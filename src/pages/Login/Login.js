@@ -5,15 +5,18 @@ import { useNavigate } from 'react-router-dom'
 // import { auth } from 'firebase-client'
 
 // import Input from 'ui/input/Input'
+import Logo from '../../components/Logo'
+import LoginForm from '../../features/LoginForm'
+import { GoogleSvg } from '../../assets/svg/svg-icons'
 
-// import style from 'assets/scss/login.module.scss'
+import style from '../../assets/scss/signup.module.scss'
 
 const Login = () => {
 //   const [email, setEmail] = useState('')
 //   const [password, setPassword] = useState('')
 //   const [error, setError] = useState('')
 
-//   let navigate = useNavigate()
+  let navigate = useNavigate()
 
 //   async function signIn(e) {
 //     e.preventDefault()
@@ -28,12 +31,32 @@ const Login = () => {
 //       })
 //   }
 
-//   const forgotPassword = (e) => {
-//     e.preventDefault()
-//     navigate('../forgot-password')
-//   }
+  const forgotPassword = (e) => {
+    e.preventDefault()
+    navigate('../forgot-password')
+  }
 
-//   return (
+  return (
+    <div className={style.container}>
+            <Logo />
+            <div className={style.signup_wrapper}>
+                <h2 className={style.header}>Log in to ProMBoard</h2>
+                <LoginForm />
+                <p style={{margin: '10px'}}>or</p>
+                <button 
+                    className={style.button}
+                    type='button'
+                    >
+                    <GoogleSvg />
+                    <span>Log In with Google</span>
+                </button>
+                <hr className={style.line} />
+                <div className={style.login} onClick={forgotPassword}>
+                    Forgot your password?
+                </div>
+            </div>
+        </div>
+
 //     <div className={style.container}>
 //       <div className={style.plate}>
 //         <div className={style.img}> </div>
@@ -71,7 +94,7 @@ const Login = () => {
 //         </form>
 //       </div>
 //     </div>
-//   )
+  )
 }
 
 export default Login

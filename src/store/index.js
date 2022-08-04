@@ -7,6 +7,8 @@ import { combineReducers } from 'redux'
 // import eventsReducer from './slices/eventsSlice'
 // import searchTermReducer from './slices/filterSlice'
 import userReducer from './slices/userSlice'
+import avatarReducer from './slices/avatarSlice'
+import usernameReducer from './slices/usernameSlice'
 // import membersReducer from './slices/membersSlice'
 // import memberUpReducer from './slices/memberUpSlice'
 // import participantsReducer from './slices/participantsSlice'
@@ -20,6 +22,8 @@ const persistConfig = {
 
 const reducers = combineReducers({
     user: userReducer,
+    avatar: avatarReducer,
+    username: usernameReducer,
 //   member: memberReducer,
 //   members: membersReducer,
 //   events: eventsReducer,

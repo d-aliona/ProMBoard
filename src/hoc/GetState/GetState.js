@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
-// import { useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
-// import { collection, orderBy, query, onSnapshot, where } from 'firebase/firestore'
-// import { onIdTokenChanged } from 'firebase/auth'
-// import { db, auth, eventsCollection, membersCollection } from 'firebase-client'
+import { collection, orderBy, query, onSnapshot, where } from 'firebase/firestore'
+import { onIdTokenChanged } from 'firebase/auth'
+import { db, auth, eventsCollection, membersCollection } from '../../firebase-client'
 
-// import { setMember } from 'store/slices/memberSlice'
+import { setUser } from '../../store/slices/userSlice'
 // import { setEvents } from 'store/slices/eventsSlice'
 // import { setMembers } from 'store/slices/membersSlice'
 // import { useLocation } from 'react-router-dom'
@@ -13,7 +13,7 @@ import { useEffect } from 'react'
 // import { setInput } from 'store/slices/filterSlice'
 
 const GetState = ({ children }) => {
-//   const dispatch = useDispatch()
+  const dispatch = useDispatch()
 //   const location = useLocation()
 
 //   useEffect(() => {
@@ -24,27 +24,27 @@ const GetState = ({ children }) => {
 //     dispatch(setInput(''))
 //   }, [location])
 
-//   useEffect(() => {
-//     onIdTokenChanged(auth, (user) => {
-//       if (!user) {
-//         console.log('No User found...')
-//       } else {
-//         const token = user.getIdToken().then(() => {
-//           const q = query(collection(db, 'members'), where('email', '==', user.email))
-//           onSnapshot(q, (snapshot) => {
-//             snapshot.forEach((doc) => {
-//               dispatch(
-//                 setMember({
-//                   id: doc.id,
-//                   ...doc.data(),
-//                 })
-//               )
-//             })
-//           })
-//         })
-//       }
-//     })
-//   }, [])
+  useEffect(() => {
+    onIdTokenChanged(auth, (user) => {
+      if (!user) {
+        console.log('No User found...')
+      } else {
+        const token = user.getIdToken().then(() => {
+          const q = query(collection(db, 'users'), where('email', '==', user.email))
+          onSnapshot(q, (snapshot) => {
+            snapshot.forEach((doc) => {
+              dispatch(
+                setUser({
+                  id: doc.id,
+                  ...doc.data(),
+                })
+              )
+            })
+          })
+        })
+      }
+    })
+  }, [])
 
 //   const qEvents = query(eventsCollection, orderBy('eventDate', 'desc'))
 

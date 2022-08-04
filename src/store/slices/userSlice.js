@@ -4,7 +4,7 @@ const initialState = {
   user: {
     email: null,
     id: null,
-    userPhoto: null,
+    // userPhoto: null,
   },
 }
 
@@ -18,7 +18,7 @@ const userSlice = createSlice({
     removeUser(state) {
       state.user.email = null
       state.user.id = null
-      state.user.userPhoto = null
+      // state.user.userPhoto = null
     },
   },
 })

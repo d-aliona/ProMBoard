@@ -6,9 +6,12 @@ import Signup from './pages/Signup'
 import Login from './pages/Login'
 import Home from './pages/Home'
 import Profile from './pages/Profile'
+import Board from './pages/Board'
 import NotFound from './pages/NotFound'
+import ForgotPassword from './pages/ForgotPassword'
 import GetState from './hoc/GetState/GetState' 
 import RequireAuth from './hoc/RequireAuth'
+import Layout from './components/Layout'
 
 function App() {
   return (
@@ -17,14 +20,20 @@ function App() {
         <Route path='/' element={<Start />} />
         <Route path='/signup' element={<Signup/>} />
         <Route path='/login' element={<Login/>} />
+        <Route path="forgot-password" element={<ForgotPassword />} />
         <Route
           path="/auth/*"
           element={
             <GetState>
               <RequireAuth>
                 <Routes>
-                  <Route exact path="home" element={<Home />} />
-                  <Route exact path="profile" element={<Profile />} />
+                  <Route path='' element={<Layout />}>
+                    <Route exact path="home" element={<Home />} />
+                    <Route exact path="profile" element={<Profile />} />
+                    <Route path='board/:id' element={<Board />} />
+                   
+                  </Route>
+                  
                   {/* <Route exact path="member-list" element={<MemberList />} />
                   <Route exact path="member-management" element={<MemberManagement />} />
                   <Route exact path="manager-management" element={<ManagerManagement />} />

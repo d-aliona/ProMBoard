@@ -1,4 +1,8 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"
+import { collection, addDoc } from 'firebase/firestore'
+import { db } from '../../firebase-client'
 
 import Input from '../../components/Input'
 
@@ -6,55 +10,70 @@ import style from '../../assets/scss/signupForm.module.scss'
 import { ShowPassword, HidePassword } from '../../assets/svg/svg-icons'
 
 const SignupForm = () => {
+    const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/gi
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [passConfirmed, setPassConfirmed] = useState('')
     const [isRevealPwd1, setIsRevealPwd1] = useState(false)
     const [isRevealPwd2, setIsRevealPwd2] = useState(false)
     const [showErrorEmail, setShowErrorEmail] = useState(false)
-    const [showErrorPass1, setShowErrorPass1] = useState(false)
-    const [showErrorPass2, setShowErrorPass2] = useState(false)
+    const [showErrorPass, setShowErrorPass] = useState(false)
     const disabled = email&&password&&passConfirmed ? '' : style.disabled;
+
+    let navigate = useNavigate()
 
     const createUser = (e) => {
         e.preventDefault()
 
-        // if (email.slice(1,-1).includes('@')) {
-        //     console.log('ff')
-        //     setShowErrorEmail(false)
-        // } else {
-        //     setShowErrorEmail(true)
-        //     console.log('true')
-        // }
+        if (email.match(regex)) {
+            setShowErrorEmail(false)
+            
+            if (password === passConfirmed && password.trim().length >= 6) {
+                setShowErrorPass(false)
 
-        if (password === passConfirmed && password.trim().length >= 6) {
-            setShowErrorPass1(false)
-            console.log('ok')
-          } else {
-            setShowErrorPass1(true)
-            setPassword('')
-            setPassConfirmed('')
-          }
-        
-        // if (newPass === newPassConfirmed && newPass.trim().length >= 6) {
-        //     updatePassword(user, newPass)
-        //       .then(() => {
-        //         setMessage(true)
-        //       })
-        //       .catch((error) => {
-        //         console.error(error)
-        //       })
-        //   } else {
-        //     setShowError2(true)
-        //     setNewPass('')
-        //     setNewPassConfirmed('')
-        //   }
+                const auth = getAuth()
+                createUserWithEmailAndPassword(auth, email, password)
+                .then(() => {
+                    addDoc(collection(db, 'users'),{
+                        email: email,
+                    })
+                })
+                .then(() => {
+                    navigate('../auth/home')
+                })
+                .catch((error) => {
+                    console.log(error.message)
+                })
+
+                // .then(() => {
+                //     const createdDocRef = addDoc(collection(db, 'members'), {
+                //       firstName: firstName,
+                //       lastName: lastName,
+                //       email: email,
+                //       phone: phone,
+                //       organisation: organisation,
+                //       birthDate: birthDate,
+                //       initialScore: parseInt(initialScore),
+                //       role: 'user',
+                //       score: parseInt(initialScore),
+                //       userPhoto: userPhoto,
+                //     })
+                
+              } else {
+                setShowErrorPass(true)
+                setPassword('')
+                setPassConfirmed('')
+              }
+
+        } else {
+            setShowErrorEmail(true)
+        }
     }
 
   return (
     <form className={style.form} onSubmit={createUser}>
         <Input
-            type={'email'}
+            type={'text'}
             placeholder={'Enter email'}
             value={email}
             onChange={(e) => {
@@ -68,7 +87,7 @@ const SignupForm = () => {
             value={password}
             onChange={(e) => {
                 setPassword(e.target.value)
-                setShowErrorPass1(false)
+                setShowErrorPass(false)
             }}
         />
         <div className={style.eye} onClick={() => setIsRevealPwd1(prev => !prev)}>
@@ -80,15 +99,20 @@ const SignupForm = () => {
             value={passConfirmed}
             onChange={(e) => {
                 setPassConfirmed(e.target.value)
-                setShowErrorPass1(false)
+                setShowErrorPass(false)
             }}
         />
         <div className={style.eye} onClick={() => setIsRevealPwd2(prev => !prev)}>
             {isRevealPwd2 ? <HidePassword /> : <ShowPassword />}
         </div>
-        {!!showErrorPass1 && (
+        {!!showErrorEmail && (
                   <div className={style.error}>
-                    Please include an '@' in the email address
+                    Please enter the correct email address
+                  </div>
+        )}
+        {!!showErrorPass && (
+                  <div className={style.error}>
+                    Enter the correct new password (six or more characters) and confirm it
                   </div>
         )}
         <button
