@@ -20,4 +20,4 @@ export const db = getFirestore(app)
 // export const storage = getStorage()
 
 // export const eventsCollection = collection(db, 'events')
-// export const membersCollection = collection(db, 'members')
+export const usersCollection = collection(db, 'users')

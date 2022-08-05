@@ -1,15 +1,18 @@
-import React from 'react'
-
+import React, {useEffect} from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, Navigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 
+import { onSnapshot } from 'firebase/firestore'
+import { usersCollection } from '../../firebase-client'
+
+import { setUsers } from '../../store/slices/usersSlice'
 import Logo from '../../components/Logo'
-
 import style from '../../assets/scss/start.module.scss'
 
 function Start() {
   const currentUser = useSelector((state) => state.user.user)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const logIn = (e) => {
     e.preventDefault()
@@ -20,6 +23,15 @@ function Start() {
     e.preventDefault()
     navigate('signup')
   }
+
+  useEffect(() => {
+    onSnapshot(usersCollection, (snapshot) => {
+      const userSnap = snapshot.docs.map((doc) => {
+        return { ...doc.data(), id: doc.id }
+      })
+      dispatch(setUsers(userSnap))
+    })
+  }, [])
 
   return (
     <div className={style.container}>

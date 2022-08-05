@@ -18,11 +18,11 @@ function App() {
     <Routes>
       {/* <Route path='/' element={<Layout />}> */}
         <Route path='/' element={<Start />} />
-        <Route path='/signup' element={<Signup/>} />
-        <Route path='/login' element={<Login/>} />
+        <Route path='signup' element={<Signup/>} />
+        <Route path='login' element={<Login/>} />
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route
-          path="/auth/*"
+          path="auth/*"
           element={
             <GetState>
               <RequireAuth>
@@ -31,7 +31,6 @@ function App() {
                     <Route exact path="home" element={<Home />} />
                     <Route exact path="profile" element={<Profile />} />
                     <Route path='board/:id' element={<Board />} />
-                   
                   </Route>
                   
                   {/* <Route exact path="member-list" element={<MemberList />} />

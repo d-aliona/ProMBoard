@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { collection, orderBy, query, onSnapshot, where } from 'firebase/firestore'
 import { onIdTokenChanged } from 'firebase/auth'
-import { db, auth, eventsCollection, membersCollection } from '../../firebase-client'
+import { db, auth, usersCollection } from '../../firebase-client'
 
 import { setUser } from '../../store/slices/userSlice'
-// import { setEvents } from 'store/slices/eventsSlice'
+import { setPersonalBoards } from '../../store/slices/personalBoardsSlice'
 // import { setMembers } from 'store/slices/membersSlice'
 // import { useLocation } from 'react-router-dom'
 // import { setSelected } from 'store/slices/selectSlice'
@@ -14,6 +14,7 @@ import { setUser } from '../../store/slices/userSlice'
 
 const GetState = ({ children }) => {
   const dispatch = useDispatch()
+  const user = useSelector((state) => state.user.user)
 //   const location = useLocation()
 
 //   useEffect(() => {
@@ -46,14 +47,15 @@ const GetState = ({ children }) => {
     })
   }, [])
 
-//   const qEvents = query(eventsCollection, orderBy('eventDate', 'desc'))
+  // citiesRef = collection(db, "cities")
+  const PersonalBoards = collection(usersCollection, user.id, 'personalBoards')
 
-//   useEffect(() => {
-//     onSnapshot(qEvents, (snapshot) => {
-//       const eventsSnap = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-//       dispatch(setEvents(eventsSnap))
-//     })
-//   }, [])
+  useEffect(() => {
+    onSnapshot(PersonalBoards, (snapshot) => {
+      const persBoardsSnap = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      dispatch(setPersonalBoards(persBoardsSnap))
+    })
+  }, [])
 
 //   useEffect(() => {
 //     onSnapshot(membersCollection, (snapshot) => {
