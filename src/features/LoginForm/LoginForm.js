@@ -15,6 +15,7 @@ const LoginForm = () => {
     const [isRevealPwd1, setIsRevealPwd1] = useState(false)
     const [showErrorEmail, setShowErrorEmail] = useState(false)
     const [showErrorPass, setShowErrorPass] = useState(false)
+    const [isIncorrectData, setIsIncorrectData] = useState(false)
     const disabled = email&&password ? '' : style.disabled;
 
     let navigate = useNavigate()
@@ -34,6 +35,7 @@ const LoginForm = () => {
                 })
                 .catch((error) => {
                     console.log(error.message)
+                    setIsIncorrectData(true)
                 })
  
               } else {
@@ -55,6 +57,7 @@ const LoginForm = () => {
             onChange={(e) => {
                 setEmail(e.target.value)
                 setShowErrorEmail(false)
+                setIsIncorrectData(false)
             }}
         />
         <Input
@@ -64,6 +67,8 @@ const LoginForm = () => {
             onChange={(e) => {
                 setPassword(e.target.value)
                 setShowErrorPass(false)
+                setIsIncorrectData(false)
+
             }}
         />
         <div className={style.eye} onClick={() => setIsRevealPwd1(prev => !prev)}>
@@ -71,13 +76,18 @@ const LoginForm = () => {
         </div>
         {!!showErrorEmail && (
             <div className={style.error}>
-            Please enter the correct email address
+                Please enter the correct email address
             </div>
         )}
         {!!showErrorPass && (
-                  <div className={style.error}>
-                    Enter the correct password
-                  </div>
+            <div className={style.error}>
+                Enter the correct password
+            </div>
+        )}
+        {!!isIncorrectData && (
+            <div className={style.error}>
+                Incorrect data. Please enter the correct email and password.
+            </div>
         )}
         <button
             type='submit'

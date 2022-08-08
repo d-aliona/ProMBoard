@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { collection, orderBy, query, onSnapshot, where } from 'firebase/firestore'
+import { collection, orderBy, doc, query, onSnapshot, where } from 'firebase/firestore'
 import { onIdTokenChanged } from 'firebase/auth'
 import { db, auth, usersCollection } from '../../firebase-client'
 
@@ -46,16 +46,20 @@ const GetState = ({ children }) => {
       }
     })
   }, [])
-
-  // citiesRef = collection(db, "cities")
-  const PersonalBoards = collection(usersCollection, user.id, 'personalBoards')
-
+      
   useEffect(() => {
-    onSnapshot(PersonalBoards, (snapshot) => {
-      const persBoardsSnap = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-      dispatch(setPersonalBoards(persBoardsSnap))
-    })
-  }, [])
+    if (user.id) {
+      const docRef = doc(usersCollection, user.id)
+      const PersonalBoards = collection(docRef, 'personalBoards')
+      const qPersBoards = query(PersonalBoards, orderBy('title', 'asc'))
+
+      onSnapshot(qPersBoards, (snapshot) => {
+        const persBoardsSnap = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        dispatch(setPersonalBoards(persBoardsSnap))
+      })
+    }
+    
+  }, [user])
 
 //   useEffect(() => {
 //     onSnapshot(membersCollection, (snapshot) => {

@@ -28,7 +28,7 @@ function App() {
               <RequireAuth>
                 <Routes>
                   <Route path='' element={<Layout />}>
-                    <Route exact path="home" element={<Home />} />
+                    <Route path="home" element={<Home />} />
                     <Route exact path="profile" element={<Profile />} />
                     <Route path='board/:id' element={<Board />} />
                   </Route>

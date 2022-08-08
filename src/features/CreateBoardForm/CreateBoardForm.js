@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { doc, addDoc, collection } from 'firebase/firestore'
 import { usersCollection } from '../../firebase-client'
 
+import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
 import Input from '../../components/Input'
 import style from '../../assets/scss/createboardForm.module.scss'
 import { Preview } from '../../assets/svg/svg-icons'
@@ -14,15 +15,19 @@ const CreateBoardForm = () => {
     const [title, setTitle] = useState(null)
     const [show, setShow] = useState(false)
     const [colorBoard, setColorBoard] = useState('#e6a3a3')
+    const [showError, setShowError] =useState(false)
     const ref = useRef()
     const disabled = title ? '' : style.disabled
     const user = useSelector((state) => state.user.user)
+    const boards = useSelector(personalBoardsState)
 
     useEffect(() => {
         const checkIfClickedOutside = (e) => {
 
             if (show && ref.current && !ref.current.contains(e.target)) {
                 setShow(false)
+                setTitle('')
+                setShowError(false)
             }
         }
         document.addEventListener('mousedown', checkIfClickedOutside)
@@ -33,7 +38,20 @@ const CreateBoardForm = () => {
 
     const createBoard = (e) => {
         e.preventDefault()
-        
+
+        if (!boards) {
+            createBoardInDatabase()
+        } else {
+            if (boards.some(el => el.title === title)) {
+                setShowError(true)
+            } else {
+                createBoardInDatabase()
+            }
+
+        }
+    }
+
+    const createBoardInDatabase = () => {
         const docRef = doc(usersCollection, user.id)
         const colRef = collection(docRef, 'personalBoards')
 
@@ -44,6 +62,7 @@ const CreateBoardForm = () => {
         .then(() => {
             navigate('/auth/board/' + title)
             setShow(false)
+            setShowError(false)
             setTitle('')
         })
         .catch((error) => {
@@ -119,6 +138,11 @@ const CreateBoardForm = () => {
                                     setTitle(e.target.value)
                                 }}
                             />
+                            {!!showError && (
+                                <div className={style.error}>
+                                    The board with such a title already exists. Please enter another title.
+                                </div>
+                            )}
                             <button
                                 type='submit'
                                 className={`${style.button} ${disabled}`}>

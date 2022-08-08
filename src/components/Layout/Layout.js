@@ -1,4 +1,5 @@
 import { Outlet } from 'react-router-dom'
+import autoMergeLevel1 from 'redux-persist/es/stateReconciler/autoMergeLevel1'
 
 import Sidebar from '../Sidebar'
 import Topbar from '../Topbar'
@@ -11,8 +12,12 @@ const Layout = () => {
         backgroundColor: '#f4f5f7' 
     }}>
         <Topbar />
-        <Sidebar />
-        <Outlet />
+        <div style={{display: 'flex', width: '100vw'}}>
+          <Sidebar />
+          <div style={{width: '100%'}}> 
+            <Outlet />
+          </div>
+        </div>
     </main>
   )
 }

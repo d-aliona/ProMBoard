@@ -1,0 +1,98 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 260px;
+    height: calc(100vh - 44px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    font-size: 16px;
+    background-color: #f4f5f7;
+    border-right:rgba(23, 43, 77, .3) 1px solid;
+    box-sizing:border-box;
+    color: rgb(23, 43, 77); 
+}
+
+.wrapperHidden {
+    width: 20px;
+    height: calc(100vh - 44px);
+    background-color: #f4f5f7;
+    border-right:rgba(23, 43, 77, .4) 1px solid;
+    cursor: pointer;
+}
+
+.wrapperHidden:hover {
+    background-color: rgba(23, 43, 77, .4);
+}
+
+@mixin tick {
+    width: 24px;
+    height: 24px;
+    margin: 20px 45%;
+    border-radius: 30%;
+    background-color: rgba(23, 43, 77, .4);
+    color: white;
+    cursor: pointer;
+}
+
+@mixin tickUpDown {
+    width: 24px;
+    height: 24px;
+}
+
+.tickLeft {
+    @include tick;
+    transform: rotate(90deg); 
+}
+
+.tickRight {
+    @include tick;
+    transform: rotate(-90deg); 
+}
+
+.tickUp {
+    @include tickUpDown;
+    transform: rotate(180deg); 
+}
+
+.tickDown {
+    @include tickUpDown;
+}
+
+.dropBoards {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
+    padding: 10px 14px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.plus {
+    font-size: 24px;
+    width: 24px;
+    text-align: center;
+}
+
+.dropBoards:hover {
+    background-color: rgba(0,0,0, .2);
+}
+
+.listItem {
+    padding: 5px 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.listItem:hover {
+    background-color: #ddd;
+}
+
+.colorBoard {
+    width: 25px;
+    height: 20px;
+    border-radius: 3px;
+    margin-right: 5px;
+}
