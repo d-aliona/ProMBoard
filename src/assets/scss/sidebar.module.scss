@@ -28,7 +28,7 @@
 @mixin tick {
     width: 24px;
     height: 24px;
-    margin: 20px 45%;
+    margin: 20px 84%;
     border-radius: 30%;
     background-color: rgba(23, 43, 77, .4);
     color: white;
@@ -47,7 +47,12 @@
 
 .tickRight {
     @include tick;
+    margin: 20px 45%;
     transform: rotate(-90deg); 
+}
+
+.tickLeft:hover, .tickRight:hover {
+    background-color: rgba(23, 43, 77, .9);
 }
 
 .tickUp {

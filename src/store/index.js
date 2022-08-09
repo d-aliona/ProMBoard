@@ -4,17 +4,13 @@ import { persistReducer, persistStore } from 'redux-persist'
 import thunk from 'redux-thunk'
 import { combineReducers } from 'redux'
 
-// import eventsReducer from './slices/eventsSlice'
-// import searchTermReducer from './slices/filterSlice'
 import userReducer from './slices/userSlice'
 import usersReducer from './slices/usersSlice'
 import avatarReducer from './slices/avatarSlice'
 import usernameReducer from './slices/usernameSlice'
 import personalBoardsReducer from './slices/personalBoardsSlice'
-// import memberUpReducer from './slices/memberUpSlice'
-// import participantsReducer from './slices/participantsSlice'
-// import selectValueReducer from './slices/selectSlice'
-// import visitedEventsReducer from './slices/visitedEventsSlice'
+import boardReducer from './slices/boardSlice'
+import currentListsReducer from './slices/currentListsSlice'
 
 const persistConfig = {
   key: 'root',
@@ -27,14 +23,8 @@ const reducers = combineReducers({
     avatar: avatarReducer,
     username: usernameReducer,
     personalBoards: personalBoardsReducer,
-//   member: memberReducer,
-//   members: membersReducer,
-//   events: eventsReducer,
-//   memberUp: memberUpReducer,
-//   participants: participantsReducer,
-//   searchTerm: searchTermReducer,
-//   value: selectValueReducer,
-//   visitedEvents: visitedEventsReducer,
+    board: boardReducer,
+    currentLists: currentListsReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers)

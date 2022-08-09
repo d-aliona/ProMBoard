@@ -38,7 +38,6 @@ const Sidebar = () => {
 
     const navigateBoard = (title) => {
         navigate('/auth/board/' + title)
-        // setShow(false)
     }
 
     return (
