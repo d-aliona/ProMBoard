@@ -7,27 +7,27 @@ import { usersCollection } from '../../firebase-client'
 
 import { setCurrentCards, currentCardsState } from '../../store/slices/currentCardsSlice'
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
-import Cards from '../Cards'
 import AddCardForm from '../../features/AddCardForm'
-import style from '../../assets/scss/list.module.scss'
+import Card from '../Card'
+import style from '../../assets/scss/card.module.scss'
 
 
-const List = ({list, curBoardId}) => {
+const Cards = () => {
     const dispatch = useDispatch()
     const user = useSelector((state) => state.user.user)
     const cards = useSelector(currentCardsState)
+    // console.log(cards)
 
     return (
-        <>
-            <div className={style.listWrapper}>
-                <div className={style.listTitle}>
-                    {list.listTitle}
-                    {cards && <Cards /> }
+        cards && 
+            cards.map((card, key) => {
+                return (
+                <div>
+                    <Card key={key} card={card}/>
                 </div>
-                <AddCardForm list={list} curBoardId={curBoardId}/>
-            </div>
-        </>
+                )
+            })
     )
 }
 
-export default List
+export default Cards

@@ -11,6 +11,7 @@ import usernameReducer from './slices/usernameSlice'
 import personalBoardsReducer from './slices/personalBoardsSlice'
 import boardReducer from './slices/boardSlice'
 import currentListsReducer from './slices/currentListsSlice'
+import currentCardsReducer from './slices/currentCardsSlice'
 
 const persistConfig = {
   key: 'root',
@@ -25,6 +26,7 @@ const reducers = combineReducers({
     personalBoards: personalBoardsReducer,
     board: boardReducer,
     currentLists: currentListsReducer,
+    currentCards: currentCardsReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers)

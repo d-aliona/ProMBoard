@@ -2,44 +2,24 @@ import React, {useState, useEffect} from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { collection, orderBy, doc, query, onSnapshot, where } from 'firebase/firestore'
-import { db, auth, usersCollection } from '../../firebase-client'
-
 import List from '../../components/List'
 import AddListForm from '../../features/AddListForm'
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
-import { setCurrentLists, currentListsState } from '../../store/slices/currentListsSlice'
+import { currentListsState } from '../../store/slices/currentListsSlice'
 import style from '../../assets/scss/board.module.scss'
+import GetListState from '../../hoc/GetListState'
+import { setCurrentCards, currentCardsState } from '../../store/slices/currentCardsSlice'
 
 const Board = () => {
-  const title = useParams()
   const dispatch = useDispatch()
+  const title = useParams()
+  // const dispatch = useDispatch()
   const user = useSelector((state) => state.user.user)
   const boards = useSelector(personalBoardsState)
   const lists = useSelector(currentListsState)
-  // console.log(boards)
   const [clickAddList, setClickAddList] = useState(false)
-  // console.log(title)
   const currentBoard = boards.find(ob => ob.title === title.id)
-  // console.log(currentBoard)
-  
-
-  useEffect(() => {
-      const docRef = doc(usersCollection, user.id, 'personalBoards', currentBoard.id)
-      const listsCol = collection(docRef, 'lists')
-      const qLists = query(listsCol, orderBy('order', 'asc'))
-
-      // if (lists.length) {
-        onSnapshot(qLists, (snapshot) => {
-          const listSnap = snapshot.docs.map((doc) => {
-            return { ...doc.data(), id: doc.id }
-          })
-          dispatch(setCurrentLists(listSnap))
-        })
-      // }
-  }, [currentBoard.id])
   // console.log(lists)
-
   const chooseLight = (e) => {
     e.preventDefault()
 
@@ -64,10 +44,13 @@ const Board = () => {
       </div>
       <div className={style.lists}>
         {lists && 
-          lists.map((list, id) => {
+          lists.map((list, key) => {
+            dispatch(setCurrentCards(null))
             return (
               <div>
-                <List key={id} list={list} curBoardId={currentBoard.id}/>
+                <GetListState key={key} list={list} curBoardId={currentBoard.id} >
+                  <List list={list} curBoardId={currentBoard.id}/>
+                </GetListState>
               </div>
             )
           })

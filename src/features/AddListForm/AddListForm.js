@@ -15,11 +15,29 @@ const AddListForm = (props) => {
     const user = useSelector((state) => state.user.user)
     const [clickAddList, setClickAddList] = useState(false)
     const [listTitle, setListTitle] = useState('')
+    const [showError, setShowError] =useState(false)
+    const disabled = listTitle ? '' : style.disabled
     // let navigate = useNavigate()
-    console.log(lists)
-
-    const addList = async (e) => {
+    // console.log(lists)
+    
+    const addList = (e) => {
       e.preventDefault()
+
+      if (!lists) {
+        setShowError(false)
+        addListToDatabase()
+      } else {
+          if (lists.some(el => el.listTitle === listTitle)) {
+              setShowError(true)
+          } else {
+            addListToDatabase()
+            setShowError(false)
+          }
+
+      }
+    }
+    
+    const addListToDatabase = async () => {
       const docRef = doc(usersCollection, user.id, 'personalBoards', curBoardId)
       const listsCol = collection(docRef, 'lists')
       
@@ -32,47 +50,19 @@ const AddListForm = (props) => {
 
       setListTitle('')
       setClickAddList(false)
+      setShowError(false)
     }
-
-    // const createEvent = async (e) => {
-    //   e.preventDefault()
-    //   setError('')
-  
-    //   const createdDocRef = await addDoc(eventsCollection, {
-    //     eventName: eventName,
-    //     eventDate: eventDate,
-    //     score: parseInt(score),
-    //   }).catch((err) => {
-    //     setError(err.message)
-    //     console.error(error)
-    //   })
-    //   const docRef = doc(db, 'events', createdDocRef.id)
-    //   const colRef = collection(docRef, 'participants')
-  
-    //   members &&
-    //     members.map(
-    //       async (member, id) =>
-    //         await setDoc(doc(colRef, member.id), {
-    //           addPoints: 0,
-    //           comment: '',
-    //           visitedEvent: false,
-    //         })
-    //     )
-  
-    //   setEventName('')
-    //   setEventDate('')
-    //   setScore('')
-    // }
 
     const cancel = () => {
       setClickAddList(false)
       setListTitle('')
+      setShowError(false)
     }
 
   return (
     <>
       {clickAddList && 
-        <div className={style.addForm}>
+        <form className={style.addForm} onSubmit={addList}>
           <input 
             className={style.inputTitle}
             type='text'
@@ -82,12 +72,20 @@ const AddListForm = (props) => {
                 setListTitle(e.target.value)
             }}
             autoFocus
+            required
           />
+          {!!showError && (
+            <div className={style.error}>
+                The list with such a title already exists. Please enter another title.
+            </div>
+          )}
           <div className={style.actions}>
-            <span className={style.action} onClick={addList}>+</span>
+            <button className={`${style.action} ${disabled}`} type='submit'>
+              Add list
+            </button>
             <span className={style.action} onClick={cancel}>×</span>
           </div>
-        </div>
+        </form>
       }
       {!clickAddList && 
         <div className={style.addList} onClick={() => setClickAddList(prev => !prev)}>

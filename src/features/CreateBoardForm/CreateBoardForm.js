@@ -82,7 +82,11 @@ const CreateBoardForm = () => {
                             <span className={style.titleName}>Create a board</span>
                             <span
                                 className={style.closeForm} 
-                                onClick={() => setShow(false)}> 
+                                onClick={() => {
+                                    setShow(false)
+                                    setShowError(false)
+                                    setTitle('')
+                                }}> 
                                 × 
                             </span>
                         </div>
