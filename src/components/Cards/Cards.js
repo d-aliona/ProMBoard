@@ -12,17 +12,20 @@ import Card from '../Card'
 import style from '../../assets/scss/card.module.scss'
 
 
-const Cards = () => {
+const Cards = ({list}) => {
     const dispatch = useDispatch()
     const user = useSelector((state) => state.user.user)
     const cards = useSelector(currentCardsState)
-    // console.log(cards)
+    console.log(cards)
+    // const display = cards.length === 0 ? false : cards[0].listId === list.id
 
+    // const display = cards[0].listId === list.id
+    // const display = cards.length != 0 && cards[0].listId === list.id
     return (
         cards && 
             cards.map((card, key) => {
                 return (
-                <div>
+                <div >
                     <Card key={key} card={card}/>
                 </div>
                 )

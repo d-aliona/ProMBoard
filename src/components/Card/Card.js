@@ -14,7 +14,7 @@ import style from '../../assets/scss/card.module.scss'
 const Card = ({card}) => {
     const dispatch = useDispatch()
     const user = useSelector((state) => state.user.user)
-    const cards = useSelector(currentCardsState)
+    // const cards = useSelector(currentCardsState)
     console.log(card)
 
     return (

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import { doc, addDoc, collection } from 'firebase/firestore'
-import { usersCollection } from '../../firebase-client'
+import { db, usersCollection } from '../../firebase-client'
 
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
 import Input from '../../components/Input'
@@ -52,12 +52,13 @@ const CreateBoardForm = () => {
     }
 
     const createBoardInDatabase = () => {
-        const docRef = doc(usersCollection, user.id)
-        const colRef = collection(docRef, 'personalBoards')
+        const colRef = collection(db, 'boards')
+        // const colRef = collection(docRef, 'personalBoards')
 
         addDoc(colRef, {
-            title: title,
-            colorBoard: colorBoard,
+            boardTitle: title,
+            boardColor: colorBoard,
+            owner: user.id,
         })
         .then(() => {
             navigate('/auth/board/' + title)

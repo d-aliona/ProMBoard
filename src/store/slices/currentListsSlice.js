@@ -1,8 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = {
-  currentLists: null,
-}
+// const initialState = {
+//   currentLists: [cards: [],
+//   listTitle: ''
+// id:
+//   ],
+// }
+const initialState = null
 
 const currentListsSlice = createSlice({
   name: 'currentLists',

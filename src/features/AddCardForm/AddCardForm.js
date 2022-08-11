@@ -20,14 +20,17 @@ const AddCardForm = ({list, curBoardId}) => {
 
     const addCard = async (e) => {
       e.preventDefault()
-      const docRef = doc(usersCollection, user.id, 'personalBoards', curBoardId)
-      const listsCol = collection(docRef, 'lists')
-      const listDoc = doc(listsCol, list.id)
-      const cardsCol = collection(listDoc, 'cards')
+
+      // const docRef = doc(usersCollection, user.id, 'personalBoards', curBoardId)
+      // const listsCol = collection(docRef, 'lists')
+      // const listDoc = doc(listsCol, list.id)
+      const cardsCol = collection(db, 'cards')
 
       await addDoc(cardsCol, {
         cardTitle: cardTitle,
         description: '',
+        users: [],
+        listID: list.id,
         position: cards.length ? cards.length + 1 : 1 
       }).catch((err) => {
         console.error(err)

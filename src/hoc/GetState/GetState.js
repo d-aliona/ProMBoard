@@ -7,23 +7,10 @@ import { db, auth, usersCollection } from '../../firebase-client'
 
 import { setUser } from '../../store/slices/userSlice'
 import { setPersonalBoards } from '../../store/slices/personalBoardsSlice'
-// import { setMembers } from 'store/slices/membersSlice'
-// import { useLocation } from 'react-router-dom'
-// import { setSelected } from 'store/slices/selectSlice'
-// import { setInput } from 'store/slices/filterSlice'
 
 const GetState = ({ children }) => {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.user.user)
-//   const location = useLocation()
-
-//   useEffect(() => {
-//     dispatch(setSelected('All'))
-//   }, [location])
-
-//   useEffect(() => {
-//     dispatch(setInput(''))
-//   }, [location])
 
   useEffect(() => {
     onIdTokenChanged(auth, (user) => {
@@ -49,10 +36,9 @@ const GetState = ({ children }) => {
       
   useEffect(() => {
     if (user.id) {
-      const docRef = doc(usersCollection, user.id)
-      const PersonalBoards = collection(docRef, 'personalBoards')
-      const qPersBoards = query(PersonalBoards, orderBy('title', 'asc'))
-
+      const colRef = collection(db, 'boards')
+      const qPersBoards = query(colRef, where('owner', "==", user.id))
+      
       onSnapshot(qPersBoards, (snapshot) => {
         const persBoardsSnap = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
         dispatch(setPersonalBoards(persBoardsSnap))
@@ -60,15 +46,6 @@ const GetState = ({ children }) => {
     }
     
   }, [user])
-
-//   useEffect(() => {
-//     onSnapshot(membersCollection, (snapshot) => {
-//       const memberSnap = snapshot.docs.map((doc) => {
-//         return { ...doc.data(), id: doc.id }
-//       })
-//       dispatch(setMembers(memberSnap))
-//     })
-//   }, [])
 
   return children
 }

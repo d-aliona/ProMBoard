@@ -13,13 +13,12 @@ import { setCurrentCards, currentCardsState } from '../../store/slices/currentCa
 const Board = () => {
   const dispatch = useDispatch()
   const title = useParams()
-  // const dispatch = useDispatch()
   const user = useSelector((state) => state.user.user)
   const boards = useSelector(personalBoardsState)
   const lists = useSelector(currentListsState)
   const [clickAddList, setClickAddList] = useState(false)
-  const currentBoard = boards.find(ob => ob.title === title.id)
-  // console.log(lists)
+  const currentBoard = boards.find(ob => ob.boardTitle === title.id && ob.owner === user.id)
+  
   const chooseLight = (e) => {
     e.preventDefault()
 
@@ -45,12 +44,11 @@ const Board = () => {
       <div className={style.lists}>
         {lists && 
           lists.map((list, key) => {
-            dispatch(setCurrentCards(null))
             return (
-              <div>
-                <GetListState key={key} list={list} curBoardId={currentBoard.id} >
-                  <List list={list} curBoardId={currentBoard.id}/>
-                </GetListState>
+              <div key={key}>
+                {/* <GetListState key={key} list={list} curBoardId={currentBoard.id} /> */}
+                  <List  list={list} curBoardId={currentBoard.id} />
+                {/* </GetListState> */}
               </div>
             )
           })

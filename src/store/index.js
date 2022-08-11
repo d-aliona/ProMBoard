@@ -3,6 +3,7 @@ import storage from 'redux-persist/lib/storage'
 import { persistReducer, persistStore } from 'redux-persist'
 import thunk from 'redux-thunk'
 import { combineReducers } from 'redux'
+import { composeWithDevTools } from "redux-devtools-extension";
 
 import userReducer from './slices/userSlice'
 import usersReducer from './slices/usersSlice'
@@ -33,6 +34,7 @@ const persistedReducer = persistReducer(persistConfig, reducers)
 
 export const store = configureStore({
   reducer: persistedReducer,
+  composeWithDevTools,
   devTools: process.env.NODE_ENV !== 'production',
   middleware: [thunk],
 })

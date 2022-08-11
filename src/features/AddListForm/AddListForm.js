@@ -38,11 +38,13 @@ const AddListForm = (props) => {
     }
     
     const addListToDatabase = async () => {
-      const docRef = doc(usersCollection, user.id, 'personalBoards', curBoardId)
-      const listsCol = collection(docRef, 'lists')
+      const listsCol = collection(db, 'lists')
+      // const docRef = doc(usersCollection, user.id, 'personalBoards', curBoardId)
+      // const listsCol = collection(docRef, 'lists')
       
       await addDoc(listsCol, {
         listTitle: listTitle,
+        boardID: curBoardId,
         order: lists.length ? lists.length + 1 : 1 
       }).catch((err) => {
         console.error(err)

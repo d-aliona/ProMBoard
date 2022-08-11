@@ -50,8 +50,8 @@ const BoardsList = () => {
                         <p className={style.boardsGroup}>Personal boards</p>
                             {boards 
                                 && boards.map((board, id) => 
-                                    <div key={id} className={style.listItem} onClick={() => navigateBoard(board.title)}>
-                                        {board.title}
+                                    <div key={id} className={style.listItem} onClick={() => navigateBoard(board.boardTitle)}>
+                                        {board.boardTitle}
                                     </div>
                             )}
                         <hr className={style.line} />
