@@ -12,22 +12,22 @@ import Card from '../Card'
 import style from '../../assets/scss/card.module.scss'
 
 
-const Cards = ({list}) => {
-    const dispatch = useDispatch()
-    const user = useSelector((state) => state.user.user)
+const Cards = ({list, curBoardId}) => {
+    // const dispatch = useDispatch()
+    // const user = useSelector((state) => state.user.user)
     const cards = useSelector(currentCardsState)
-    console.log(cards)
-    // const display = cards.length === 0 ? false : cards[0].listId === list.id
-
-    // const display = cards[0].listId === list.id
-    // const display = cards.length != 0 && cards[0].listId === list.id
+    const selectedCards = cards
+        .filter((card) => card.listID === list.id)
+        .sort((a,b) => a.position - b.position)
+    
+    // console.log(selectedCards)
     return (
-        cards && 
-            cards.map((card, key) => {
+        selectedCards && 
+            selectedCards.map((card, key) => {
                 return (
-                <div >
-                    <Card key={key} card={card}/>
-                </div>
+                    // <div>
+                        <Card key={key} card={card} />
+                    // </div>
                 )
             })
     )

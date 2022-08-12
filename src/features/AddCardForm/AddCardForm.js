@@ -16,7 +16,8 @@ const AddCardForm = ({list, curBoardId}) => {
     const [clickAddCard, setClickAddCard] = useState(false)
     const [cardTitle, setCardTitle] = useState('')
     const disabled = cardTitle ? '' : style.disabled
-    // let navigate = useNavigate()
+    
+    const selectedCards = cards.filter((card) => card.boardID === curBoardId && card.listID === list.id)
 
     const addCard = async (e) => {
       e.preventDefault()
@@ -31,7 +32,8 @@ const AddCardForm = ({list, curBoardId}) => {
         description: '',
         users: [],
         listID: list.id,
-        position: cards.length ? cards.length + 1 : 1 
+        boardID: curBoardId,
+        position: selectedCards.length ? selectedCards.length + 1 : 1 
       }).catch((err) => {
         console.error(err)
       })

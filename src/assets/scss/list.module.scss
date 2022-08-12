@@ -1,13 +1,87 @@
 .listWrapper {
     // margin-left: 10px;
-    padding: 10px;
+    position: relative;
+    padding: 10px 8px;
     width: 250px;
     background-color: #ebecf0;
     border-radius: 4px;
 }
 
+.listHeader {
+    display: flex;
+    justify-content: space-between;
+    // margin: 5px 5px 10px;
+    cursor: pointer;
+}
+
 .listTitle {
-    margin: 5px;
     font-weight: 600;
     font-size: 16px;
+    padding: 10px;
+    margin-right: auto;
+}    
+
+.listMenu {
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 38px;
+    height: 38px;
+}
+
+.listMenu:hover {
+    background-color: rgba(0, 0, 0, .1);
+    border-radius: 3px;
+}
+
+.line {
+    display: block;
+    width: 100%;
+    height: 1px;
+    border-top: 1px solid #ccc;
+    margin: 10px 0;
+}
+
+.closeForm {
+    cursor: pointer;
+    font-size: 26px;
+}
+
+.title {
+    display: flex;
+    justify-content: end;
+    padding-right: 10px;
+}
+
+.titleName {
+    display: inline-flex;
+    align-items: center;
+    margin: auto;
+}
+
+.dropMenu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 10px;
+    left: 255px;
+    padding: 10px 0;
+    z-index: 10;
+    width: 280px;
+    color: rgb(23, 43, 77);
+    background-color: #fff;
+    border: 1px solid #e3e6f0;
+    border-radius: 4px;
+    box-shadow: 0 8px 16px -4px rgba(9, 30, 66, .25), 0 0 0 1px rgba(9, 30, 66,  .1);
+    font-size: 16px;
+}
+
+.menuItem {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.menuItem:hover {
+    background: rgba(0, 0, 0, .1);
 }

@@ -14,37 +14,63 @@ import style from '../../assets/scss/list.module.scss'
 
 const List = ({ list, curBoardId }) => {
     const dispatch = useDispatch()
-    // const user = useSelector((state) => state.user.user)
-    // const cards = useSelector(currentCardsState)
+    const ref = useRef()
+    const [showMenu, setShowMenu] = useState(false)
+
+    const toggle = (e) => {
+        e.preventDefault()
+        setShowMenu(prev => !prev)
+    }
 
     useEffect(() => {
-        // const docRef = doc(usersCollection, user.id, 'personalBoards', curBoardId)
-        // const listsCol = collection(docRef, 'lists')
-        // const listDoc = doc(listsCol, list.id)
-        const cardsCol = collection(db, 'cards')
-        const qCards = query(cardsCol, where('listID', '==', list.id))
+        const checkIfClickedOutside = (e) => {
 
-        onSnapshot(qCards, (snapshot) => {
-            const cardSnap = snapshot.docs.map((doc) => (
-                { ...doc.data(), id: doc.id }))
-            dispatch(setCurrentCards(cardSnap))
-        })
-        
-    }, [list])
+            if (showMenu && ref.current && !ref.current.contains(e.target)) {
+                setShowMenu(false)
+            }
+        }
 
-    // const display = cards.length === 0 ? false : cards[0].listId === list.id
+        document.addEventListener('mousedown', checkIfClickedOutside)
+
+        return () => {
+            document.removeEventListener('mousedown', checkIfClickedOutside)
+        }
+    }, [showMenu])
     
-    // console.log(cards)
-    // console.log(display)
-    // console.log(list.id)
-
     return (
-        <>
+        <> 
             <div className={style.listWrapper}>
-                <div className={style.listTitle}>
-                    {list.listTitle}
-                    {<Cards list={list}  />}
+                <div className={style.listHeader}>
+                    <div className={style.listTitle} >
+                        {list.listTitle}
+                    </div>
+                    <div className={style.listMenu} onClick={toggle}>•••</div>
                 </div>
+                {showMenu && (
+                    <div className={style.dropMenu} ref={ref}>
+                        <div className={style.title}>
+                            <span className={style.titleName}>List actions</span>
+                            <span
+                                className={style.closeForm} 
+                                onClick={() => {
+                                    setShowMenu(false)
+                                }}> 
+                                × 
+                            </span>
+                        </div>
+                        <hr className={style.line} />
+                        <div className={style.menuItem}>Copy list</div>
+                        <div className={style.menuItem}>Move list</div>
+                        <hr className={style.line} />
+                        <div className={style.menuItem}>Move all cards in this list</div>
+                        <div className={style.menuItem}>Delete all cards in this list</div>
+                        <hr className={style.line} />
+                        <div className={style.menuItem}>Delete this list</div>
+                    </div>
+
+                )}
+                
+                {<Cards list={list} curBoardId={curBoardId} />}
                 <AddCardForm list={list} curBoardId={curBoardId} />
             </div>
         </>

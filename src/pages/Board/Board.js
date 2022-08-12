@@ -18,7 +18,9 @@ const Board = () => {
   const lists = useSelector(currentListsState)
   const [clickAddList, setClickAddList] = useState(false)
   const currentBoard = boards.find(ob => ob.boardTitle === title.id && ob.owner === user.id)
-  
+    
+  const sortedLists = [...lists].sort((a,b) => a.position - b.position)
+
   const chooseLight = (e) => {
     e.preventDefault()
 
@@ -42,13 +44,11 @@ const Board = () => {
         </div>
       </div>
       <div className={style.lists}>
-        {lists && 
-          lists.map((list, key) => {
+        {sortedLists && 
+          sortedLists.map((list, key) => {
             return (
-              <div key={key}>
-                {/* <GetListState key={key} list={list} curBoardId={currentBoard.id} /> */}
-                  <List  list={list} curBoardId={currentBoard.id} />
-                {/* </GetListState> */}
+              <div key={key} draggable>
+                <List  list={list} curBoardId={currentBoard.id} />
               </div>
             )
           })

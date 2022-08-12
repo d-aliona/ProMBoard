@@ -10,15 +10,15 @@ import style from '../../assets/scss/addListForm.module.scss'
 const AddListForm = (props) => {
     const title = props.title
     const curBoardId = props.curBoardId
-    // const ref = useRef()
+    
     const lists = useSelector(currentListsState)
     const user = useSelector((state) => state.user.user)
     const [clickAddList, setClickAddList] = useState(false)
     const [listTitle, setListTitle] = useState('')
     const [showError, setShowError] =useState(false)
     const disabled = listTitle ? '' : style.disabled
-    // let navigate = useNavigate()
-    // console.log(lists)
+
+    const selectedLists = lists.filter((list) => list.boardID === curBoardId)
     
     const addList = (e) => {
       e.preventDefault()
@@ -39,13 +39,11 @@ const AddListForm = (props) => {
     
     const addListToDatabase = async () => {
       const listsCol = collection(db, 'lists')
-      // const docRef = doc(usersCollection, user.id, 'personalBoards', curBoardId)
-      // const listsCol = collection(docRef, 'lists')
-      
+            
       await addDoc(listsCol, {
         listTitle: listTitle,
         boardID: curBoardId,
-        order: lists.length ? lists.length + 1 : 1 
+        position: selectedLists.length ? selectedLists.length + 1 : 1 
       }).catch((err) => {
         console.error(err)
       })
