@@ -20,6 +20,7 @@ function Topbar() {
     const [showDropListAuth, setShowDropListAuth] = useState(false)
     const [show, setShow] = useState(false)
     const ref = useRef()
+    const refMailBox = useRef()
     const navigate = useNavigate()
     const dispatch = useDispatch()
     //   console.log(isAvatar)
@@ -49,7 +50,7 @@ function Topbar() {
     useEffect(() => {
         const checkIfClickedOutside = (e) => {
 
-            if (show && ref.current && !ref.current.contains(e.target)) {
+            if (show && ref.current && !ref.current.contains(e.target) && !refMailBox.current.contains(e.target)) {
                 setShow(false)
             }
         }
@@ -71,7 +72,7 @@ function Topbar() {
             </div>
             <BoardsList />
             <CreateBoardForm />
-            <div className={style.mailbox} onClick={() => setShow(prev => !prev)}>
+            <div className={style.mailbox} onClick={() => setShow(prev => !prev)} ref={refMailBox}>
                 {user.email}
                 <div className={style.circle}>{avatar}</div>
             </div>

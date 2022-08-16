@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useRef} from 'react'
 
 import CreateBoardForm from '../../features/CreateBoardForm'
 import style from '../../assets/scss/home.module.scss'
