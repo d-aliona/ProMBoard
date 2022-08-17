@@ -1,17 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-// const initialState = null
-// const initialState = {
-//   board: {
-//     title: null,
-//     colorBoard: null,
-//     id: null,
-//   },
-// }
 const initialState = {
   currentDragStartCard: {
     order: null,
-    listId: null,
+    listID: null,
   },
 }
 

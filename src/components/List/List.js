@@ -11,33 +11,16 @@ import Cards from '../Cards'
 import AddCardForm from '../../features/AddCardForm'
 import style from '../../assets/scss/list.module.scss'
 import DropListMenu from '../../features/DropListMenu'
-
+import useOutsideClick from '../../hooks/useOutsideClick'
 
 const List = ({ list, curBoardId }) => {
-    const dispatch = useDispatch()
-    const ref = useRef()
-    const refListMenu = useRef()
     const [showMenu, setShowMenu] = useState(false)
+    const ref = useOutsideClick(() => setShowMenu(false))
     
     const toggle = (e) => {
-        e.preventDefault()
-        setShowMenu(prev => prev === true ? false : true)
+        setShowMenu(prev => !prev)
+        e.stopPropagation()
     }
-
-    useEffect(() => {
-        const checkIfClickedOutside = (e) => {
-
-            if (showMenu && ref.current && !ref.current.contains(e.target) && !refListMenu.current.contains(e.target)) {
-                setShowMenu(false)
-            }
-        }
-
-        document.addEventListener('mousedown', checkIfClickedOutside)
-
-        return () => {
-            document.removeEventListener('mousedown', checkIfClickedOutside)
-        }
-    }, [showMenu])
     
     return (
         <> 
@@ -46,7 +29,7 @@ const List = ({ list, curBoardId }) => {
                     <div className={style.listTitle} >
                         {list.listTitle}
                     </div>
-                    <div className={style.listMenu} onClick={toggle} ref={refListMenu}>•••</div>
+                    <div className={style.listMenu} onClick={toggle}>•••</div>
                 </div>
                 {showMenu && (
                     <div className={style.dropMenu} ref={ref}>

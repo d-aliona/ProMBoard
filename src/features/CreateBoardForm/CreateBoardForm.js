@@ -9,6 +9,7 @@ import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
 import Input from '../../components/Input'
 import style from '../../assets/scss/createboardForm.module.scss'
 import { Preview } from '../../assets/svg/svg-icons'
+import useOutsideClick from '../../hooks/useOutsideClick'
 
 const CreateBoardForm = () => {
     let navigate = useNavigate()
@@ -16,25 +17,22 @@ const CreateBoardForm = () => {
     const [show, setShow] = useState(false)
     const [colorBoard, setColorBoard] = useState('#e6a3a3')
     const [showError, setShowError] =useState(false)
-    const ref = useRef()
     const disabled = title ? '' : style.disabled
     const user = useSelector((state) => state.user.user)
     const boards = useSelector(personalBoardsState)
+        
+    const handleClickOutside = () => {
+        setShow(false)
+        setTitle('')
+        setShowError(false)
+    }
 
-    useEffect(() => {
-        const checkIfClickedOutside = (e) => {
+    const ref = useOutsideClick(handleClickOutside)
 
-            if (show && ref.current && !ref.current.contains(e.target)) {
-                setShow(false)
-                setTitle('')
-                setShowError(false)
-            }
-        }
-        document.addEventListener('mousedown', checkIfClickedOutside)
-        return () => {
-            document.removeEventListener('mousedown', checkIfClickedOutside)
-        }
-    }, [show])
+    const handleClickToCreateBoard = (e) => {
+        setShow(prev => !prev)
+        e.stopPropagation()
+    }
 
     const createBoard = (e) => {
         e.preventDefault()
@@ -42,7 +40,7 @@ const CreateBoardForm = () => {
         if (!boards) {
             createBoardInDatabase()
         } else {
-            if (boards.some(el => el.title === title)) {
+            if (boards.some(el => el.boardTitle === title)) {
                 setShowError(true)
             } else {
                 createBoardInDatabase()
@@ -53,8 +51,7 @@ const CreateBoardForm = () => {
 
     const createBoardInDatabase = () => {
         const colRef = collection(db, 'boards')
-        // const colRef = collection(docRef, 'personalBoards')
-
+        
         addDoc(colRef, {
             boardTitle: title,
             boardColor: colorBoard,
@@ -73,7 +70,7 @@ const CreateBoardForm = () => {
 
     return (
         <>
-            <div style={{cursor: 'pointer'}} onClick={() => setShow(prev => !prev)}>
+            <div style={{cursor: 'pointer'}} onClick={handleClickToCreateBoard}>
             Create a board
             </div>
             {show && (
@@ -143,7 +140,7 @@ const CreateBoardForm = () => {
                                     setTitle(e.target.value)
                                 }}
                             />
-                            {!!showError && (
+                            {showError && (
                                 <div className={style.error}>
                                     The board with such a title already exists. Please enter another title.
                                 </div>

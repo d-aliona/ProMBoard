@@ -1,9 +1,10 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
 
+import useBoardColor from '../../hooks/useBoardColor'
 import { TickDown } from '../../assets/svg/svg-icons'
 import style from '../../assets/scss/sidebar.module.scss'
 
@@ -18,6 +19,8 @@ const Sidebar = () => {
     const [tickUpDownGuest, setTickUpDownGuest] = useState(style.TickDown)
     const boards = useSelector(personalBoardsState)
     let navigate = useNavigate()
+    const title = useParams()
+    const boardColor = useBoardColor(title)
     
     useEffect(() => {
         setChangeTick(toggleClick ? style.tickLeft : style.tickRight)
@@ -38,7 +41,7 @@ const Sidebar = () => {
     return (
         <>
             {toggleClick && (
-                <div className={style.wrapper}>
+                <div className={style.wrapper} style={{backgroundColor: `${title.id ? boardColor : '#f4f5f7' }`}}>
                     <div className={`${changeTick}`} onClick={() => setToggleClick(prev => !prev)}>
                         <TickDown />
                     </div>
@@ -75,7 +78,10 @@ const Sidebar = () => {
                 </div>
             )}
             {!toggleClick && (
-                <div className={style.wrapperHidden} onClick={() => setToggleClick(prev => !prev)}>
+                <div className={style.wrapperHidden} 
+                    style={{'--backgroundColor': `${title.id ? boardColor : '#f4f5f7' }`, 
+                    '--hoverColor': 'rgba(23, 43, 77, .4)'}}
+                    onClick={() => setToggleClick(prev => !prev)}>
                     <div className={`${changeTick}`} >
                         <TickDown />
                     </div>

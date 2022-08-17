@@ -1,39 +1,32 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
 import style from '../../assets/scss/boardsList.module.scss'
 import { TickDown } from '../../assets/svg/svg-icons'
+import useOutsideClick from '../../hooks/useOutsideClick'
 
 const BoardsList = () => {
     const boards = useSelector(personalBoardsState)
     const [show, setShow] = useState(false)
-    const ref = useRef()
+    const ref = useOutsideClick(() => setShow(false))
     let navigate = useNavigate()
     
-    useEffect(() => {
-        const checkIfClickedOutside = (e) => {
-
-            if (show && ref.current && !ref.current.contains(e.target)) {
-                setShow(false)
-            }
-        }
-        document.addEventListener('mousedown', checkIfClickedOutside)
-        return () => {
-            document.removeEventListener('mousedown', checkIfClickedOutside)
-        }
-    }, [show])
-
     const navigateBoard = (title) => {
         navigate('/auth/board/' + title)
         setShow(false)
+    }
+
+    const toggle = (e) => {
+        setShow(prev => !prev)
+        e.stopPropagation()
     }
     
     return (
         <>
             <div style={{position: 'relative'}}>
-                <div className={style.head} onClick={() => setShow(prev => !prev)}>
+                <div className={style.head} onClick={toggle}>
                     Boards <TickDown />
                 </div>
                 {show && (
@@ -60,7 +53,6 @@ const BoardsList = () => {
                 )}        
             </div>
         </>
-        
     )
 }
 

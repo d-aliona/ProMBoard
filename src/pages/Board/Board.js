@@ -10,8 +10,7 @@ import AddListForm from '../../features/AddListForm'
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
 import { currentListsState } from '../../store/slices/currentListsSlice'
 import style from '../../assets/scss/board.module.scss'
-import GetListState from '../../hoc/GetListState'
-import { setCurrentCards, currentCardsState } from '../../store/slices/currentCardsSlice'
+import useBoardColor from '../../hooks/useBoardColor'
 
 const Board = () => {
   const dispatch = useDispatch()
@@ -21,7 +20,9 @@ const Board = () => {
   const lists = useSelector(currentListsState)
   const currentBoard = boards.find(ob => ob.boardTitle === title.id && ob.owner === user.id)
   const sortedLists = [...lists].sort((a,b) => a.position - b.position)
-
+  const boardColor = useBoardColor(title)
+  console.log(title.id)
+  console.log(boardColor)
   const dragItem = useRef()
   const dragOverItem = useRef()
   
@@ -88,8 +89,15 @@ const Board = () => {
       
   }
 
+  // const hex2rgba = (hex, alpha = 1) => {
+  //   const [r, g, b] = hex.match(/\w\w/g).map(x => parseInt(x, 16));
+  //   return `rgba(${r},${g},${b},${alpha})`;
+  // }
+
+  // console.log(hex2rgba(boardColor))
+
   return (
-    <div className={style.wrapper}>
+    <div className={style.wrapper} style={{backgroundColor: `${boardColor}`, opacity: '0.5'}}>
       <div className={style.head}>
         <div className={style.title}>
           {title.id}

@@ -18,15 +18,22 @@ const Cards = ({list, curBoardId}) => {
     const dispatch = useDispatch()
     // const user = useSelector((state) => state.user.user)
     const cards = useSelector(currentCardsState)
-    // const currentDragStartCard = useSelector(currentDragStartCardState)
-    // const currentDragEndCard = useSelector(currentDragEndCardState)
-    const selectedCards = cards
+    const currentDragStartCard = useSelector(currentDragStartCardState)
+    const currentDragEndCard = useSelector(currentDragEndCardState)
+    let selectedCards = cards
         .filter((card) => card.listID === list.id)
         .sort((a,b) => a.position - b.position)
 
     const dragItem = useRef()
     const dragOverItem = useRef()
 
+    // useEffect(() => {
+    //     selectedCards = cards
+    //         .filter((card) => card.listID === list.id)
+    //         .sort((a,b) => a.position - b.position)
+    // },[dispatch, cards])
+
+    // console.log(selectedCards)
     // useEffect(() => {
     //     dispatch(setCurrentDragStartCard({
     //         order: dragItem.current,
@@ -43,7 +50,7 @@ const Cards = ({list, curBoardId}) => {
         dragItem.current = position
         dispatch(setCurrentDragStartCard({
             order: dragItem.current,
-            listId: list.id,
+            listID: list.id,
         }))
         // console.log(dragItem)
         // console.log(dragItem.current)
@@ -51,6 +58,7 @@ const Cards = ({list, curBoardId}) => {
         setTimeout(function(){
             e.target.style.visibility = "hidden"
         }, 0)
+        e.stopPropagation()
     }
 
     const dragEnter = (e, position) => {
@@ -59,6 +67,7 @@ const Cards = ({list, curBoardId}) => {
             order: dragOverItem.current,
             listID: list.id,
         }))
+        e.stopPropagation()
         // e.target.style.visibility = "hidden"
         // console.log(e.target.innerHTML)
     }
@@ -70,13 +79,14 @@ const Cards = ({list, curBoardId}) => {
         const dragStartCards = cards
             .filter((card) => card.listID === currentDragStartCard.listID)
             .sort((a,b) => a.position - b.position)
-        const dropEndCards = cards
-            .filter((card) => card.listID === currentDragEndCard.listID)
-            .sort((a,b) => a.position - b.position)
-
+        
         const copyStartCards = [...dragStartCards]
+        console.log(copyStartCards)
         const dragItemContent = copyStartCards[currentDragStartCard.order]
+        console.log(dragItemContent)
+        console.log(currentDragStartCard.order)
         copyStartCards.splice(currentDragStartCard.order, 1)
+        console.log(copyStartCards)
         dragItem.current = null
         copyStartCards && 
             copyStartCards.map(async(card, index) => {
@@ -86,36 +96,29 @@ const Cards = ({list, curBoardId}) => {
                     position: index + 1,
                 })
             })
+        
+        const dropEndCards = cards
+            .filter((card) => card.listID === currentDragEndCard.listID)
+            .sort((a,b) => a.position - b.position)
+        
 
         const copyEndCards = [...dropEndCards]
+        console.log(copyEndCards)
         // const dragItemContent = copyStartCards[currentDragStartCard.order]
         copyEndCards.splice(currentDragEndCard.order, 0, dragItemContent)
+        console.log(copyEndCards)
         dragOverItem.current = null
         copyEndCards && 
             copyEndCards.map(async(card, index) => {
                 const docRef = doc(db, 'cards', card.id)
 
                 await updateDoc(docRef, {
+                    listID: currentDragEndCard.listID,
                     position: index + 1,
                 })
             })
-
-        // const copyListItems = [...sortedLists];
-        // const dragItemContent = copyListItems[dragItem.current];
-        // copyListItems.splice(dragItem.current, 1);
-        // copyListItems.splice(dragOverItem.current, 0, dragItemContent);
-        // dragItem.current = null;
-        // dragOverItem.current = null;
-            
-        // copyListItems && 
-        //   copyListItems.map(async (list, index) => {
-        //     const docRef = doc(db, 'lists', list.id)
-                    
-        //     await updateDoc(docRef, {
-        //       position: parseInt(index) + 1,
-        //     })
-        //   })
-      }
+        e.stopPropagation()
+    }
     
     return (
         selectedCards && 

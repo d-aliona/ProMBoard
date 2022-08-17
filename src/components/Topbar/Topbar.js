@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useNavigate, Navigate } from 'react-router-dom'
+import { useNavigate, Navigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { auth } from '../../firebase-client'
@@ -10,7 +10,9 @@ import { avatarState } from '../../store/slices/avatarSlice'
 import Logo from '../Logo'
 import CreateBoardForm from '../../features/CreateBoardForm'
 import BoardsList from '../../components/BoardsList'
+import useOutsideClick from '../../hooks/useOutsideClick'
 import style from '../../assets/scss/topbar.module.scss'
+import useBoardColor from '../../hooks/useBoardColor'
 
 function Topbar() {
     const user = useSelector(userState)
@@ -19,8 +21,11 @@ function Topbar() {
     const [avatar, setAvatar] = useState('?')
     const [showDropListAuth, setShowDropListAuth] = useState(false)
     const [show, setShow] = useState(false)
-    const ref = useRef()
-    const refMailBox = useRef()
+    const ref = useOutsideClick(() => setShow(false))
+    const title = useParams()
+    // console.log(title.id)
+    const boardColor = useBoardColor(title)
+    // console.log(boardColor)
     const navigate = useNavigate()
     const dispatch = useDispatch()
     //   console.log(isAvatar)
@@ -33,37 +38,25 @@ function Topbar() {
 
     
 
-    const toggle = () => setShow(!show)
+    const toggle = (e) => {
+        setShow(prev => !prev)
+        e.stopPropagation()
+    }
 
     const signout = () => {
         signOut(auth)
         dispatch(removeUser())
-        toggle()
+        setShow(prev => !prev)
         navigate('/')
     }
 
     const goToProfile = () => {
-        toggle()
+        setShow(prev => !prev)
         navigate('/auth/profile')
     }
 
-    useEffect(() => {
-        const checkIfClickedOutside = (e) => {
-
-            if (show && ref.current && !ref.current.contains(e.target) && !refMailBox.current.contains(e.target)) {
-                setShow(false)
-            }
-        }
-
-        document.addEventListener('mousedown', checkIfClickedOutside)
-
-        return () => {
-            document.removeEventListener('mousedown', checkIfClickedOutside)
-        }
-    }, [show])
-
     return (
-        <nav className={style.navbar}>
+        <nav className={style.navbar} style={{backgroundColor: `${title.id ? boardColor : 'rgba(23, 43, 77, .2)' }`}}>
             <div
                 style={{ cursor: 'pointer', marginBottom: '5px' }}
                 onClick={() => navigate('/auth/home')}
@@ -72,7 +65,7 @@ function Topbar() {
             </div>
             <BoardsList />
             <CreateBoardForm />
-            <div className={style.mailbox} onClick={() => setShow(prev => !prev)} ref={refMailBox}>
+            <div className={style.mailbox} onClick={toggle}>
                 {user.email}
                 <div className={style.circle}>{avatar}</div>
             </div>

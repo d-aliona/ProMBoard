@@ -1,5 +1,4 @@
 import { Outlet } from 'react-router-dom'
-import autoMergeLevel1 from 'redux-persist/es/stateReconciler/autoMergeLevel1'
 
 import Sidebar from '../Sidebar'
 import Topbar from '../Topbar'
