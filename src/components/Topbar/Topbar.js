@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useNavigate, Navigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -13,6 +13,7 @@ import BoardsList from '../../components/BoardsList'
 import useOutsideClick from '../../hooks/useOutsideClick'
 import style from '../../assets/scss/topbar.module.scss'
 import useBoardColor from '../../hooks/useBoardColor'
+import MenuContext from '../../context/MenuContext'
 
 function Topbar() {
     const user = useSelector(userState)
@@ -25,6 +26,8 @@ function Topbar() {
     const title = useParams()
     // console.log(title.id)
     const boardColor = useBoardColor(title)
+    const {textColor} = useContext(MenuContext)
+
     // console.log(boardColor)
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -56,7 +59,9 @@ function Topbar() {
     }
 
     return (
-        <nav className={style.navbar} style={{backgroundColor: `${title.id ? boardColor : 'rgba(23, 43, 77, .2)' }`}}>
+        <nav className={style.navbar} 
+            style={{backgroundColor: `${title.id ? boardColor : 'rgba(23, 43, 77, .2)' }`,
+            color: `${title.id ? textColor : 'rgb(23, 43, 77)'}`}}>
             <div
                 style={{ cursor: 'pointer', marginBottom: '5px' }}
                 onClick={() => navigate('/auth/home')}

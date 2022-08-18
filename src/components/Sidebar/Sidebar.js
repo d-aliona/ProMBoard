@@ -6,6 +6,7 @@ import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
 
 import useBoardColor from '../../hooks/useBoardColor'
 import { TickDown } from '../../assets/svg/svg-icons'
+import MenuContext from '../../context/MenuContext'
 import style from '../../assets/scss/sidebar.module.scss'
 
 const Sidebar = () => {
@@ -21,6 +22,7 @@ const Sidebar = () => {
     let navigate = useNavigate()
     const title = useParams()
     const boardColor = useBoardColor(title)
+    const {textColor} = useContext(MenuContext)
     
     useEffect(() => {
         setChangeTick(toggleClick ? style.tickLeft : style.tickRight)
@@ -38,10 +40,17 @@ const Sidebar = () => {
         navigate('/auth/board/' + title)
     }
 
+    const handleClickBoard = (board) => {
+        navigateBoard(board.boardTitle)
+    }
+
     return (
         <>
             {toggleClick && (
-                <div className={style.wrapper} style={{backgroundColor: `${title.id ? boardColor : '#f4f5f7' }`}}>
+                <div 
+                    className={style.wrapper} 
+                    style={{backgroundColor: `${title.id ? boardColor : '#f4f5f7' }`,
+                    color: `${title.id ? textColor : 'rgb(23, 43, 77)'}`}}>
                     <div className={`${changeTick}`} onClick={() => setToggleClick(prev => !prev)}>
                         <TickDown />
                     </div>
@@ -65,7 +74,10 @@ const Sidebar = () => {
                             </div>
                             {boards 
                                 && boards.map((board, id) => 
-                                    <div key={id} className={style.listItem} onClick={() => navigateBoard(board.boardTitle)}>
+                                    <div key={id} 
+                                        className={style.listItem}
+                                        style={{backgroundColor: `${board.boardTitle === title.id ? 'rgba(23, 43, 77, .3)' : ''}`}} 
+                                        onClick={() => handleClickBoard(board)}>
                                         <div className={style.colorBoard} style={{backgroundColor: `${board.boardColor}`}}></div>
                                         {board.boardTitle}
                                     </div>

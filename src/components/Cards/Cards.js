@@ -81,12 +81,11 @@ const Cards = ({list, curBoardId}) => {
             .sort((a,b) => a.position - b.position)
         
         const copyStartCards = [...dragStartCards]
-        console.log(copyStartCards)
+        
         const dragItemContent = copyStartCards[currentDragStartCard.order]
-        console.log(dragItemContent)
-        console.log(currentDragStartCard.order)
+        
         copyStartCards.splice(currentDragStartCard.order, 1)
-        console.log(copyStartCards)
+        
         dragItem.current = null
         copyStartCards && 
             copyStartCards.map(async(card, index) => {
@@ -103,10 +102,10 @@ const Cards = ({list, curBoardId}) => {
         
 
         const copyEndCards = [...dropEndCards]
-        console.log(copyEndCards)
+        
         // const dragItemContent = copyStartCards[currentDragStartCard.order]
         copyEndCards.splice(currentDragEndCard.order, 0, dragItemContent)
-        console.log(copyEndCards)
+        
         dragOverItem.current = null
         copyEndCards && 
             copyEndCards.map(async(card, index) => {
@@ -126,10 +125,11 @@ const Cards = ({list, curBoardId}) => {
                 return (
                     <div className={style.cardBackground}>
                         <div key={index} 
-                            onDragStart={(e) => dragStart(e, index)}
-                            onDragEnter={(e) => dragEnter(e, index)}
-                            onDragEnd={(e) => drop(e)}
-                            draggable={true}>
+                            // onDragStart={(e) => dragStart(e, index)}
+                            // onDragEnter={(e) => dragEnter(e, index)}
+                            // onDragEnd={(e) => drop(e)}
+                            // draggable={true}
+                            >
                             <Card card={card} />
                         </div>
                     </div>

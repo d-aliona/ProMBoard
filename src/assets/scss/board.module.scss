@@ -1,7 +1,3 @@
-.wrapper {
-    color: rgb(23, 43, 77);
-}
-
 .head {
     display: flex;
     justify-content: space-between;
@@ -34,6 +30,10 @@
     cursor: pointer;
 }
 
+.changeColor_dark:hover, .changeColor_light:hover {
+    font-weight: bold;
+}
+
 .lists {
     display: flex;
     flex-wrap: nowrap;
@@ -44,6 +44,7 @@
 }
 
 .listBackground {
+    color:rgb(23, 43, 77);
     background-color: rgba(23, 43, 77, .6);
     height: fit-content;
     border-radius: 6px;

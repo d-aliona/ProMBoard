@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom'
 
 import Sidebar from '../Sidebar'
 import Topbar from '../Topbar'
+import { MenuProvider } from '../../context/MenuContext'
 
 const Layout = () => {
   return (
@@ -10,6 +11,7 @@ const Layout = () => {
         height: '100vh',
         backgroundColor: '#f4f5f7' 
     }}>
+      <MenuProvider>
         <Topbar />
         <div style={{display: 'flex', width: '100vw'}}>
           <Sidebar />
@@ -17,6 +19,7 @@ const Layout = () => {
             <Outlet />
           </div>
         </div>
+      </MenuProvider>
     </main>
   )
 }
