@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
-import { collection, where, query, onSnapshot } from 'firebase/firestore'
+import { collection, where, query, onSnapshot, orderBy } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
 import { setCurrentLists, currentListsState } from '../../store/slices/currentListsSlice'
@@ -20,7 +20,7 @@ const GetBoardState = ({ children }) => {
     useEffect(() => {
         
         const listsCol = collection(db, 'lists')
-        const qLists = query(listsCol, where('boardID', '==', currentBoard.id))
+        const qLists = query(listsCol, where('boardID', '==', currentBoard.id), orderBy('position'))
         
         onSnapshot(qLists, (snapshot) => {
             const listSnap = snapshot.docs.map((doc) => {

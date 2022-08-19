@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
 
-import { collection, orderBy, where, query, onSnapshot } from 'firebase/firestore'
+import { updateDoc, doc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
 import { setCurrentCards, currentCardsState } from '../../store/slices/currentCardsSlice'
@@ -15,19 +15,50 @@ import useOutsideClick from '../../hooks/useOutsideClick'
 
 const List = ({ list, curBoardId }) => {
     const [showMenu, setShowMenu] = useState(false)
+    const [listtitle, setListtitle] = useState(list.listTitle)
+    const [clickTitle, setClickTitle] = useState(false)
     const ref = useOutsideClick(() => setShowMenu(false))
     
+    // console.log(listtitle)
+
+    const updateListTitle = async (e) => {
+        const docRef = doc(db, 'lists', list.id)
+                  
+          await updateDoc(docRef, {
+            listTitle: listtitle,
+          })
+        //   setClickTitle(false)
+        
+    }
+
+    const refInput = useOutsideClick(updateListTitle)
+
     const toggle = (e) => {
         setShowMenu(prev => !prev)
         e.stopPropagation()
     }
-    
+
+    const handleListTitle = (e) => {
+        // e.preventDefault()
+        setClickTitle(true)
+    }
+
+    // console.log(showMenu)
     return (
         <> 
             <div className={style.listWrapper}>
                 <div className={style.listHeader}>
-                    <div className={style.listTitle} >
-                        {list.listTitle}
+                    <div className={style.listTitle} onClick={handleListTitle}>
+                        {clickTitle ? 
+                            <input 
+                                ref={refInput}
+                                type='text'
+                                className={style.inputTitle}
+                                defaultValue={listtitle}
+                                autoFocus
+                                onChange={(e) => setListtitle(e.target.value)}
+                                />
+                            : <span style={{height: '32px', lineHeight: '200%'}}> {listtitle} </span>}
                     </div>
                     <div className={style.listMenu} onClick={toggle}>•••</div>
                 </div>

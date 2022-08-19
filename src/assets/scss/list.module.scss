@@ -10,16 +10,28 @@
 .listHeader {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     // margin: 5px 5px 10px;
     cursor: pointer;
 }
 
 .listTitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-weight: 600;
     font-size: 16px;
     padding: 10px;
     margin-right: auto;
-}    
+}   
+
+.inputTitle {
+    border: 1px solid rgb(23, 43, 77);
+    border-radius: 3px;
+    padding: 4px;
+    width: 100%;
+    font-size: 16px;
+}
 
 .listMenu {
     font-size: 12px;
