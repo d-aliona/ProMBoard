@@ -19,7 +19,8 @@ const AddListForm = (props) => {
     const disabled = listTitle ? '' : style.disabled
 
     const selectedLists = lists.filter((list) => list.boardID === curBoardId)
-    
+    // console.log('lists',lists)
+    // console.log('selected',selectedLists)
     const addList = (e) => {
       e.preventDefault()
 
@@ -43,7 +44,7 @@ const AddListForm = (props) => {
       await addDoc(listsCol, {
         listTitle: listTitle,
         boardID: curBoardId,
-        position: selectedLists.length ? selectedLists.length + 1 : 1 
+        position: lists.length ? lists.length + 1 : 1 
       }).catch((err) => {
         console.error(err)
       })

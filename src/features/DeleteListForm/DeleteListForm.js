@@ -1,28 +1,39 @@
 import React, { useState, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
-import { doc, deleteDoc } from 'firebase/firestore'
+import { doc, deleteDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
-import Input from '../../components/Input'
 import useOutsideClick from '../../hooks/useOutsideClick'
+import { currentListsState } from '../../store/slices/currentListsSlice'
 
 import style from '../../assets/scss/deleteListForm.module.scss'
-import { ShowPassword, HidePassword } from '../../assets/svg/svg-icons'
 
 const DeleteListForm = ({list, curBoardId, setShowMenu}) => {
-    const [messageDeleteList, setMessageDeleteList] = useState(false)
+    
     const [show, setShow] = useState(true)
     const title = useParams()
-    
-
+    const lists = useSelector(currentListsState)    
     const handleClickOutside = () => {
         setShow(false)
     }
 
-    const deleteList = async (e) => {
+    const deleteList = async () => {
         
+        lists.forEach(async(el) => {
+            if (el.position > list.position) {
+                // console.log(list.position)
+              const docRef = doc(db, 'lists', el.id)
+                    
+              await updateDoc(docRef, {
+                  position: el.position - 1,
+              })
+            }  
+          })
+
         await deleteDoc(doc(db, "lists", list.id))
+               
         setShow(false)
     }
 
@@ -32,8 +43,7 @@ const DeleteListForm = ({list, curBoardId, setShowMenu}) => {
         
     }
     const ref = useOutsideClick(handleClickOutside)
-    // const ref = useOutsideClick(() => setShow(false))
-//   console.log(show)
+ 
     return (
         <> 
             {show &&

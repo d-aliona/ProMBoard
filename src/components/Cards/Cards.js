@@ -10,113 +10,109 @@ import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
 import AddCardForm from '../../features/AddCardForm'
 import Card from '../Card'
 import style from '../../assets/scss/card.module.scss'
-import { setCurrentDragEndCard, currentDragEndCardState } from '../../store/slices/currentDragEndCardSlice'
+// import { setCurrentDragEndCard, currentDragEndCardState } from '../../store/slices/currentDragEndCardSlice'
 import { setCurrentDragStartCard, currentDragStartCardState } from '../../store/slices/currentDragStartCardSlice'
 
 
-const Cards = ({list, curBoardId}) => {
+const Cards = ({list, curBoardId, draggingCard, setDraggingCard}) => {
     const dispatch = useDispatch()
     // const user = useSelector((state) => state.user.user)
     const cards = useSelector(currentCardsState)
     const currentDragStartCard = useSelector(currentDragStartCardState)
-    const currentDragEndCard = useSelector(currentDragEndCardState)
+    // const currentDragEndCard = useSelector(currentDragEndCardState)
     let selectedCards = cards
         .filter((card) => card.listID === list.id)
         .sort((a,b) => a.position - b.position)
-
-    const dragItem = useRef()
-    const dragOverItem = useRef()
-
-    // useEffect(() => {
-    //     selectedCards = cards
-    //         .filter((card) => card.listID === list.id)
-    //         .sort((a,b) => a.position - b.position)
-    // },[dispatch, cards])
-
-    // console.log(selectedCards)
-    // useEffect(() => {
-    //     dispatch(setCurrentDragStartCard({
-    //         order: dragItem.current,
-    //         listId: list.id,
-    //     }))
-    //     dispatch(setCurrentDragEndCard({
-    //         order: dragOverItem.current,
-    //         listID: list.id,
-    //     }))
-        
-    // }, [dispatch, list])
     
-    const dragStart = (e, position) => {
-        dragItem.current = position
+    const dragItemCard = useRef()
+    const dragItemCardNode = useRef()
+
+    const handleDragStartCard = (e, item) => {
+        dragItemCard.current = item.index
+        dragItemCardNode.current = e.target
+        
         dispatch(setCurrentDragStartCard({
-            order: dragItem.current,
+            order: dragItemCard.current,
             listID: list.id,
+            cardID: item.card.id,
         }))
-        // console.log(dragItem)
-        // console.log(dragItem.current)
+
+        dragItemCardNode.current.addEventListener('dragend', handleDragEndCard)
         
         setTimeout(function(){
-            e.target.style.visibility = "hidden"
-        }, 0)
-        e.stopPropagation()
+            setDraggingCard(true)
+          }, 0)
     }
 
-    const dragEnter = (e, position) => {
-        dragOverItem.current = position
-        dispatch(setCurrentDragEndCard({
-            order: dragOverItem.current,
+    const handleDragEnterCard = (e, targetItem) => {
+        
+        let copyCards = [...cards]
+        const indexDragItem = copyCards.findIndex(el => el.id === currentDragStartCard.cardID)
+        // console.log('indexItem', indexDragItem)
+        // console.log('copycards',copyCards)
+        // console.log(copyCards[indexDragItem])
+        copyCards &&
+            copyCards.map((el) => {
+                // console.log(el)
+                if (el.listID === list.id) {
+                    if (el.position >= targetItem.index) {
+                        // console.log('el.position', el.position)
+                        el = {...el, position: el.position + 1}
+                    } else {return el}
+                } else {return el}
+            })
+        // console.log(copyCards[indexDragItem]) 
+        copyCards[indexDragItem] = {...copyCards[indexDragItem], listID: list.id, position: targetItem.index}
+        // console.log(copyCards[indexDragItem])    
+        // copyCards[indexDragItem].listID = list.id
+        // copyCards[indexDragItem].position = targetItem.index
+
+        copyCards &&
+            copyCards.map((el) => {
+                if (el.listID === currentDragStartCard.listID) {
+                    if (el.position > currentDragStartCard.position) {
+                        el = {...el, position: el.position - 1}
+                        // el.position = el.position - 1
+                    } else {return el}
+                } else {return el}
+            })
+
+        dispatch(setCurrentCards(copyCards))
+
+        dispatch(setCurrentDragStartCard({
+            order: targetItem.index,
             listID: list.id,
+            cardID: currentDragStartCard.cardID
         }))
-        e.stopPropagation()
-        // e.target.style.visibility = "hidden"
-        // console.log(e.target.innerHTML)
     }
 
-    const drop = (e) => {
+    const handleDragLeaveCard = (e) => {
         e.preventDefault()
-        e.target.style.visibility = "visible"
+    }
+    
+    const allowDropCard = (e) => {
+    e.preventDefault()
+    }
+
+    const handleDropCard = (e) => {
+        e.preventDefault()
         
-        const dragStartCards = cards
-            .filter((card) => card.listID === currentDragStartCard.listID)
-            .sort((a,b) => a.position - b.position)
-        
-        const copyStartCards = [...dragStartCards]
-        
-        const dragItemContent = copyStartCards[currentDragStartCard.order]
-        
-        copyStartCards.splice(currentDragStartCard.order, 1)
-        
-        dragItem.current = null
-        copyStartCards && 
-            copyStartCards.map(async(card, index) => {
+        cards && 
+            cards.map(async (card, index) => {
                 const docRef = doc(db, 'cards', card.id)
-
+                        
                 await updateDoc(docRef, {
-                    position: index + 1,
-                })
+                    listID: card.listID,
+                    position: card.position,
             })
-        
-        const dropEndCards = cards
-            .filter((card) => card.listID === currentDragEndCard.listID)
-            .sort((a,b) => a.position - b.position)
-        
+        })
+    }
 
-        const copyEndCards = [...dropEndCards]
-        
-        // const dragItemContent = copyStartCards[currentDragStartCard.order]
-        copyEndCards.splice(currentDragEndCard.order, 0, dragItemContent)
-        
-        dragOverItem.current = null
-        copyEndCards && 
-            copyEndCards.map(async(card, index) => {
-                const docRef = doc(db, 'cards', card.id)
-
-                await updateDoc(docRef, {
-                    listID: currentDragEndCard.listID,
-                    position: index + 1,
-                })
-            })
-        e.stopPropagation()
+    const handleDragEndCard = (e) => {
+        setDraggingCard(false)
+        dragItemCard.current = null
+        dragItemCardNode.current.removeEventListener('dragend', handleDragEndCard)
+        dragItemCardNode.current = null
     }
     
     return (
@@ -125,10 +121,12 @@ const Cards = ({list, curBoardId}) => {
                 return (
                     <div className={style.cardBackground}>
                         <div key={index} 
-                            // onDragStart={(e) => dragStart(e, index)}
-                            // onDragEnter={(e) => dragEnter(e, index)}
-                            // onDragEnd={(e) => drop(e)}
-                            // draggable={true}
+                            onDragStart={(e) => handleDragStartCard(e, {index, card})}
+                            onDragEnter={draggingCard ? (e) => {handleDragEnterCard(e, {index, card})} : null}
+                            onDragOver={draggingCard ? (e) => {allowDropCard(e)} : null}
+                            onDragLeave={draggingCard ? (e) => {handleDragLeaveCard(e)} : null} 
+                            onDrop={(e) => {handleDropCard(e)}}
+                            draggable={true}
                             >
                             <Card card={card} />
                         </div>

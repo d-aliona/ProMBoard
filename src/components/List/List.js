@@ -13,22 +13,25 @@ import style from '../../assets/scss/list.module.scss'
 import DropListMenu from '../../features/DropListMenu'
 import useOutsideClick from '../../hooks/useOutsideClick'
 
-const List = ({ list, curBoardId }) => {
+const List = ({ list, curBoardId, draggingCard, setDraggingCard }) => {
     const [showMenu, setShowMenu] = useState(false)
     const [listtitle, setListtitle] = useState(list.listTitle)
     const [clickTitle, setClickTitle] = useState(false)
     const ref = useOutsideClick(() => setShowMenu(false))
     
-    // console.log(listtitle)
-
     const updateListTitle = async (e) => {
-        const docRef = doc(db, 'lists', list.id)
+        if (refInput.current.value === '') {
+            refInput.current.style.border = '2px solid red'
+            refInput.current.placeholder = 'There should be a title'
+        } else {
+            const docRef = doc(db, 'lists', list.id)
                   
-          await updateDoc(docRef, {
-            listTitle: listtitle,
-          })
-        //   setClickTitle(false)
-        
+            await updateDoc(docRef, {
+                listTitle: refInput.current.value,
+            })
+            setClickTitle(false)
+            refInput.current = null
+        }
     }
 
     const refInput = useOutsideClick(updateListTitle)
@@ -39,11 +42,11 @@ const List = ({ list, curBoardId }) => {
     }
 
     const handleListTitle = (e) => {
-        // e.preventDefault()
+        e.stopPropagation()
         setClickTitle(true)
+        refInput.current.style.border = '2px solid rgba(23, 43, 77, .7)'
     }
 
-    // console.log(showMenu)
     return (
         <> 
             <div className={style.listWrapper}>
@@ -54,11 +57,11 @@ const List = ({ list, curBoardId }) => {
                                 ref={refInput}
                                 type='text'
                                 className={style.inputTitle}
-                                defaultValue={listtitle}
+                                value={listtitle}
                                 autoFocus
                                 onChange={(e) => setListtitle(e.target.value)}
                                 />
-                            : <span style={{height: '32px', lineHeight: '200%'}}> {listtitle} </span>}
+                            : <span style={{height: '32px', lineHeight: '200%'}}> {list.listTitle} </span>}
                     </div>
                     <div className={style.listMenu} onClick={toggle}>•••</div>
                 </div>
@@ -68,7 +71,11 @@ const List = ({ list, curBoardId }) => {
                     </div>
                 )}
                 {/* <div draggable="false"> */}
-                    {<Cards list={list} curBoardId={curBoardId} />}
+                    {<Cards 
+                        list={list} 
+                        curBoardId={curBoardId} 
+                        draggingCard={draggingCard} 
+                        setDraggingCard={setDraggingCard}/>}
                     <AddCardForm list={list} curBoardId={curBoardId} />
                 {/* </div> */}
             </div>

@@ -13,6 +13,7 @@ import style from '../../assets/scss/board.module.scss'
 import useBoardColor from '../../hooks/useBoardColor'
 import MenuContext from '../../context/MenuContext'
 import { setCurrentLists, currentListsState } from '../../store/slices/currentListsSlice'
+import DropListMenu from '../../features/DropListMenu'
 
 
 const Board = () => {
@@ -25,12 +26,12 @@ const Board = () => {
   const boardColor = useBoardColor(title)
   const {textColor, setTextColor} = useContext(MenuContext)
   const [draggingList, setDraggingList] = useState(false)
+  const [draggingCard, setDraggingCard] = useState(false)
   // console.log(lists)
   const dragItemList = useRef()
   const dragItemListNode = useRef()
   
   const handleDragStartList = (e, item) => {
-    
     dragItemList.current = item
     dragItemListNode.current = e.target
     
@@ -39,27 +40,40 @@ const Board = () => {
     setTimeout(function(){
       setDraggingList(true)
     }, 0)
+    
   }
  
-  const handleDragEnterList = async (e, targetItem) => {
-      //  console.log(dragItemListNode.current !== e.currentTarget)
-    if (dragItemListNode.current !== e.currentTarget) {
-      
-      const copyListItems = [...lists]
-      const dragItemContent = copyListItems[dragItemList.current.index]
-      copyListItems.splice(dragItemList.current.index, 1)
-      copyListItems.splice(targetItem.index, 0, dragItemContent)
-      
-      copyListItems && 
-        copyListItems.map(async (list, index) => {
-          const docRef = doc(db, 'lists', list.id)
-                  
-          await updateDoc(docRef, {
-            position: parseInt(index) + 1,
-          })
+  const handleDragEnterList = (e, targetItem) => {
+    // e.target.style.visibility = 'hidden'
+    const copyListItems = [...lists]
+    const dragItemContent = copyListItems[dragItemList.current.index]
+    copyListItems.splice(dragItemList.current.index, 1)
+    copyListItems.splice(targetItem.index, 0, dragItemContent)
+    dispatch(setCurrentLists(copyListItems))
+    
+    dragItemList.current.index = targetItem.index 
+  }
+
+  const handleDragLeaveList = (e) => {
+    e.preventDefault()
+    // e.stopPropagation()
+    // e.target.style.visibility = 'visible'
+  }
+
+  const allowDrop = (e) => {
+    e.preventDefault()
+  }
+
+  const drop = (e) => {
+    e.preventDefault()
+    lists && 
+      lists.map(async (list, index) => {
+        const docRef = doc(db, 'lists', list.id)
+                
+        await updateDoc(docRef, {
+          position: parseInt(index) + 1,
         })
-      dragItemList.current.index = targetItem.index 
-    } 
+      })
   }
 
   const handleDragEndList = (e) => {
@@ -72,33 +86,13 @@ const Board = () => {
 
   const getStyles = (position) => {
     if (dragItemList.current.index === position) {
-      return style.listBackground
+      // dragItemList.current.style.visibility = 'hidden'
+      return 'style.listBackground'
       
     }
     return 'style.listForeground'
   }
  
-  // const drop = (e) => {
-  //   e.preventDefault();
-  //   e.target.style.visibility = "visible"
-  //   // e.target.style.border = 'none'
-  //   const copyListItems = [...sortedLists];
-  //   const dragItemContent = copyListItems[dragItem.current];
-  //   copyListItems.splice(dragItem.current, 1);
-  //   copyListItems.splice(dragOverItem.current, 0, dragItemContent);
-  //   dragItem.current = null;
-  //   dragOverItem.current = null;
-        
-  //   copyListItems && 
-  //     copyListItems.map(async (list, index) => {
-  //       const docRef = doc(db, 'lists', list.id)
-                
-  //       await updateDoc(docRef, {
-  //         position: parseInt(index) + 1,
-  //       })
-  //     })
-  // }
-
   const chooseLight = (e) => {
     e.preventDefault()
     setTextColor('white')
@@ -131,10 +125,19 @@ const Board = () => {
                 <div className={style.listBackground}>
                   <div key={index} 
                     onDragStart={(e) => handleDragStartList(e, {index, list})}
-                    onDragEnter={draggingList ? (e) => {handleDragEnterList(e, {index, list})}:null}
+                    onDragEnter={draggingList ? (e) => {handleDragEnterList(e, {index, list})} : null}
+                    onDragOver={draggingList ? (e) => {allowDrop(e)} : null}
+                    onDragLeave={draggingList ? (e) => {handleDragLeaveList(e)} : null}
+                    // onDragLeave={(e) => {handleDragLeaveList(e)}}
+
+                    onDrop={(e) => {drop(e)}}
                     className={draggingList ? getStyles(index): style.listForeground} 
                     draggable={true}>
-                    <List  list={list} curBoardId={currentBoard.id} />
+                    <List  
+                      list={list} 
+                      curBoardId={currentBoard.id} 
+                      draggingCard={draggingCard} 
+                      setDraggingCard={setDraggingCard}/>
                   </div>
                 </div>
               </>
