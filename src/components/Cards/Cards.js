@@ -28,6 +28,7 @@ const Cards = ({list, curBoardId, draggingCard, setDraggingCard}) => {
     const dragItemCardNode = useRef()
 
     const handleDragStartCard = (e, item) => {
+        e.stopPropagation()
         dragItemCard.current = item.index
         dragItemCardNode.current = e.target
         
@@ -70,7 +71,7 @@ const Cards = ({list, curBoardId, draggingCard, setDraggingCard}) => {
         copyCards &&
             copyCards.map((el) => {
                 if (el.listID === currentDragStartCard.listID) {
-                    if (el.position > currentDragStartCard.position) {
+                    if (el.position > currentDragStartCard.order) {
                         el = {...el, position: el.position - 1}
                         // el.position = el.position - 1
                     } else {return el}
@@ -114,6 +115,15 @@ const Cards = ({list, curBoardId, draggingCard, setDraggingCard}) => {
         dragItemCardNode.current.removeEventListener('dragend', handleDragEndCard)
         dragItemCardNode.current = null
     }
+
+    const getStyles = (position) => {
+        if (dragItemCard.current === position) {
+          // dragItemList.current.style.visibility = 'hidden'
+          return style.cardBackgroundOpacity
+          
+        }
+        return style.listForeground
+    }
     
     return (
         selectedCards && 
@@ -126,9 +136,10 @@ const Cards = ({list, curBoardId, draggingCard, setDraggingCard}) => {
                             onDragOver={draggingCard ? (e) => {allowDropCard(e)} : null}
                             onDragLeave={draggingCard ? (e) => {handleDragLeaveCard(e)} : null} 
                             onDrop={(e) => {handleDropCard(e)}}
+                            className={draggingCard ? getStyles(index): style.cardBackground}
                             draggable={true}
                             >
-                            <Card card={card} />
+                            <Card card={card} list={list}/>
                         </div>
                     </div>
                 )

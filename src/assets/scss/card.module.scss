@@ -1,4 +1,5 @@
 .cardWrapper {
+    position: relative;
     width: 100%;
     margin: 8px 0;
     padding: 6px;
@@ -10,6 +11,7 @@
 
 .cardWrapper:hover {
     background-color: rgba(255, 255, 255, .75);
+    cursor: pointer;
 }
 
 .cardTitle {
@@ -23,3 +25,147 @@
     // height: fit-content;
     border-radius: 6px;
 }
+
+.cardBackgroundOpacity {
+    opacity: 0;
+}
+
+.window {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 50;
+    background-color: rgba(23, 43, 77, .7);
+}
+
+.openedCardModal {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 100;
+    width: 750px;
+    color: rgb(23, 43, 77);
+    background-color: #eee;
+    border: 1px solid #e3e6f0;
+    border-radius: 4px;
+}
+
+.title {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    font-weight: 600;
+}
+
+.closeModal {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 24px;
+}
+.closeModal:hover {
+    background-color: rgba(23, 43, 77, .3);
+}
+.titleicon {
+    width: 35px;
+    height: 35px;
+    background-image: url(../images/cardTitle.png);
+}
+
+.descriptionicon {
+    width: 35px;
+    height: 35px;
+    background-image: url(../images/cardDescription.png);
+}
+
+.descriptioniconMini {
+    margin-top: 10px;
+    width: 18px;
+    height: 18px;
+    background-size: 18px;
+    background-image: url(../images/cardDescription.png);
+}
+
+.commenticon {
+    width: 35px;
+    height: 35px;
+    background-image: url(../images/commenticon.png);
+}
+
+.descriptionText {
+    width: 100%;
+    margin-top: 10px;
+    margin-left: calc(35px + 10px);
+    background-color: rgba(73, 136, 245, 0.1);
+    border: 1px solid rgba(73, 136, 245, 0.1);
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 16px;
+}
+.descriptionText:hover {
+    cursor: pointer;
+    background-color: rgba(73, 136, 245, 0.3);
+}
+
+.inputDescription {
+    border: 2px solid rgba(23, 43, 77, .7);
+    border-radius: 3px;
+    padding: 3px;
+    width: 100%;
+    min-height: 100px;
+    font-size: 16px;
+    min-width: 100%;
+    max-width: 100%;
+}
+
+.CommentText {
+    width: 100%;
+    margin-top: 10px;
+    // margin-left: calc(35px + 10px);
+    background-color: red;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+@mixin button {
+    background: transparent;
+    border-radius: 3px;
+    padding: 3px 10px;
+}
+
+.buttonTrue {
+    @include button;
+    border: 1px solid rgb(38, 70, 177);
+}
+.buttonTrue:hover {
+    background-color: rgb(38, 70, 177);
+    color: white;
+}
+.buttonCancel {
+    @include button;
+    border: 1px solid rgb(129, 3, 3);
+}
+.buttonCancel:hover {
+    background-color: rgb(129, 3, 3);
+    color: white;
+}
+
+.circle {
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    font-size: 20px;
+    line-height: 36px;
+    border-radius: 50%;
+    color: rgb(255, 255, 255);
+    background-color: rgb(23, 43, 77);
+  }

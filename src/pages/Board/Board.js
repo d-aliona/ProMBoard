@@ -87,10 +87,10 @@ const Board = () => {
   const getStyles = (position) => {
     if (dragItemList.current.index === position) {
       // dragItemList.current.style.visibility = 'hidden'
-      return 'style.listBackground'
+      return style.listBackgroundOpacity
       
     }
-    return 'style.listForeground'
+    return style.listForeground
   }
  
   const chooseLight = (e) => {

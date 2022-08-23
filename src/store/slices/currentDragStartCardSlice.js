@@ -4,6 +4,7 @@ const initialState = {
   currentDragStartCard: {
     order: null,
     listID: null,
+    cardID: null,
   },
 }
 
