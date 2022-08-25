@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import style from '../../assets/scss/card.module.scss'
 
-
-const CardTitle = ({card, list, setShow}) => {
+const CardTitle = ({card, list}) => {
+    let navigate = useNavigate()
     
     return (
         <>
@@ -18,7 +19,7 @@ const CardTitle = ({card, list, setShow}) => {
                 <div
                     className={style.closeModal} 
                     onClick={() => {
-                        setShow(false)
+                        navigate(-1)
                     }}> 
                     × 
                 </div>

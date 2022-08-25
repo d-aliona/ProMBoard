@@ -77,7 +77,8 @@ const Comment = ({card, comment}) => {
                             {!confirmDelete && 
                                 <div style={{textAlign:'end', paddingTop:'6px'}}>
                                     <span className={style.updateComment} onClick={() => setClickEditComment(true)}>Edit</span>
-                                    <span className={style.updateComment} onClick={() => setConfirmDelete(true)}>Delete</span>
+                                    <span className={style.updateComment} 
+                                        onClick={(e) => {setConfirmDelete(true); e.stopPropagation()}}>Delete</span>
                                 </div>}
                             {!!confirmDelete && 
                                 <div className={style.confirmDelete}>

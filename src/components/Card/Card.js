@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, Link } from 'react-router-dom'
 
 import { collection, orderBy, doc, query, onSnapshot } from 'firebase/firestore'
 import { db } from '../../firebase-client'
@@ -14,7 +14,7 @@ import CardDescription from './CardDescription'
 import CardCommentForm from './comments/CardCommentForm'
 import CardComments from './comments/CardComments'
 import CardSidebar from './CardSidebar'
-
+import { Navigate } from "react-router-dom"
 import style from '../../assets/scss/card.module.scss'
 
 
@@ -22,20 +22,12 @@ const Card = ({card, list}) => {
     const dispatch = useDispatch()
     let navigate = useNavigate()
     const title = useParams()
-    const [show, setShow] = useState(false)
     
     const handleClickToOpenCard = (e) => {
-        setShow(prev => !prev)
         e.stopPropagation()
-        navigate('/auth/board/' + title.id + '/' + card.id)
+        navigate('/auth/board/' + title.id + '/' + card.id, {state: {list: list, card: card}})
     }
 
-    const handleClickOutside = () => {
-        setShow(false)
-    }
-
-    const ref = useOutsideClick(handleClickOutside)
-    
     return (
         <>
             <div className={style.cardWrapper} >
@@ -53,24 +45,6 @@ const Card = ({card, list}) => {
                         : null }     */}
                 </div>
             </div>
-            {show && (
-                <div className={style.window}>
-                    <div className={style.openedCardModal} ref={ref}>
-                        <CardTitle card={card} list={list} setShow={setShow}/>
-                        <div style={{display: 'flex'}}>
-                            <div style={{width:'75%'}}>
-                                {/* <CardMembers /> */}
-                                <CardDescription card={card} />
-                                <CardCommentForm card={card} />
-                                <CardComments card={card} />
-                            </div>
-                            <div style={{width:'25%'}}>
-                                <CardSidebar card={card}/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}    
         </>
     )
 }
