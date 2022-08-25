@@ -7,6 +7,7 @@ import Login from './pages/Login'
 import Home from './pages/Home'
 import Profile from './pages/Profile'
 import Board from './pages/Board'
+import Card1 from './pages/Card1'
 import NotFound from './pages/NotFound'
 import ForgotPassword from './pages/ForgotPassword'
 import GetState from './hoc/GetState/GetState' 
@@ -33,6 +34,7 @@ function App() {
                       <GetBoardState>
                         <Routes>
                           <Route path='' element={<Board />} />
+                          <Route path=':idcard' element={<Card1 />} />
                         </Routes>
                       </GetBoardState> 
                     } />

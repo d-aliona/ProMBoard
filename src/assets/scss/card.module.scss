@@ -38,6 +38,7 @@
     height: 100vh;
     z-index: 50;
     background-color: rgba(23, 43, 77, .7);
+    overflow-y: scroll;
 }
 
 .openedCardModal {
@@ -101,10 +102,10 @@
 }
 
 .descriptionText {
-    width: 100%;
+    width: auto;
     margin-top: 10px;
     margin-left: calc(35px + 10px);
-    background-color: rgba(73, 136, 245, 0.1);
+    background-color: rgba(73, 136, 245, 0.04);
     border: 1px solid rgba(73, 136, 245, 0.1);
     border-radius: 4px;
     padding: 10px;
@@ -126,14 +127,38 @@
     max-width: 100%;
 }
 
-.CommentText {
+.commentForm {
     width: 100%;
-    margin-top: 10px;
-    // margin-left: calc(35px + 10px);
-    background-color: red;
+    height: 36px;
+    background-color: white;
     border-radius: 4px;
     padding: 10px;
     font-size: 16px;
+    border: 1px solid rgba(23, 43, 77, .2);
+}
+
+.commentForm:hover {
+    box-shadow: 0 8px 16px -4px rgba(9, 30, 66, .25), 0 0 0 1px rgba(9, 30, 66,  .1);
+    cursor: pointer;
+}
+
+.inputComment {
+    @extend .commentForm;
+    margin-left: calc(35px + 10px);
+    width: 496px;
+    height: 70px;
+    resize: none;
+}
+
+.commentText {
+    @extend .descriptionText; 
+    background-color: white;
+    border: none;
+}
+
+.commentText:hover {
+    cursor: auto;
+    background-color: white;
 }
 
 @mixin button {
@@ -169,3 +194,62 @@
     color: rgb(255, 255, 255);
     background-color: rgb(23, 43, 77);
   }
+
+.updateComment {
+    margin: 10px 0 10px 10px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.confirmDelete {
+    // position: relative;
+    margin: 0 auto;
+    text-align: center;
+    width: 200px;
+    height: 200px;
+}
+
+.sidebar {
+    font-weight: 600;
+    padding: 20px;
+}
+
+.sidebarItem {
+    @extend .descriptionText;
+    background-color: rgba(73, 136, 245, 0.1);
+    margin-left: 0;
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.membersicon {
+    width: 20px;
+    height: 20px;
+    background-size: 20px;
+    background-image: url(../images/membersicon.png);
+}
+.covericon {
+    width: 20px;
+    height: 20px;
+    background-size: 20px;
+    background-image: url(../images/covericon.png);
+}
+.moveicon {
+    width: 20px;
+    height: 20px;
+    background-size: 20px;
+    background-image: url(../images/moveicon.png);
+}
+.copyicon {
+    width: 20px;
+    height: 20px;
+    background-size: 20px;
+    background-image: url(../images/copyicon.png);
+}
+.deleteicon {
+    width: 20px;
+    height: 20px;
+    background-size: 20px;
+    background-image: url(../images/trashbinicon.png);
+}

@@ -1,27 +1,33 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { collection, orderBy, doc, query, onSnapshot } from 'firebase/firestore'
-import { usersCollection } from '../../firebase-client'
+import { db } from '../../firebase-client'
 
-import { setCurrentCards, currentCardsState } from '../../store/slices/currentCardsSlice'
+import { setCurrentComments, currentCommentsState } from '../../store/slices/currentCommentsSlice'
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
 import AddCardForm from '../../features/AddCardForm'
 import useOutsideClick from '../../hooks/useOutsideClick'
 import CardTitle from './CardTitle'
 import CardDescription from './CardDescription'
-import CardComment from './CardComment'
+import CardCommentForm from './comments/CardCommentForm'
+import CardComments from './comments/CardComments'
+import CardSidebar from './CardSidebar'
 
 import style from '../../assets/scss/card.module.scss'
 
 
 const Card = ({card, list}) => {
+    const dispatch = useDispatch()
+    let navigate = useNavigate()
+    const title = useParams()
     const [show, setShow] = useState(false)
     
     const handleClickToOpenCard = (e) => {
         setShow(prev => !prev)
         e.stopPropagation()
+        navigate('/auth/board/' + title.id + '/' + card.id)
     }
 
     const handleClickOutside = () => {
@@ -40,6 +46,11 @@ const Card = ({card, list}) => {
                             <div className={style.descriptioniconMini}></div>
                         </abbr> 
                         : null }
+                    {/* {comments.length > 0 ? 
+                        <abbr title="This card has a description">
+                            <div className={style.descriptioniconMini}></div>
+                        </abbr> 
+                        : null }     */}
                 </div>
             </div>
             {show && (
@@ -50,9 +61,12 @@ const Card = ({card, list}) => {
                             <div style={{width:'75%'}}>
                                 {/* <CardMembers /> */}
                                 <CardDescription card={card} />
-                                <CardComment card={card} />
+                                <CardCommentForm card={card} />
+                                <CardComments card={card} />
                             </div>
-                            {/* <CardSidebar /> */}
+                            <div style={{width:'25%'}}>
+                                <CardSidebar card={card}/>
+                            </div>
                         </div>
                     </div>
                 </div>
