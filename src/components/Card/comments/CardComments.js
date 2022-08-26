@@ -26,6 +26,7 @@ const CardComments = ({card}) => {
             dispatch(setCurrentComments(commentsSnap))
         })
     }, [card])
+    // console.log(comments)
 
     return (
         <>

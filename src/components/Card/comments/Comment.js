@@ -2,13 +2,13 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { db } from '../../../firebase-client'
-import { collection, orderBy, doc, query, onSnapshot } from 'firebase/firestore'
+import { collection, orderBy, doc, deleteDoc, updateDoc, query, onSnapshot } from 'firebase/firestore'
 
 import { avatarState } from '../../../store/slices/avatarSlice'
 import { setCurrentComments, currentCommentsState } from '../../../store/slices/currentCommentsSlice'
 import useOutsideClick from '../../../hooks/useOutsideClick'
 import style from '../../../assets/scss/card.module.scss'
-import styles from '../../../assets/scss/deleteListForm.module.scss'
+import styles from '../../../assets/scss/deleteForm.module.scss'
 
 const Comment = ({card, comment}) => {
     const dispatch = useDispatch()
@@ -18,7 +18,7 @@ const Comment = ({card, comment}) => {
     const avatar = useSelector(avatarState)
     const [clickEditComment, setClickEditComment] = useState(false)
     const [confirmDelete, setConfirmDelete] = useState(false)
-    const [commentText, setCommentText] = useState('')
+    const [commentText, setCommentText] = useState(comment.comment)
 
     const handleInputComment = (e) => {
         e.stopPropagation()
@@ -31,12 +31,26 @@ const Comment = ({card, comment}) => {
         setCommentText(comment.comment)
     }
 
-    const editComment = (comment) => {
-
+    const editComment = async(e) => {
+        const docRef = doc(db, 'cards', card.id, 'comments', comment.id)
+                
+        await updateDoc(docRef, {
+            comment: commentText,
+            edited: true,
+        })
+        setClickEditComment(false)
     }
 
-    const deleteComment = () => {
-        
+    const deleteComment = async(e) => {
+        e.stopPropagation()
+        setConfirmDelete(false)
+        await deleteDoc(doc(db, "cards", card.id, 'comments', comment.id))
+
+        const docRef = doc(db, 'cards', card.id)
+        await updateDoc(docRef, {
+            commentsExist: card.commentsNumber === 1 ? false : true,
+            commentsNumber: card.commentsNumber - 1,
+        })
     }
     
     return (
@@ -45,21 +59,21 @@ const Comment = ({card, comment}) => {
                 <div className={style.circle}>?</div>
                 <div style={{fontSize: '16px', fontWeight: '600'}}>{comment.user} </div>
                 <div>{comment.time}</div>
+                <div>{comment.edited ? '(edited)' : null}</div>
             </div>
             <div>    
                 <div>
                     {clickEditComment ? 
                         <>
                             <textarea 
-                                type='text'
-                                className={style.inputComment}
-                                value={comment.comment}
+                                className={style.editComment}
+                                value={commentText}
                                 autoFocus
                                 onChange={(e) => setCommentText(e.target.value)}
                                 >
                             </textarea>
                             <div style={{marginLeft: 'calc(35px + 10px)'}}>
-                                <button className={style.buttonTrue} >
+                                <button className={style.buttonTrue} onClick={editComment}>
                                     Save
                                 </button>
                                 <button className={style.buttonCancel} onClick={cancel}>
@@ -76,17 +90,26 @@ const Comment = ({card, comment}) => {
                             </pre>
                             {!confirmDelete && 
                                 <div style={{textAlign:'end', paddingTop:'6px'}}>
-                                    <span className={style.updateComment} onClick={() => setClickEditComment(true)}>Edit</span>
                                     <span className={style.updateComment} 
-                                        onClick={(e) => {setConfirmDelete(true); e.stopPropagation()}}>Delete</span>
+                                        onClick={(e) => {setClickEditComment(true); e.stopPropagation()}}>
+                                        Edit
+                                    </span>
+                                    <span className={style.updateComment} 
+                                        onClick={(e) => {setConfirmDelete(true); e.stopPropagation()}}>
+                                        Delete
+                                    </span>
                                 </div>}
-                            {!!confirmDelete && 
+                            {confirmDelete && 
                                 <div className={style.confirmDelete}>
                                     Are you sure you want to delete this comment?
-                                    <button className={styles.buttonYes} onClick={deleteComment}>
+                                    <button className={styles.buttonYes} 
+                                        style={{fontSize:'16px'}}
+                                        onClick={deleteComment}>
                                         Yes
                                     </button>
-                                    <button className={styles.buttonNo} onClick={() => setConfirmDelete(false)}>
+                                    <button className={styles.buttonNo}
+                                        style={{fontSize:'16px'}} 
+                                        onClick={(e) => {setConfirmDelete(false); e.stopPropagation()}}>
                                         No
                                     </button>
                                 </div>

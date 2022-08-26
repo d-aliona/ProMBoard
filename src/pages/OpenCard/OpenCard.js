@@ -25,13 +25,15 @@ import { setCurrentCards, currentCardsState } from '../../store/slices/currentCa
 // import style from '../../assets/scss/card.module.scss'
 
 const OpenCard = () => {
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   let navigate = useNavigate()
-    
+  const [clickTitle, setClickTitle] = useState(false) 
   const title = useParams()
   const location = useLocation()
-  const { list, card } = location.state
-  
+  const { list } = location.state
+  const cards = useSelector(currentCardsState)
+  const card = cards.find(ob => ob.id === title.idcard)
+
   const ref = useOutsideClick(() => navigate(-1))
 
   return (
@@ -39,7 +41,7 @@ const OpenCard = () => {
       <Board /> 
       <div className={style.window}>
         <div className={style.openedCardModal} ref={ref}>
-          <CardTitle card={card} list={list}/>
+          <CardTitle card={card} list={list} clickTitle={clickTitle} setClickTitle={setClickTitle}/>
           <div style={{display: 'flex'}}>
             <div style={{width:'75%'}}>
               {/* <CardMembers /> */}
@@ -48,7 +50,7 @@ const OpenCard = () => {
               <CardComments card={card} />
             </div>
             <div style={{width:'25%'}}>
-              <CardSidebar card={card}/>
+              <CardSidebar card={card} setClickTitle={setClickTitle}/>
             </div>
           </div>
         </div>

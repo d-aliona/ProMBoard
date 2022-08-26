@@ -14,14 +14,15 @@ const CardCommentForm = ({card}) => {
     
     const [clickComment, setClickComment] = useState(false)
     const [comment, setComment] = useState('')
-
-    const addCardComment = () => {
+    
+    const addCardComment = async() => {
         const colRef = collection(db, 'cards', card.id, 'comments')
         
         addDoc(colRef, {
             comment: comment,
             user: user.email,
             time: new Date().toLocaleString('en-GB'),
+            edited: false,
         })
         .then(() => {
             setClickComment(false)
@@ -30,6 +31,14 @@ const CardCommentForm = ({card}) => {
         .catch((error) => {
             console.error(error.message)
         })
+
+        const docRef = doc(db, 'cards', card.id)
+
+        await updateDoc(docRef, {
+            commentsExist: true,
+            commentsNumber: card.commentsNumber + 1,
+        })
+
     }
 
     const handleInputComment = (e) => {
@@ -81,8 +90,6 @@ const CardCommentForm = ({card}) => {
                                 </div>}
                     </div>
                 </div>
-                
-                
             </div>
         </>
     )

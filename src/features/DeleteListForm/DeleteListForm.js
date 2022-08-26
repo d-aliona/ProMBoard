@@ -8,7 +8,7 @@ import { db } from '../../firebase-client'
 import useOutsideClick from '../../hooks/useOutsideClick'
 import { currentListsState } from '../../store/slices/currentListsSlice'
 
-import style from '../../assets/scss/deleteListForm.module.scss'
+import style from '../../assets/scss/deleteForm.module.scss'
 
 const DeleteListForm = ({list, curBoardId, setShowMenu}) => {
     

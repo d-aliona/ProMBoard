@@ -2,19 +2,16 @@ import React, {useState, useEffect, useRef, useContext} from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { doc, updateDoc, collection, orderBy, where, query, onSnapshot } from 'firebase/firestore'
+import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
 import List from '../../components/List'
 import AddListForm from '../../features/AddListForm'
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
-// import { currentListsState } from '../../store/slices/currentListsSlice'
 import style from '../../assets/scss/board.module.scss'
 import useBoardColor from '../../hooks/useBoardColor'
 import MenuContext from '../../context/MenuContext'
 import { setCurrentLists, currentListsState } from '../../store/slices/currentListsSlice'
-import DropListMenu from '../../features/DropListMenu'
-
 
 const Board = () => {
   const dispatch = useDispatch()
@@ -27,7 +24,6 @@ const Board = () => {
   const {textColor, setTextColor} = useContext(MenuContext)
   const [draggingList, setDraggingList] = useState(false)
   const [draggingCard, setDraggingCard] = useState(false)
-  // console.log(lists)
   const dragItemList = useRef()
   const dragItemListNode = useRef()
   
@@ -44,7 +40,6 @@ const Board = () => {
   }
  
   const handleDragEnterList = (e, targetItem) => {
-    // e.target.style.visibility = 'hidden'
     const copyListItems = [...lists]
     const dragItemContent = copyListItems[dragItemList.current.index]
     copyListItems.splice(dragItemList.current.index, 1)
@@ -56,8 +51,6 @@ const Board = () => {
 
   const handleDragLeaveList = (e) => {
     e.preventDefault()
-    // e.stopPropagation()
-    // e.target.style.visibility = 'visible'
   }
 
   const allowDrop = (e) => {
@@ -86,9 +79,7 @@ const Board = () => {
 
   const getStyles = (position) => {
     if (dragItemList.current.index === position) {
-      // dragItemList.current.style.visibility = 'hidden'
       return style.listBackgroundOpacity
-      
     }
     return style.listForeground
   }
@@ -128,8 +119,6 @@ const Board = () => {
                     onDragEnter={draggingList ? (e) => {handleDragEnterList(e, {index, list})} : null}
                     onDragOver={draggingList ? (e) => {allowDrop(e)} : null}
                     onDragLeave={draggingList ? (e) => {handleDragLeaveList(e)} : null}
-                    // onDragLeave={(e) => {handleDragLeaveList(e)}}
-
                     onDrop={(e) => {drop(e)}}
                     className={draggingList ? getStyles(index): style.listForeground} 
                     draggable={true}>
@@ -137,7 +126,7 @@ const Board = () => {
                       list={list} 
                       curBoardId={currentBoard.id} 
                       draggingCard={draggingCard} 
-                      setDraggingCard={setDraggingCard}/>
+                      setDraggingCard={setDraggingCard} />
                   </div>
                 </div>
               </>
