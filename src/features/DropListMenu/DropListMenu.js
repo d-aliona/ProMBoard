@@ -1,15 +1,10 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { signInWithEmailAndPassword } from "firebase/auth"
-import { auth } from '../../firebase-client'
-
-import Input from '../../components/Input'
 
 import style from '../../assets/scss/list.module.scss'
-import { ShowPassword, HidePassword } from '../../assets/svg/svg-icons'
 import DeleteListForm from '../DeleteListForm'
 
-const DropListMenu = ({list, curBoardId, setShowMenu}) => {
+const DropListMenu = ({list, curBoardId, setShowMenu, setClickTitle}) => {
     const [messageDeleteList, setMessageDeleteList] = useState(false)
 
     const handleDeleteList = (e) => {
@@ -17,20 +12,21 @@ const DropListMenu = ({list, curBoardId, setShowMenu}) => {
         setMessageDeleteList(true)
         e.stopPropagation()
     }
-//   console.log(messageDeleteList)
+
     return (
         <>
             <div className={style.title}>
                 <span className={style.titleName}>List actions</span>
                 <span
                     className={style.closeForm} 
-                    onClick={() => {
-                        setShowMenu(false)
-                    }}> 
+                    onClick={() => {setShowMenu(false)}}> 
                     × 
                 </span>
             </div>
             <hr className={style.line} />
+            <div className={style.menuItem}
+                onClick={(e) => {e.stopPropagation(); setClickTitle(true)}}>
+                Rename list</div>
             <div className={style.menuItem}>Copy list</div>
             <div className={style.menuItem}>Move list</div>
             <hr className={style.line} />

@@ -16,7 +16,7 @@ const GetBoardState = ({ children }) => {
     const currentBoard = boards.find(ob => ob.boardTitle === title.id && ob.owner === user.id)
     const lists = useSelector(currentListsState)
     const cards = useSelector(currentCardsState)
-    console.log(cards)
+    
     useEffect(() => {
         
         const listsCol = collection(db, 'lists')

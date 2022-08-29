@@ -36,12 +36,13 @@ const Sidebar = () => {
         setTickUpDownGuest(showGuestBoards ? style.tickDown : style.tickUp)
     }, [showGuestBoards])   
 
-    const navigateBoard = (title) => {
-        navigate('/auth/board/' + title)
-    }
+    // const navigateBoard = (title) => {
+    //     navigate('/auth/board/' + title)
+    // }
 
     const handleClickBoard = (board) => {
-        navigateBoard(board.boardTitle)
+        // navigateBoard(board.boardTitle)
+        navigate('/auth/board/' + board.boardTitle)
     }
 
     return (

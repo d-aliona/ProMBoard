@@ -22,7 +22,12 @@
 
 .cardBackground {
     background-color: rgba(23, 43, 77, .1);
-    // height: fit-content;
+    height: fit-content;
+    border-radius: 6px;
+}
+
+.cardForeground {
+    height: fit-content;
     border-radius: 6px;
 }
 

@@ -1,31 +1,30 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, Link } from 'react-router-dom'
 
 import { updateDoc, doc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
-import { setCurrentCards, currentCardsState } from '../../store/slices/currentCardsSlice'
-import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
 import Cards from '../Cards'
 import AddCardForm from '../../features/AddCardForm'
 import style from '../../assets/scss/list.module.scss'
 import DropListMenu from '../../features/DropListMenu'
 import useOutsideClick from '../../hooks/useOutsideClick'
 
-const List = ({ list, curBoardId, draggingCard, setDraggingCard }) => {
+const List = ({ list, cards, curBoardId, draggingCard, setDraggingCard, listsCardsToRender, setListsCardsToRender }) => {
     const [showMenu, setShowMenu] = useState(false)
     const [listtitle, setListtitle] = useState(list.listTitle)
     const [clickTitle, setClickTitle] = useState(false)
     const ref = useOutsideClick(() => setShowMenu(false))
-    
-    const updateListTitle = async (e) => {
+    // console.log(list.id)
+    const updateListTitle = async (a) => {
+        
         if (refInput.current.value === '') {
             refInput.current.style.border = '2px solid red'
             refInput.current.placeholder = 'There should be a title'
         } else {
-            const docRef = doc(db, 'lists', list.id)
-                  
+            const docRef = doc(db, 'lists', a)
+            console.log(list.id)
+            console.log(a)
+  
             await updateDoc(docRef, {
                 listTitle: refInput.current.value,
             })
@@ -34,7 +33,7 @@ const List = ({ list, curBoardId, draggingCard, setDraggingCard }) => {
         }
     }
 
-    const refInput = useOutsideClick(updateListTitle)
+    const refInput = useOutsideClick(() => updateListTitle(list.id))
 
     const toggle = (e) => {
         setShowMenu(prev => !prev)
@@ -43,6 +42,7 @@ const List = ({ list, curBoardId, draggingCard, setDraggingCard }) => {
 
     const handleListTitle = (e) => {
         e.stopPropagation()
+        console.log(list.id)
         setClickTitle(true)
         refInput.current.style.border = '2px solid rgba(23, 43, 77, .7)'
     }
@@ -67,17 +67,22 @@ const List = ({ list, curBoardId, draggingCard, setDraggingCard }) => {
                 </div>
                 {showMenu && (
                     <div className={style.dropMenu} ref={ref}>
-                        <DropListMenu list={list} curBoardId={curBoardId} setShowMenu={setShowMenu} />
+                        <DropListMenu 
+                            list={list} 
+                            curBoardId={curBoardId} 
+                            setShowMenu={setShowMenu} 
+                            setClickTitle={setClickTitle}/>
                     </div>
                 )}
-                {/* <div draggable="false"> */}
-                    {<Cards 
-                        list={list} 
-                        curBoardId={curBoardId} 
-                        draggingCard={draggingCard} 
-                        setDraggingCard={setDraggingCard}/>}
-                    <AddCardForm list={list} curBoardId={curBoardId} />
-                {/* </div> */}
+                {<Cards 
+                    list={list} 
+                    cards={cards}
+                    listsCardsToRender={listsCardsToRender}
+                    setListsCardsToRender={setListsCardsToRender}
+                    curBoardId={curBoardId} 
+                    draggingCard={draggingCard} 
+                    setDraggingCard={setDraggingCard}/>}
+                <AddCardForm list={list} curBoardId={curBoardId} />
             </div>
         </>
     )

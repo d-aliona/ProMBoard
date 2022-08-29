@@ -11,29 +11,16 @@ import style from '../../assets/scss/createboardForm.module.scss'
 import { Preview } from '../../assets/svg/svg-icons'
 import useOutsideClick from '../../hooks/useOutsideClick'
 
-const CreateBoardForm = () => {
+const CreateBoardForm = ({setShowCreateBoardForm}) => {
     let navigate = useNavigate()
     const [title, setTitle] = useState(null)
-    const [show, setShow] = useState(false)
     const [colorBoard, setColorBoard] = useState('#e6a3a3')
     const [showError, setShowError] =useState(false)
     const disabled = title ? '' : style.disabled
     const user = useSelector((state) => state.user.user)
     const boards = useSelector(personalBoardsState)
-        
-    const handleClickOutside = () => {
-        setShow(false)
-        setTitle('')
-        setShowError(false)
-    }
-
-    const ref = useOutsideClick(handleClickOutside)
-
-    const handleClickToCreateBoard = (e) => {
-        setShow(prev => !prev)
-        e.stopPropagation()
-    }
-
+    
+    const ref = useOutsideClick(() => {setShowCreateBoardForm(false)})
     const createBoard = (e) => {
         e.preventDefault()
 
@@ -45,7 +32,6 @@ const CreateBoardForm = () => {
             } else {
                 createBoardInDatabase()
             }
-
         }
     }
 
@@ -59,7 +45,7 @@ const CreateBoardForm = () => {
         })
         .then(() => {
             navigate('/auth/board/' + title)
-            setShow(false)
+            setShowCreateBoardForm(false)
             setShowError(false)
             setTitle('')
         })
@@ -70,90 +56,85 @@ const CreateBoardForm = () => {
 
     return (
         <>
-            <div style={{cursor: 'pointer'}} onClick={handleClickToCreateBoard}>
-            Create a board
-            </div>
-            {show && (
-                <div className={style.window}>
-                    <div className={style.dropCreateBoardForm} ref={ref}>
-                        <div className={style.title}>
-                            <span className={style.titleName}>Create a board</span>
-                            <span
-                                className={style.closeForm} 
-                                onClick={() => {
-                                    setShow(false)
-                                    setShowError(false)
-                                    setTitle('')
-                                }}> 
-                                × 
-                            </span>
-                        </div>
-                        <hr className={style.line} />
-                        <div className={style.previewImage} style={{backgroundColor: `${colorBoard}`}}>
-                            <Preview />
-                        </div>
-                        <p>Background</p>
-                        <div className={style.colourList}>
-                            <div 
-                                className={style.colourItem} 
-                                style={{backgroundColor: '#e6a3a3'}}
-                                onClick={() => setColorBoard('#e6a3a3')}></div>
-                            <div 
-                                className={style.colourItem} 
-                                style={{backgroundColor: '#d7c5e2'}}
-                                onClick={() => setColorBoard('#d7c5e2')}></div>
-                            <div 
-                                className={style.colourItem} 
-                                style={{backgroundColor: '#c1ddec'}}
-                                onClick={() => setColorBoard('#c1ddec')}></div>
-                            <div 
-                                className={style.colourItem} 
-                                style={{backgroundColor: '#c1ecd9'}}
-                                onClick={() => setColorBoard('#c1ecd9')}></div>
-                            <div 
-                                className={style.colourItem} 
-                                style={{backgroundColor: '#e7ecc1'}}
-                                onClick={() => setColorBoard('#e7ecc1')}></div>
-                            <div 
-                                className={style.colourItem} 
-                                style={{backgroundColor: '#fbffc7'}}
-                                onClick={() => setColorBoard('#fbffc7')}></div>
-                        </div>
-                        <div>    
-                            <p>or choose your colour: 
-                            <input 
-                                type="color" 
-                                defaultValue='#bba896'
-                                style={{marginLeft: '10px'}} 
-                                onChange={(e)=> {
-                                setColorBoard(e.target.value) 
-                                }} />
-                            </p>
-                        </div>
-                        <p style={{marginTop: '20px'}}>Board title</p>
-                        <form onSubmit={createBoard}>
-                            <Input
-                                type={'text'}
-                                placeholder={'Enter board title'}
-                                value={title}
-                                onChange={(e) => {
-                                    setTitle(e.target.value)
-                                }}
-                            />
-                            {showError && (
-                                <div className={style.error}>
-                                    The board with such a title already exists. Please enter another title.
-                                </div>
-                            )}
-                            <button
-                                type='submit'
-                                className={`${style.button} ${disabled}`}>
-                                Create
-                            </button>
-                        </form>
+            <div className={style.window}>
+                <div className={style.dropCreateBoardForm} ref={ref}>
+                    <div className={style.title}>
+                        <span className={style.titleName}>Create a board</span>
+                        <span
+                            className={style.closeForm} 
+                            onClick={() => {
+                                setShowCreateBoardForm(false)
+                                setShowError(false)
+                                setTitle('')
+                            }}> 
+                            × 
+                        </span>
                     </div>
+                    <hr className={style.line} />
+                    <div className={style.previewImage} style={{backgroundColor: `${colorBoard}`}}>
+                        <Preview />
+                    </div>
+                    <p>Background</p>
+                    <div className={style.colourList}>
+                        <div 
+                            className={style.colourItem} 
+                            style={{backgroundColor: '#e6a3a3'}}
+                            onClick={() => setColorBoard('#e6a3a3')}></div>
+                        <div 
+                            className={style.colourItem} 
+                            style={{backgroundColor: '#d7c5e2'}}
+                            onClick={() => setColorBoard('#d7c5e2')}></div>
+                        <div 
+                            className={style.colourItem} 
+                            style={{backgroundColor: '#c1ddec'}}
+                            onClick={() => setColorBoard('#c1ddec')}></div>
+                        <div 
+                            className={style.colourItem} 
+                            style={{backgroundColor: '#c1ecd9'}}
+                            onClick={() => setColorBoard('#c1ecd9')}></div>
+                        <div 
+                            className={style.colourItem} 
+                            style={{backgroundColor: '#e7ecc1'}}
+                            onClick={() => setColorBoard('#e7ecc1')}></div>
+                        <div 
+                            className={style.colourItem} 
+                            style={{backgroundColor: '#fbffc7'}}
+                            onClick={() => setColorBoard('#fbffc7')}></div>
+                    </div>
+                    <div>    
+                        <p>or choose your colour: 
+                        <input 
+                            type="color" 
+                            defaultValue='#bba896'
+                            style={{marginLeft: '10px'}} 
+                            onChange={(e)=> {
+                            setColorBoard(e.target.value) 
+                            }} />
+                        </p>
+                    </div>
+                    <p style={{marginTop: '20px'}}>Board title</p>
+                    <form onSubmit={createBoard}>
+                        <Input
+                            type={'text'}
+                            placeholder={'Enter board title'}
+                            value={title}
+                            onChange={(e) => {
+                                setTitle(e.target.value)
+                            }}
+                        />
+                        {showError && (
+                            <div className={style.error}>
+                                The board with such a title already exists. Please enter another title.
+                            </div>
+                        )}
+                        <button
+                            type='submit'
+                            className={`${style.button} ${disabled}`}>
+                            Create
+                        </button>
+                    </form>
                 </div>
-            )}    
+            </div>
         </>
     )
 }

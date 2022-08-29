@@ -1,15 +1,11 @@
-import React, {useRef} from 'react'
+import React, {useState} from 'react'
 
 import CreateBoardForm from '../../features/CreateBoardForm'
 import style from '../../assets/scss/home.module.scss'
 
 const Home = () => {
-  const createBoard = () => {
-    return (
-      <CreateBoardForm />
-    )
-  }
-
+  const [showCreateBoardForm, setShowCreateBoardForm] = useState(false)
+  
   return (
     <div className={style.wrapper}>
       <p className={style.motto}>
@@ -19,9 +15,14 @@ const Home = () => {
         Boards are where work gets done.
       </p>
       <hr className={style.line} />
-      <div className={style.createBoard} onClick={createBoard}>
+      <div className={style.createBoard} onClick={(e) => {setShowCreateBoardForm(prev => !prev); e.stopPropagation()}}>
         Create your board
       </div>
+      {showCreateBoardForm && (
+                <div >
+                    <CreateBoardForm setShowCreateBoardForm={setShowCreateBoardForm}/>
+                </div>
+            )}
     </div>
   )
 }

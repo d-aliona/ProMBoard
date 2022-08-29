@@ -22,13 +22,12 @@ function Topbar() {
     const [avatar, setAvatar] = useState('?')
     const [showDropListAuth, setShowDropListAuth] = useState(false)
     const [show, setShow] = useState(false)
-    const ref = useOutsideClick(() => setShow(false))
+    const [showCreateBoardForm, setShowCreateBoardForm] = useState(false)
+    const ref = useOutsideClick(() => {setShow(false)})
     const title = useParams()
     // console.log(title.id)
     const boardColor = useBoardColor(title)
     const {textColor} = useContext(MenuContext)
-
-    // console.log(boardColor)
     const navigate = useNavigate()
     const dispatch = useDispatch()
     //   console.log(isAvatar)
@@ -64,12 +63,18 @@ function Topbar() {
             color: `${title.id ? textColor : 'rgb(23, 43, 77)'}`}}>
             <div
                 style={{ cursor: 'pointer', marginBottom: '5px' }}
-                onClick={() => navigate('/auth/home')}
-            >
+                onClick={() => navigate('/auth/home')}>
                 <Logo />
             </div>
             <BoardsList />
-            <CreateBoardForm />
+            <div style={{cursor: 'pointer'}} onClick={(e) => {setShowCreateBoardForm(prev => !prev); e.stopPropagation()}}>
+                Create a board
+            </div>
+            {showCreateBoardForm && (
+                <div >
+                    <CreateBoardForm setShowCreateBoardForm={setShowCreateBoardForm}/>
+                </div>
+            )}
             <div className={style.mailbox} onClick={toggle}>
                 {user.email}
                 <div className={style.circle}>{avatar}</div>

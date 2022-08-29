@@ -15,7 +15,6 @@ import currentListsReducer from './slices/currentListsSlice'
 import currentCardsReducer from './slices/currentCardsSlice'
 import currentCommentsReducer from './slices/currentCommentsSlice'
 import currentDragStartCardReducer from './slices/currentDragStartCardSlice'
-import currentDragEndCardReducer from './slices/currentDragEndCardSlice'
 
 const persistConfig = {
   key: 'root',
@@ -33,7 +32,6 @@ const reducers = combineReducers({
     currentCards: currentCardsReducer,
     currentComments: currentCommentsReducer,
     currentDragStartCard: currentDragStartCardReducer,
-    currentDragEndCard: currentDragEndCardReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers)

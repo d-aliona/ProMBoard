@@ -1,29 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, Link } from 'react-router-dom'
 
 import { collection, orderBy, doc, query, onSnapshot, updateDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
-import { setCurrentCards, currentCardsState } from '../../store/slices/currentCardsSlice'
-import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
-import AddCardForm from '../../features/AddCardForm'
 import Card from '../Card'
 import style from '../../assets/scss/card.module.scss'
-// import { setCurrentDragEndCard, currentDragEndCardState } from '../../store/slices/currentDragEndCardSlice'
 import { setCurrentDragStartCard, currentDragStartCardState } from '../../store/slices/currentDragStartCardSlice'
 
-
-const Cards = ({list, curBoardId, draggingCard, setDraggingCard}) => {
+const Cards = ({list, cards, draggingCard, setDraggingCard, listsCardsToRender, setListsCardsToRender}) => {
     const dispatch = useDispatch()
-    // const user = useSelector((state) => state.user.user)
-    const cards = useSelector(currentCardsState)
     const currentDragStartCard = useSelector(currentDragStartCardState)
-    // const currentDragEndCard = useSelector(currentDragEndCardState)
-    let selectedCards = cards
-        .filter((card) => card.listID === list.id)
-        .sort((a,b) => a.position - b.position)
-    
     const dragItemCard = useRef()
     const dragItemCardNode = useRef()
 
@@ -31,9 +18,11 @@ const Cards = ({list, curBoardId, draggingCard, setDraggingCard}) => {
         e.stopPropagation()
         dragItemCard.current = item.index
         dragItemCardNode.current = e.target
+        const listIndex = listsCardsToRender.findIndex(el => el.list.id === list.id)
         
         dispatch(setCurrentDragStartCard({
-            order: dragItemCard.current,
+            cardIndex: dragItemCard.current,
+            listIndex: listIndex,
             listID: list.id,
             cardID: item.card.id,
         }))
@@ -46,42 +35,17 @@ const Cards = ({list, curBoardId, draggingCard, setDraggingCard}) => {
     }
 
     const handleDragEnterCard = (e, targetItem) => {
+        let copyCards = [...listsCardsToRender]
+        const listIndexForEnterCard = listsCardsToRender.findIndex(el => el.list.id === list.id)
+        const dragItemContent = copyCards[currentDragStartCard.listIndex].cards[currentDragStartCard.cardIndex]
+        copyCards[currentDragStartCard.listIndex].cards.splice(currentDragStartCard.cardIndex, 1)
+        copyCards[listIndexForEnterCard].cards.splice(targetItem.index, 0, dragItemContent)
         
-        let copyCards = [...cards]
-        const indexDragItem = copyCards.findIndex(el => el.id === currentDragStartCard.cardID)
-        // console.log('indexItem', indexDragItem)
-        // console.log('copycards',copyCards)
-        // console.log(copyCards[indexDragItem])
-        copyCards &&
-            copyCards.map((el) => {
-                // console.log(el)
-                if (el.listID === list.id) {
-                    if (el.position >= targetItem.index) {
-                        // console.log('el.position', el.position)
-                        el = {...el, position: el.position + 1}
-                    } else {return el}
-                } else {return el}
-            })
-        // console.log(copyCards[indexDragItem]) 
-        copyCards[indexDragItem] = {...copyCards[indexDragItem], listID: list.id, position: targetItem.index}
-        // console.log(copyCards[indexDragItem])    
-        // copyCards[indexDragItem].listID = list.id
-        // copyCards[indexDragItem].position = targetItem.index
-
-        copyCards &&
-            copyCards.map((el) => {
-                if (el.listID === currentDragStartCard.listID) {
-                    if (el.position > currentDragStartCard.order) {
-                        el = {...el, position: el.position - 1}
-                        // el.position = el.position - 1
-                    } else {return el}
-                } else {return el}
-            })
-
-        dispatch(setCurrentCards(copyCards))
-
+        setListsCardsToRender(copyCards)
+        
         dispatch(setCurrentDragStartCard({
-            order: targetItem.index,
+            listIndex: listIndexForEnterCard,
+            cardIndex: targetItem.index,
             listID: list.id,
             cardID: currentDragStartCard.cardID
         }))
@@ -97,14 +61,17 @@ const Cards = ({list, curBoardId, draggingCard, setDraggingCard}) => {
 
     const handleDropCard = (e) => {
         e.preventDefault()
-        
-        cards && 
-            cards.map(async (card, index) => {
-                const docRef = doc(db, 'cards', card.id)
+                
+        listsCardsToRender && 
+            listsCardsToRender.map((listItem, indexList) => {
+                listItem.cards &&
+                    listItem.cards.map(async (card, indexCard) => {
+                        const docRef = doc(db, 'cards', card.id)
                         
-                await updateDoc(docRef, {
-                    listID: card.listID,
-                    position: card.position,
+                        await updateDoc(docRef, {
+                            listID: listsCardsToRender[indexList].list.id,
+                            position: parseInt(indexCard) + 1,
+                            })
             })
         })
     }
@@ -117,17 +84,15 @@ const Cards = ({list, curBoardId, draggingCard, setDraggingCard}) => {
     }
 
     const getStyles = (position) => {
-        if (dragItemCard.current === position) {
-          // dragItemList.current.style.visibility = 'hidden'
-          return style.cardBackgroundOpacity
-          
+        if (currentDragStartCard.cardIndex === position && currentDragStartCard.listID === list.id) {
+            return style.cardBackgroundOpacity
         }
-        return style.listForeground
+        return style.cardForeground
     }
     
     return (
-        selectedCards && 
-            selectedCards.map((card, index) => {
+        cards && 
+            cards.map((card, index) => {
                 return (
                     <div className={style.cardBackground}>
                         <div key={index} 
@@ -136,7 +101,7 @@ const Cards = ({list, curBoardId, draggingCard, setDraggingCard}) => {
                             onDragOver={draggingCard ? (e) => {allowDropCard(e)} : null}
                             onDragLeave={draggingCard ? (e) => {handleDragLeaveCard(e)} : null} 
                             onDrop={(e) => {handleDropCard(e)}}
-                            className={draggingCard ? getStyles(index): style.cardBackground}
+                            className={draggingCard ? getStyles(index): style.cardForeground}
                             draggable={true}
                             >
                             <Card card={card} list={list}/>

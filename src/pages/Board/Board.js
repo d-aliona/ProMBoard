@@ -12,6 +12,8 @@ import style from '../../assets/scss/board.module.scss'
 import useBoardColor from '../../hooks/useBoardColor'
 import MenuContext from '../../context/MenuContext'
 import { setCurrentLists, currentListsState } from '../../store/slices/currentListsSlice'
+import { setCurrentCards, currentCardsState } from '../../store/slices/currentCardsSlice'
+import { setCurrentDragStartCard, currentDragStartCardState } from '../../store/slices/currentDragStartCardSlice'
 
 const Board = () => {
   const dispatch = useDispatch()
@@ -19,6 +21,8 @@ const Board = () => {
   const user = useSelector((state) => state.user.user)
   const boards = useSelector(personalBoardsState)
   const lists = useSelector(currentListsState)
+  const cards = useSelector(currentCardsState)
+  const currentDragStartCard = useSelector(currentDragStartCardState)
   const currentBoard = boards.find(ob => ob.boardTitle === title.id && ob.owner === user.id)
   const boardColor = useBoardColor(title)
   const {textColor, setTextColor} = useContext(MenuContext)
@@ -27,10 +31,31 @@ const Board = () => {
   const dragItemList = useRef()
   const dragItemListNode = useRef()
   
+  let allListsCards = []
+  let i = 0
+
+  for (const list of lists) {
+    allListsCards.push({list: list, cards: []})
+
+    for (const card of cards) {
+      if (card.listID === list.id) {
+        allListsCards[i].cards.push(card)
+      }
+    }
+    i++
+  }
+  allListsCards.sort((a,b) => a.list.position - b.list.position) 
+  allListsCards.forEach(el => {el.cards.sort((a,b) => a.position - b.position)})
+
+  const [listsCardsToRender, setListsCardsToRender] = useState(allListsCards)
+  
+  useEffect(() => {
+      setListsCardsToRender(allListsCards);
+  }, [lists, cards])
+
   const handleDragStartList = (e, item) => {
     dragItemList.current = item
     dragItemListNode.current = e.target
-    
     dragItemListNode.current.addEventListener('dragend', handleDragEndList)
        
     setTimeout(function(){
@@ -40,13 +65,26 @@ const Board = () => {
   }
  
   const handleDragEnterList = (e, targetItem) => {
-    const copyListItems = [...lists]
-    const dragItemContent = copyListItems[dragItemList.current.index]
-    copyListItems.splice(dragItemList.current.index, 1)
-    copyListItems.splice(targetItem.index, 0, dragItemContent)
-    dispatch(setCurrentLists(copyListItems))
-    
-    dragItemList.current.index = targetItem.index 
+    const copyListItems = [...listsCardsToRender]
+
+    if (draggingList) {
+      const dragItemContent = copyListItems[dragItemList.current.index]
+      copyListItems.splice(dragItemList.current.index, 1)
+      copyListItems.splice(targetItem.index, 0, dragItemContent)
+      dragItemList.current.index = targetItem.index 
+    } else {
+      const dragItemContent = copyListItems[currentDragStartCard.listIndex].cards[currentDragStartCard.cardIndex]
+      copyListItems[currentDragStartCard.listIndex].cards.splice(currentDragStartCard.cardIndex, 1)
+      copyListItems[targetItem.index].cards.splice(0, 0, dragItemContent)
+      
+      dispatch(setCurrentDragStartCard({
+        listIndex: targetItem.index,
+        cardIndex: 0,
+        listID: targetItem.el.list.id,
+        cardID: currentDragStartCard.cardID
+      }))
+    }
+    setListsCardsToRender(copyListItems)
   }
 
   const handleDragLeaveList = (e) => {
@@ -59,9 +97,9 @@ const Board = () => {
 
   const drop = (e) => {
     e.preventDefault()
-    lists && 
-      lists.map(async (list, index) => {
-        const docRef = doc(db, 'lists', list.id)
+    listsCardsToRender && 
+      listsCardsToRender.map(async (el, index) => {
+        const docRef = doc(db, 'lists', el.list.id)
                 
         await updateDoc(docRef, {
           position: parseInt(index) + 1,
@@ -70,7 +108,6 @@ const Board = () => {
   }
 
   const handleDragEndList = (e) => {
-    
     setDraggingList(false)
     dragItemList.current = null
     dragItemListNode.current.removeEventListener('dragend', handleDragEndList)
@@ -109,21 +146,24 @@ const Board = () => {
         </div>
       </div>
       <div className={style.lists}>
-        {lists && 
-          lists.map((list, index) => {
+        {listsCardsToRender && 
+          listsCardsToRender.map((el, index) => {
             return (
               <>
                 <div className={style.listBackground}>
                   <div key={index} 
-                    onDragStart={(e) => handleDragStartList(e, {index, list})}
-                    onDragEnter={draggingList ? (e) => {handleDragEnterList(e, {index, list})} : null}
+                    onDragStart={(e) => handleDragStartList(e, {index, el})}
+                    onDragEnter={draggingList || (draggingCard && !el.cards.length) ? (e) => {handleDragEnterList(e, {index, el})} : null}
                     onDragOver={draggingList ? (e) => {allowDrop(e)} : null}
                     onDragLeave={draggingList ? (e) => {handleDragLeaveList(e)} : null}
                     onDrop={(e) => {drop(e)}}
                     className={draggingList ? getStyles(index): style.listForeground} 
                     draggable={true}>
                     <List  
-                      list={list} 
+                      list={el.list}
+                      cards={el.cards}
+                      listsCardsToRender={listsCardsToRender}
+                      setListsCardsToRender={setListsCardsToRender} 
                       curBoardId={currentBoard.id} 
                       draggingCard={draggingCard} 
                       setDraggingCard={setDraggingCard} />
