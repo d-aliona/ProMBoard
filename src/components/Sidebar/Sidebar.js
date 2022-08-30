@@ -40,9 +40,9 @@ const Sidebar = () => {
     //     navigate('/auth/board/' + title)
     // }
 
-    const handleClickBoard = (board) => {
+    const handleClickBoard = (id) => {
         // navigateBoard(board.boardTitle)
-        navigate('/auth/board/' + board.boardTitle)
+        navigate('/auth/board/' + id)
     }
 
     return (
@@ -77,8 +77,8 @@ const Sidebar = () => {
                                 && boards.map((board, id) => 
                                     <div key={id} 
                                         className={style.listItem}
-                                        style={{backgroundColor: `${board.boardTitle === title.id ? 'rgba(23, 43, 77, .3)' : ''}`}} 
-                                        onClick={() => handleClickBoard(board)}>
+                                        style={{backgroundColor: `${board.id === title.id ? 'rgba(23, 43, 77, .3)' : ''}`}} 
+                                        onClick={() => handleClickBoard(board.id)}>
                                         <div className={style.colorBoard} style={{backgroundColor: `${board.boardColor}`}}></div>
                                         {board.boardTitle}
                                     </div>

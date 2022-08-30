@@ -13,7 +13,7 @@ const GetBoardState = ({ children }) => {
     const user = useSelector((state) => state.user.user)
     const title = useParams()
     const boards = useSelector(personalBoardsState)
-    const currentBoard = boards.find(ob => ob.boardTitle === title.id && ob.owner === user.id)
+    const currentBoard = boards.find(ob => ob.id === title.id)
     const lists = useSelector(currentListsState)
     const cards = useSelector(currentCardsState)
     

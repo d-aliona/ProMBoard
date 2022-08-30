@@ -13,8 +13,8 @@ const BoardsList = () => {
     const ref = useOutsideClick(() => setShow(false))
     let navigate = useNavigate()
     
-    const navigateBoard = (title) => {
-        navigate('/auth/board/' + title)
+    const navigateBoard = (boardID) => {
+        navigate('/auth/board/' + boardID)
         setShow(false)
     }
 
@@ -43,7 +43,7 @@ const BoardsList = () => {
                         <p className={style.boardsGroup}>Personal boards</p>
                             {boards 
                                 && boards.map((board, id) => 
-                                    <div key={id} className={style.listItem} onClick={() => navigateBoard(board.boardTitle)}>
+                                    <div key={id} className={style.listItem} onClick={() => navigateBoard(board.id)}>
                                         {board.boardTitle}
                                     </div>
                             )}

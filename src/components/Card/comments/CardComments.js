@@ -5,7 +5,6 @@ import { db } from '../../../firebase-client'
 import { collection, orderBy, doc, query, onSnapshot } from 'firebase/firestore'
 
 import Comment from './Comment'
-import { avatarState } from '../../../store/slices/avatarSlice'
 import { setCurrentComments, currentCommentsState } from '../../../store/slices/currentCommentsSlice'
 import useOutsideClick from '../../../hooks/useOutsideClick'
 import style from '../../../assets/scss/card.module.scss'
@@ -26,8 +25,7 @@ const CardComments = ({card}) => {
             dispatch(setCurrentComments(commentsSnap))
         })
     }, [card])
-    // console.log(comments)
-
+    
     return (
         <>
             <div style={{padding: '20px 0 20px 20px'}}>

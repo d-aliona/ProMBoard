@@ -4,14 +4,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { updateDoc, doc, collection, addDoc } from 'firebase/firestore'
 import { db } from '../../../firebase-client'
 
-import { avatarState } from '../../../store/slices/avatarSlice'
 import useOutsideClick from '../../../hooks/useOutsideClick'
 import style from '../../../assets/scss/card.module.scss'
 
 const CardCommentForm = ({card}) => {
     const user = useSelector((state) => state.user.user)
-    const avatar = useSelector(avatarState)
-    
+        
     const [clickComment, setClickComment] = useState(false)
     const [comment, setComment] = useState('')
     
@@ -60,7 +58,7 @@ const CardCommentForm = ({card}) => {
                     <div style={{fontSize: '18px'}}>Comments</div>
                 </div>
                 <div style={{display: 'flex', alignItems: 'start', gap: '10px', marginTop: '10px'}}>
-                    <div className={style.circle}>?</div>
+                    <div className={style.circle}>{user.firstName[0] + user.lastName[0]}</div>
                     <div className={!clickComment ? style.commentForm : null} 
                         onClick={handleInputComment}>
                         {clickComment ? 

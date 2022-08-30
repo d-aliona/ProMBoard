@@ -5,10 +5,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { auth } from '../../firebase-client'
 import { signOut } from 'firebase/auth'
 import { userState, removeUser } from '../../store/slices/userSlice'
-import { avatarState } from '../../store/slices/avatarSlice'
 
 import Logo from '../Logo'
 import CreateBoardForm from '../../features/CreateBoardForm'
+import Notification from '../Notification'
 import BoardsList from '../../components/BoardsList'
 import useOutsideClick from '../../hooks/useOutsideClick'
 import style from '../../assets/scss/topbar.module.scss'
@@ -17,29 +17,15 @@ import MenuContext from '../../context/MenuContext'
 
 function Topbar() {
     const user = useSelector(userState)
-    const isAvatar = useSelector(avatarState)
-    //   const avatar = isAvatar ? isAvatar : '?'
-    const [avatar, setAvatar] = useState('?')
-    const [showDropListAuth, setShowDropListAuth] = useState(false)
     const [show, setShow] = useState(false)
     const [showCreateBoardForm, setShowCreateBoardForm] = useState(false)
     const ref = useOutsideClick(() => {setShow(false)})
     const title = useParams()
-    // console.log(title.id)
     const boardColor = useBoardColor(title)
     const {textColor} = useContext(MenuContext)
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    //   console.log(isAvatar)
-
-    useEffect(() => {
-        if (isAvatar) {
-            setAvatar(isAvatar)
-        }
-    }, [isAvatar, avatarState])
-
     
-
     const toggle = (e) => {
         setShow(prev => !prev)
         e.stopPropagation()
@@ -75,16 +61,19 @@ function Topbar() {
                     <CreateBoardForm setShowCreateBoardForm={setShowCreateBoardForm}/>
                 </div>
             )}
-            <div className={style.mailbox} onClick={toggle}>
-                {user.email}
-                <div className={style.circle}>{avatar}</div>
+            <div className={style.authbox}>
+                <Notification />
+                <div className={style.authbox} onClick={toggle}>
+                    {user.firstName + ' ' + user.lastName} 
+                    <div className={style.circle}>{user.firstName[0] + user.lastName[0]}</div>
+                </div>
             </div>
             {show && (
                 <div className={style.dropListAuth} ref={ref}>
                     <div className={style.account}>
-                        <div className={style.circle}>{avatar}</div>
+                        <div className={style.circle}>{user.firstName[0] + user.lastName[0]}</div>
                         <div>
-                            <p>first Name?  last Name?</p>
+                            <p>{user.firstName + ' ' + user.lastName}</p>
                             <p style={{ color: '#999', marginTop: '6px' }}>{user.email}</p>
                         </div>
                     </div>

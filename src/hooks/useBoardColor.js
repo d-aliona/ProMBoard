@@ -10,7 +10,7 @@ const useBoardColor = (title) => {
     
     useEffect(() => {
         if (title.id) {
-            const currentBoard = boards.find(ob => ob.boardTitle === title.id && ob.owner === user.id)
+            const currentBoard = boards.find(ob => ob.id === title.id)
             setBoardColor(currentBoard.boardColor)
         }
     },[title])

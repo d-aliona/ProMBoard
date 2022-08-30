@@ -4,18 +4,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { db } from '../../../firebase-client'
 import { collection, orderBy, doc, deleteDoc, updateDoc, query, onSnapshot } from 'firebase/firestore'
 
-import { avatarState } from '../../../store/slices/avatarSlice'
 import { setCurrentComments, currentCommentsState } from '../../../store/slices/currentCommentsSlice'
 import useOutsideClick from '../../../hooks/useOutsideClick'
 import style from '../../../assets/scss/card.module.scss'
 import styles from '../../../assets/scss/deleteForm.module.scss'
 
 const Comment = ({card, comment}) => {
-    const dispatch = useDispatch()
-
     const user = useSelector((state) => state.user.user)
-    
-    const avatar = useSelector(avatarState)
     const [clickEditComment, setClickEditComment] = useState(false)
     const [confirmDelete, setConfirmDelete] = useState(false)
     const [commentText, setCommentText] = useState(comment.comment)
@@ -56,7 +51,7 @@ const Comment = ({card, comment}) => {
     return (
         <>
             <div  style={{display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px'}}>
-                <div className={style.circle}>?</div>
+                <div className={style.circle}>{user.firstName[0] + user.lastName[0]}</div>
                 <div style={{fontSize: '16px', fontWeight: '600'}}>{comment.user} </div>
                 <div>{comment.time}</div>
                 <div>{comment.edited ? '(edited)' : null}</div>

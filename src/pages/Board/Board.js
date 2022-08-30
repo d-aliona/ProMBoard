@@ -23,7 +23,7 @@ const Board = () => {
   const lists = useSelector(currentListsState)
   const cards = useSelector(currentCardsState)
   const currentDragStartCard = useSelector(currentDragStartCardState)
-  const currentBoard = boards.find(ob => ob.boardTitle === title.id && ob.owner === user.id)
+  const currentBoard = boards.find(ob => ob.id === title.id)
   const boardColor = useBoardColor(title)
   const {textColor, setTextColor} = useContext(MenuContext)
   const [draggingList, setDraggingList] = useState(false)
@@ -137,7 +137,7 @@ const Board = () => {
       color: `${title.id ? textColor : 'rgb(23, 43, 77)'}`}}>
       <div className={style.head}>
         <div className={style.title}>
-          {title.id}
+          {currentBoard.boardTitle}
         </div>
         <div className={style.changeColor}>
           Choose text color: 

@@ -13,6 +13,8 @@ import { ShowPassword, HidePassword } from '../../assets/svg/svg-icons'
 
 const SignupForm = () => {
     const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/gi
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [passConfirmed, setPassConfirmed] = useState('')
@@ -20,7 +22,7 @@ const SignupForm = () => {
     const [isRevealPwd2, setIsRevealPwd2] = useState(false)
     const [showErrorEmail, setShowErrorEmail] = useState(false)
     const [showErrorPass, setShowErrorPass] = useState(false)
-    const disabled = email && password && passConfirmed ? '' : style.disabled
+    const disabled = firstName && lastName && email && password && passConfirmed ? '' : style.disabled
     const users = useSelector(usersState)
 
     let navigate = useNavigate()
@@ -42,6 +44,9 @@ const SignupForm = () => {
                         .then(() => {
                             addDoc(collection(db, 'users'), {
                                 email: email,
+                                firstName: firstName,
+                                lastname: lastName,
+                                guestBoards: [],
                             })
                         })
                         .then(() => {
@@ -63,6 +68,22 @@ const SignupForm = () => {
 
     return (
         <form className={style.form} onSubmit={createUser}>
+            <Input
+                type={'text'}
+                placeholder={'Enter your First Name'}
+                value={firstName}
+                onChange={(e) => {
+                    setFirstName(e.target.value)
+                }}
+            />
+            <Input
+                type={'text'}
+                placeholder={'Enter your Last Name'}
+                value={lastName}
+                onChange={(e) => {
+                    setLastName(e.target.value)
+                }}
+            />
             <Input
                 type={'text'}
                 placeholder={'Enter email'}

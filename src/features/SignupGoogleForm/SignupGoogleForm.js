@@ -13,8 +13,7 @@ const SignupGoogleForm = (props) => {
     const title = props.title
     let navigate = useNavigate()
     const users = useSelector(usersState)
-    // console.log(users)
-
+    
     const signupGoogle = (e) => {
         e.preventDefault()
         const provider = new GoogleAuthProvider();
@@ -23,11 +22,14 @@ const SignupGoogleForm = (props) => {
         signInWithPopup(auth, provider)
         .then((result) => {
             const user = result.user;
-            // console.log(user.email, user.displayName)
             
             if (!users.some(el => el.email === user.email)) {
+
                 addDoc(collection(db, 'users'),{
                     email: user.email,
+                    firstName: user.displayName.split(' ')[0],
+                    lastName: user.displayName.split(' ')[1],
+                    guestBoards: [],
                 })
             }
         })
