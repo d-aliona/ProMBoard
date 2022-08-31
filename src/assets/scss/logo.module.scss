@@ -20,8 +20,29 @@
 }
 
 .bellicon {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
+    background-size: 28px;
     margin-right: 30px;
     background-image: url(../images/bellicon.png);
+}
+
+@keyframes blink {   
+    from {
+      opacity: 1;    
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+.newnotification {
+    animation: blink .8s infinite alternate;
+    position: relative;
+    top: 6px;
+    left: 15px;
+    width: 10px;
+    height: 10px;
+    background-color: rgb(129, 3, 3);
+    border-radius: 50%;
 }

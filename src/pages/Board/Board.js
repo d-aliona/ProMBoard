@@ -6,6 +6,8 @@ import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
 import List from '../../components/List'
+import ViewMembers from '../../components/ViewMembers'
+import InviteMembers from '../../features/InviteMembers'
 import AddListForm from '../../features/AddListForm'
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
 import style from '../../assets/scss/board.module.scss'
@@ -28,6 +30,7 @@ const Board = () => {
   const {textColor, setTextColor} = useContext(MenuContext)
   const [draggingList, setDraggingList] = useState(false)
   const [draggingCard, setDraggingCard] = useState(false)
+  
   const dragItemList = useRef()
   const dragItemListNode = useRef()
   
@@ -139,7 +142,9 @@ const Board = () => {
         <div className={style.title}>
           {currentBoard.boardTitle}
         </div>
-        <div className={style.changeColor}>
+        <ViewMembers currentBoard={currentBoard} />
+        <InviteMembers currentBoard={currentBoard} />
+        <div className={style.headMenu}>
           Choose text color: 
           <div className={style.changeColor_light} onClick={chooseLight}>light</div>
           <div className={style.changeColor_dark} onClick={chooseDark}>dark</div>

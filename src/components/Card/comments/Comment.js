@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { db } from '../../../firebase-client'
 import { collection, orderBy, doc, deleteDoc, updateDoc, query, onSnapshot } from 'firebase/firestore'
 
+import Initials from '../../Initials'
 import { setCurrentComments, currentCommentsState } from '../../../store/slices/currentCommentsSlice'
 import useOutsideClick from '../../../hooks/useOutsideClick'
 import style from '../../../assets/scss/card.module.scss'
@@ -51,7 +52,7 @@ const Comment = ({card, comment}) => {
     return (
         <>
             <div  style={{display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px'}}>
-                <div className={style.circle}>{user.firstName[0] + user.lastName[0]}</div>
+                <Initials user={user}/>
                 <div style={{fontSize: '16px', fontWeight: '600'}}>{comment.user} </div>
                 <div>{comment.time}</div>
                 <div>{comment.edited ? '(edited)' : null}</div>

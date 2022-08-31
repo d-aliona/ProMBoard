@@ -42,6 +42,7 @@ const CreateBoardForm = ({setShowCreateBoardForm}) => {
             boardTitle: title,
             boardColor: colorBoard,
             owner: user.id,
+            invitedMembers: [],
         })
         .then(() => {
             navigate('/auth/board/' + title)

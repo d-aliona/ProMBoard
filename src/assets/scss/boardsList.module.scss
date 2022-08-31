@@ -62,3 +62,11 @@
 .listItem:hover {
     background-color: #eee;
 }
+
+.dropViewMembers {
+    @extend .dropBoardsList;
+    position: absolute;
+    top: 90px;
+    margin-left: -30px;
+    box-shadow: 0 0 0 100vh rgba(9, 30, 66,  .4);
+}

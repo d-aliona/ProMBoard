@@ -7,6 +7,7 @@ import { signOut } from 'firebase/auth'
 import { userState, removeUser } from '../../store/slices/userSlice'
 
 import Logo from '../Logo'
+import Initials from '../Initials'
 import CreateBoardForm from '../../features/CreateBoardForm'
 import Notification from '../Notification'
 import BoardsList from '../../components/BoardsList'
@@ -64,14 +65,15 @@ function Topbar() {
             <div className={style.authbox}>
                 <Notification />
                 <div className={style.authbox} onClick={toggle}>
-                    {user.firstName + ' ' + user.lastName} 
-                    <div className={style.circle}>{user.firstName[0] + user.lastName[0]}</div>
+                    <div style={{marginRight:'10px'}}>{user.firstName + ' ' + user.lastName}</div>
+                    <Initials user={user}/> 
+                    {/* <div className={style.circle}>{user.firstName[0] + user.lastName[0]}</div> */}
                 </div>
             </div>
             {show && (
                 <div className={style.dropListAuth} ref={ref}>
                     <div className={style.account}>
-                        <div className={style.circle}>{user.firstName[0] + user.lastName[0]}</div>
+                        <Initials user={user}/>
                         <div>
                             <p>{user.firstName + ' ' + user.lastName}</p>
                             <p style={{ color: '#999', marginTop: '6px' }}>{user.email}</p>

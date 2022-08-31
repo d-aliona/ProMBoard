@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { updateDoc, doc, collection, addDoc } from 'firebase/firestore'
 import { db } from '../../../firebase-client'
 
+import Initials from '../../Initials'
 import useOutsideClick from '../../../hooks/useOutsideClick'
 import style from '../../../assets/scss/card.module.scss'
 
@@ -58,7 +59,7 @@ const CardCommentForm = ({card}) => {
                     <div style={{fontSize: '18px'}}>Comments</div>
                 </div>
                 <div style={{display: 'flex', alignItems: 'start', gap: '10px', marginTop: '10px'}}>
-                    <div className={style.circle}>{user.firstName[0] + user.lastName[0]}</div>
+                    <Initials user={user}/>
                     <div className={!clickComment ? style.commentForm : null} 
                         onClick={handleInputComment}>
                         {clickComment ? 
