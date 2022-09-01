@@ -1,0 +1,90 @@
+.headMenu {
+    display: flex;
+    gap: 10px;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 16px;
+    background: rgba(23, 43, 77, .2);
+}
+
+.inviteMembersWindow {
+    position: fixed;
+    z-index: 100;
+    top: 160px;
+    box-shadow: 0 0 0 100vh rgba(9, 30, 66,  .6);
+    width: 500px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 10px;
+    color: rgb(23, 43, 77);
+    background-color: #fff;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.dropmembersList {
+    width: 480px;
+    max-height: 200px;
+    border: 1px solid rgb(23, 43, 77);
+    border-radius: 3px;
+    overflow-y: auto;
+    box-shadow: 0 8px 16px -4px rgba(9, 30, 66, .25), 0 0 0 1px rgba(9, 30, 66,  .1);
+}
+
+.dropMember {
+    padding: 8px 10px;
+}
+.dropMember:hover {
+    cursor: pointer;
+    background-color: rgba(23, 43, 77, .1);
+}
+
+.invitationForm {
+    @extend .dropmembersList;
+    display: flex;
+    width: 480px;
+    gap: 10px;
+    align-items: center;
+    padding: 10px;
+}
+
+.membersToInvite {
+    width: 75%;
+}
+
+.memberToInvite {
+    margin: 5px;
+    padding: 5px;
+    background-color: rgba(38, 70, 177, .2);
+    display:inline-flex;
+    gap: 15px;
+    align-items: center;
+    border-radius: 4px;
+}
+
+.inviteButton {
+    width: 25%;
+    padding: 3px 10px;
+    color: white;
+    background: rgba(38, 70, 177, .9);
+    border-radius: 3px;
+    border: 1px solid rgb(38, 70, 177);
+    font-size: 18px;
+}
+.inviteButton:hover {
+    background-color: rgb(38, 70, 177);
+    
+}
+
+.closeMemberToInvite {
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0 5px;
+    background-color: rgba(38, 70, 177, .2);
+    border-radius: 50%;
+}
+.closeMemberToInvite:hover {
+    background-color: rgba(38, 70, 177, .4);
+}

@@ -7,9 +7,10 @@ import styles from '../../assets/scss/boardsList.module.scss'
 
 const ViewMembers = ({currentBoard}) => {
     const user = useSelector((state) => state.user.user)
+    const users = useSelector((state) => state.users.users)
     const [showMembers, setShowMembers] = useState(false)
     const ref = useOutsideClick(() => setShowMembers(false))
-
+    console.log(users)
     return (
         <>
             <div 
@@ -27,13 +28,15 @@ const ViewMembers = ({currentBoard}) => {
                         </div>
                     <hr className={styles.line} />
                     <p className={styles.boardsGroup} style={{marginBottom:'10px'}}>Invited members</p>
-                    {currentBoard.invitedMembers.length 
-                        ? currentBoard.invitedMembers.map((member, id) => 
-                            <div>
-                                <span>{member.firstName + ' ' + member.lastName}</span>
-                                <span style={{marginLeft:'15px',color:'#666'}}>{member.email}</span>
-                            </div>
-                            )
+                    {currentBoard.invitedMembers.length > 0
+                        ? currentBoard.invitedMembers.map((memberID, id) => {
+                            const currentMember = users.find(user => user.id === memberID)
+                            return (
+                                <div>
+                                    <span>{currentMember.firstName + ' ' + currentMember.lastName}</span>
+                                    <span style={{marginLeft:'15px',color:'#666'}}>{currentMember.email}</span>
+                                </div>)
+                        })
                         : <div>There are no invited members</div> 
                     }
                 </div>
