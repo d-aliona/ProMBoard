@@ -7,8 +7,8 @@ import { composeWithDevTools } from "redux-devtools-extension";
 
 import userReducer from './slices/userSlice'
 import usersReducer from './slices/usersSlice'
-import usernameReducer from './slices/usernameSlice'
 import personalBoardsReducer from './slices/personalBoardsSlice'
+import notPersonalBoardsReducer from './slices/notPersonalBoardsSlice'
 import boardReducer from './slices/boardSlice'
 import currentListsReducer from './slices/currentListsSlice'
 import currentCardsReducer from './slices/currentCardsSlice'
@@ -23,8 +23,8 @@ const persistConfig = {
 const reducers = combineReducers({
     user: userReducer,
     users: usersReducer,
-    username: usernameReducer,
     personalBoards: personalBoardsReducer,
+    notPersonalBoards: notPersonalBoardsReducer,
     board: boardReducer,
     currentLists: currentListsReducer,
     currentCards: currentCardsReducer,

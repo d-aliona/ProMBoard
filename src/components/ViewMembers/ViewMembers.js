@@ -10,7 +10,7 @@ const ViewMembers = ({currentBoard}) => {
     const users = useSelector((state) => state.users.users)
     const [showMembers, setShowMembers] = useState(false)
     const ref = useOutsideClick(() => setShowMembers(false))
-    console.log(users)
+    
     return (
         <>
             <div 

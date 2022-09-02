@@ -5,16 +5,20 @@ import { useParams } from 'react-router-dom'
 import { doc, deleteDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
+import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
 import useOutsideClick from '../../hooks/useOutsideClick'
 import { currentListsState } from '../../store/slices/currentListsSlice'
 
 import style from '../../assets/scss/deleteForm.module.scss'
 
-const DeleteListForm = ({list, curBoardId, setShowMenu}) => {
+const DeleteListForm = ({list, setShowMenu}) => {
     
     const [show, setShow] = useState(true)
     const title = useParams()
-    const lists = useSelector(currentListsState)    
+    const lists = useSelector(currentListsState)  
+    const boards = useSelector(personalBoardsState)
+    const currentBoard = boards.find(ob => ob.id === title.id)
+
     const handleClickOutside = () => {
         setShow(false)
     }
@@ -23,7 +27,6 @@ const DeleteListForm = ({list, curBoardId, setShowMenu}) => {
         
         lists.forEach(async(el) => {
             if (el.position > list.position) {
-                // console.log(list.position)
               const docRef = doc(db, 'lists', el.id)
                     
               await updateDoc(docRef, {
@@ -51,7 +54,7 @@ const DeleteListForm = ({list, curBoardId, setShowMenu}) => {
                     <div className={style.deleteListForm} ref={ref}>
                         <p>Are you sure you want to delete </p>
                         <p>the list <strong>{list.listTitle} </strong></p>
-                        <p>from the board <strong>{title.id}</strong>?</p>
+                        <p>from the board <strong>{currentBoard.boardTitle}</strong>?</p>
                         <div>
                             <button className={style.buttonYes} onClick={deleteList}>
                                 Yes

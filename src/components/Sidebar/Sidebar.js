@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
+import { notPersonalBoardsState } from '../../store/slices/notPersonalBoardsSlice'
 
 import useBoardColor from '../../hooks/useBoardColor'
 import { TickDown } from '../../assets/svg/svg-icons'
@@ -10,6 +11,7 @@ import MenuContext from '../../context/MenuContext'
 import style from '../../assets/scss/sidebar.module.scss'
 
 const Sidebar = () => {
+    const user = useSelector((state) => state.user.user)
     const [showYourBoards, setShowYourBoards] = useState(true)
     const [showGuestBoards, setShowGuestBoards] = useState(true)
     const [toggleClick, setToggleClick] = useState(true)
@@ -23,7 +25,9 @@ const Sidebar = () => {
     const title = useParams()
     const boardColor = useBoardColor(title)
     const {textColor} = useContext(MenuContext)
-    
+    const notUserBoards = useSelector(notPersonalBoardsState)
+    const guestBoards = notUserBoards && notUserBoards.length ? notUserBoards.filter((board) => board.invitedMembers.includes(user.id)): []
+
     useEffect(() => {
         setChangeTick(toggleClick ? style.tickLeft : style.tickRight)
     }, [toggleClick])
@@ -61,18 +65,12 @@ const Sidebar = () => {
                     <div className={style.dropBoards}>
                         Members <span className={style.plus}>+</span>
                     </div>
-                    {showYourBoards && (
-                        <div className={style.dropBoards} onClick={() => setShowYourBoards(prev => !prev)}>
-                            Your boards 
-                            <span className={`${tickUpDownPers}`}><TickDown /></span>
-                        </div>
-                    )}
+                    <div className={style.dropBoards} onClick={() => setShowYourBoards(prev => !prev)}>
+                        Your boards 
+                        <span className={`${tickUpDownPers}`}><TickDown /></span>
+                    </div>
                     {!showYourBoards && (
                         <div>
-                            <div className={style.dropBoards} onClick={() => setShowYourBoards(prev => !prev)}>
-                                Your boards 
-                                <span className={`${tickUpDownPers}`}><TickDown /></span>
-                            </div>
                             {boards 
                                 && boards.map((board, id) => 
                                     <div key={id} 
@@ -81,13 +79,26 @@ const Sidebar = () => {
                                         onClick={() => handleClickBoard(board.id)}>
                                         <div className={style.colorBoard} style={{backgroundColor: `${board.boardColor}`}}></div>
                                         {board.boardTitle}
-                                    </div>
-                            )}
+                                    </div>)}
                         </div>
                     )}
                     <div className={style.dropBoards} onClick={() => setShowGuestBoards(prev => !prev)}>
-                        Guest boards <TickDown />
+                        Guest boards 
+                        <span className={`${tickUpDownGuest}`}><TickDown /></span>
                     </div>
+                    {!showGuestBoards && (
+                        <div>
+                            {guestBoards 
+                                && guestBoards.map((board, id) => 
+                                    <div key={id} 
+                                        className={style.listItem}
+                                        style={{backgroundColor: `${board.id === title.id ? 'rgba(23, 43, 77, .3)' : ''}`}} 
+                                        onClick={() => handleClickBoard(board.id)}>
+                                        <div className={style.colorBoard} style={{backgroundColor: `${board.boardColor}`}}></div>
+                                        {board.boardTitle}
+                                    </div>)}
+                        </div>
+                    )}
                 </div>
             )}
             {!toggleClick && (

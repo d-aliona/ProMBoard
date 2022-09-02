@@ -7,6 +7,7 @@ import { db, auth, usersCollection } from '../../firebase-client'
 
 import { setUser } from '../../store/slices/userSlice'
 import { setPersonalBoards } from '../../store/slices/personalBoardsSlice'
+import { setNotPersonalBoards } from '../../store/slices/notPersonalBoardsSlice'
 
 const GetState = ({ children }) => {
   const dispatch = useDispatch()
@@ -43,9 +44,28 @@ const GetState = ({ children }) => {
         const persBoardsSnap = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
         dispatch(setPersonalBoards(persBoardsSnap))
       })
+      const qNotPersBoards = query(colRef, where('owner', "!=", user.id))
+      
+      onSnapshot(qNotPersBoards, (snapshot) => {
+        const notPersBoardsSnap = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        dispatch(setNotPersonalBoards(notPersBoardsSnap))
+      })
     }
     
   }, [user])
+
+  // useEffect(() => {
+  //   if (user.id) {
+  //     const colRef = collection(db, 'boards')
+  //     const qNotPersBoards = query(colRef, where('owner', "!=", user.id))
+      
+  //     onSnapshot(qNotPersBoards, (snapshot) => {
+  //       const notPersBoardsSnap = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+  //       dispatch(setNotPersonalBoards(notPersBoardsSnap))
+  //     })
+  //   }
+    
+  // }, [user])
 
   return children
 }

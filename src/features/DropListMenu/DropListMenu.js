@@ -6,7 +6,7 @@ import DeleteListForm from '../DeleteListForm'
 
 const DropListMenu = ({list, curBoardId, setShowMenu, setClickTitle}) => {
     const [messageDeleteList, setMessageDeleteList] = useState(false)
-
+    
     const handleDeleteList = (e) => {
         e.preventDefault()
         setMessageDeleteList(true)
@@ -35,7 +35,7 @@ const DropListMenu = ({list, curBoardId, setShowMenu, setClickTitle}) => {
             <hr className={style.line} />
             <div className={style.menuItem} onClick={handleDeleteList}>Delete this list</div>
             {messageDeleteList && 
-                <DeleteListForm list={list} curBoardId={curBoardId} setShowMenu={setShowMenu}/>
+                <DeleteListForm list={list} setShowMenu={setShowMenu}/>
             }
         </>
     )

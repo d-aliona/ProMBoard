@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef, useContext} from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { doc, updateDoc } from 'firebase/firestore'
+import { collection, where, query, onSnapshot, orderBy, doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
 import List from '../../components/List'
@@ -10,6 +10,7 @@ import ViewMembers from '../../components/ViewMembers'
 import InviteMembers from '../../features/InviteMembers'
 import AddListForm from '../../features/AddListForm'
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
+import { notPersonalBoardsState } from '../../store/slices/notPersonalBoardsSlice'
 import style from '../../assets/scss/board.module.scss'
 import useBoardColor from '../../hooks/useBoardColor'
 import MenuContext from '../../context/MenuContext'
@@ -22,15 +23,15 @@ const Board = () => {
   const title = useParams()
   const user = useSelector((state) => state.user.user)
   const boards = useSelector(personalBoardsState)
+  const notUserBoards = useSelector(notPersonalBoardsState)
   const lists = useSelector(currentListsState)
   const cards = useSelector(currentCardsState)
   const currentDragStartCard = useSelector(currentDragStartCardState)
-  const currentBoard = boards.find(ob => ob.id === title.id)
+  const currentBoard = boards.find(ob => ob.id === title.id) || notUserBoards.find(ob => ob.id === title.id)
   const boardColor = useBoardColor(title)
   const {textColor, setTextColor} = useContext(MenuContext)
   const [draggingList, setDraggingList] = useState(false)
   const [draggingCard, setDraggingCard] = useState(false)
-  
   const dragItemList = useRef()
   const dragItemListNode = useRef()
   

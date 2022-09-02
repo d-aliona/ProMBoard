@@ -44,8 +44,8 @@ const CreateBoardForm = ({setShowCreateBoardForm}) => {
             owner: user.id,
             invitedMembers: [],
         })
-        .then(() => {
-            navigate('/auth/board/' + title)
+        .then((docRef) => {
+            navigate('/auth/board/' + docRef.id)
             setShowCreateBoardForm(false)
             setShowError(false)
             setTitle('')

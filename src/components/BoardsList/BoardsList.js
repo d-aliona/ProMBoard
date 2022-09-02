@@ -3,16 +3,21 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
+import { notPersonalBoardsState } from '../../store/slices/notPersonalBoardsSlice'
 import style from '../../assets/scss/boardsList.module.scss'
 import { TickDown } from '../../assets/svg/svg-icons'
 import useOutsideClick from '../../hooks/useOutsideClick'
 
 const BoardsList = () => {
+    const user = useSelector((state) => state.user.user)
     const boards = useSelector(personalBoardsState)
+    const notUserBoards = useSelector(notPersonalBoardsState)
     const [show, setShow] = useState(false)
     const ref = useOutsideClick(() => setShow(false))
     let navigate = useNavigate()
     
+    const guestBoards = notUserBoards && notUserBoards.length ? notUserBoards.filter((board) => board.invitedMembers.includes(user.id)): []
+
     const navigateBoard = (boardID) => {
         navigate('/auth/board/' + boardID)
         setShow(false)
@@ -41,14 +46,20 @@ const BoardsList = () => {
                         </div>
                         <hr className={style.line} />
                         <p className={style.boardsGroup}>Personal boards</p>
-                            {boards 
-                                && boards.map((board, id) => 
+                        {boards 
+                            && boards.map((board, id) => 
+                                <div key={id} className={style.listItem} onClick={() => navigateBoard(board.id)}>
+                                    {board.boardTitle}
+                                </div>
+                        )}
+                        <hr className={style.line} />
+                        <p className={style.boardsGroup}>Guest boards</p>
+                        {guestBoards 
+                                && guestBoards.map((board, id) => 
                                     <div key={id} className={style.listItem} onClick={() => navigateBoard(board.id)}>
                                         {board.boardTitle}
                                     </div>
                             )}
-                        <hr className={style.line} />
-                        <p className={style.boardsGroup}>Guest boards</p>
                     </div>
                 )}        
             </div>

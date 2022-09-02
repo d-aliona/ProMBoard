@@ -61,7 +61,7 @@ const InviteMembers = ({currentBoard}) => {
         setShow(true) 
     }
 
-    const changeMindToInvite = (e, member) => {
+    const cancelToInvite = (e, member) => {
         e.stopPropagation()
         setSelectedToBeInvited(prevArr => {
             let newArr = prevArr.filter((mem) => mem.id !== member.id)
@@ -72,15 +72,23 @@ const InviteMembers = ({currentBoard}) => {
         })
     }
 
-    const inviteMembers = () => {
+    const inviteMembers = (e) => {
+        e.stopPropagation()
+
         selectedToBeInvited && 
             selectedToBeInvited.map(async(member) => {
                 const docRef = doc(db, 'boards', currentBoard.id)
-                        
                 await updateDoc(docRef, {
                     invitedMembers: [...currentBoard.invitedMembers, member.id],
                 })
-    })}
+
+                const docMemberRef = doc(db, 'users', member.id)
+                await updateDoc(docMemberRef, {
+                    guestBoards: [...member.guestBoards, currentBoard.id],
+                })
+            })
+        setSelectedToBeInvited([])
+    }
 
     return (
         <>
@@ -110,13 +118,14 @@ const InviteMembers = ({currentBoard}) => {
                                         <span>{member.firstName + ' ' + member.lastName}</span>
                                         <span
                                             className={style.closeMemberToInvite} 
-                                            onClick={(e) => changeMindToInvite(e, member)}> 
+                                            onClick={(e) => cancelToInvite(e, member)}> 
                                             × 
                                         </span>
                                     </div>
                                 ))}
                             </div>
-                            <button className={style.inviteButton} onClick={inviteMembers}>
+                            <button className={style.inviteButton} 
+                                onClick={(e) => inviteMembers(e)}>
                                 Invite
                             </button>
                         </div>
@@ -162,7 +171,7 @@ const InviteMembers = ({currentBoard}) => {
                         ? currentBoard.invitedMembers.map((memberID, id) => {
                             const currentMember = users.find(user => user.id === memberID)
                             return (
-                                <div style={{display:'flex', alignItems:'center', gap:'10px'}}>
+                                <div style={{display:'flex', alignItems:'center', gap:'10px', marginTop:'4px'}}>
                                     <Initials user={currentMember} />
                                     {currentMember.firstName + ' ' + currentMember.lastName}
                                 </div>)
