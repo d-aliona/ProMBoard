@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"
-import { collection, addDoc } from 'firebase/firestore'
+import { collection, addDoc, doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
 import Input from '../../components/Input'
@@ -27,7 +27,7 @@ const SignupForm = () => {
 
     let navigate = useNavigate()
 
-    const createUser = (e) => {
+    const createUser = async(e) => {
         e.preventDefault()
 
         if (email.match(regex)) {
@@ -36,16 +36,14 @@ const SignupForm = () => {
             if (password === passConfirmed && password.trim().length >= 6) {
                 setShowErrorPass(false)
 
-                if (users.some(el => el.email === email)) {
-                    navigate('../auth/home')
-                } else {
+                if (!users.some(el => el.email === email)) {
                     const auth = getAuth()
                     createUserWithEmailAndPassword(auth, email, password)
                         .then(() => {
                             addDoc(collection(db, 'users'), {
                                 email: email,
                                 firstName: firstName,
-                                lastname: lastName,
+                                lastName: lastName,
                                 guestBoards: [],
                             })
                         })
@@ -55,6 +53,17 @@ const SignupForm = () => {
                         .catch((error) => {
                             console.log(error.message)
                         })
+                    
+                } else {
+                    const userFound = users.find(el => el.email === email)
+                    if (userFound.firstName === '?' && userFound.lastName === '?') {
+                        const docRef = doc(db, 'users', userFound.id)
+                        await updateDoc(docRef, {
+                            firstName: firstName,
+                            lastName: lastName,
+                        })
+                    }
+                    navigate('../auth/home')
                 }
             } else {
                 setShowErrorPass(true)

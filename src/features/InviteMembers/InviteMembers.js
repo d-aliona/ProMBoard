@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef, useContext} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
-import { doc, deleteDoc, updateDoc } from 'firebase/firestore'
+import emailjs from '@emailjs/browser'
+import { doc, deleteDoc, updateDoc, addDoc, collection } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
 import Input from '../../components/Input'
@@ -11,6 +11,7 @@ import style from '../../assets/scss/inviteMembers.module.scss'
 import styles from '../../assets/scss/boardsList.module.scss'
 
 const InviteMembers = ({currentBoard}) => {
+    const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/gi
     const user = useSelector((state) => state.user.user)
     const users = useSelector((state) => state.users.users)
     const [show, setShow] = useState(false)
@@ -18,12 +19,19 @@ const InviteMembers = ({currentBoard}) => {
     const [searchTerm, setSearchTerm] = useState('')
     const [dropMemberList, setDropMemberList] = useState([])
     const [selectedToBeInvited, setSelectedToBeInvited] = useState([])
-    const [select, setSelect] = useState(false)
-        // console.log(currentBoard.invitedMembers)
-    // const [usersNotPresentOnBoard, setUsersNotPresentOnBoard] = useState(users
-    //     .filter(member => member.id !== user.id)
-    //     .filter(member => !currentBoard.invitedMembers.includes(member)))
-    const [usersNotPresentOnBoard, setUsersNotPresentOnBoard] = useState(users)
+    const [isSuccessfulSend , setIsSuccessfulSend ] = useState(false)
+    const disabled = searchTerm.match(regex) ? '' : style.disabled
+    const [usersNotPresentOnBoard, setUsersNotPresentOnBoard] = useState([])
+    const currentOwner = users.find(member => member.id === currentBoard.owner)
+
+    useEffect(() => {
+        const filteredUsers = users    
+            .filter(member => member.id !== user.id)
+            .filter(member => !currentBoard.invitedMembers.includes(member.id))
+        setUsersNotPresentOnBoard(filteredUsers)    
+    },[currentBoard])
+              
+    // const [usersNotPresentOnBoard, setUsersNotPresentOnBoard] = useState(users)
 
     const ref = useOutsideClick(() => {
         setShow(false)
@@ -31,7 +39,7 @@ const InviteMembers = ({currentBoard}) => {
         setDropMemberList([])
         setSelectedToBeInvited([])
         setShowDropList(false)
-        setUsersNotPresentOnBoard(users)
+        setIsSuccessfulSend(false)
     })
 
     useEffect(() => {
@@ -90,6 +98,34 @@ const InviteMembers = ({currentBoard}) => {
         setSelectedToBeInvited([])
     }
 
+    const sendEmail = (e) => {
+        e.preventDefault()
+        
+        emailjs.sendForm('gmail', 'template_5wbqx98', e.target, 'WNtAQiomd_4bK-q2C')
+        .then(() => {
+            // console.log(result.text)
+            addDoc(collection(db, 'users'), {
+                email: searchTerm,
+                firstName: '?',
+                lastName: '?',
+                guestBoards: [currentBoard.id],
+            })
+            .then((userRef) => {
+                const docRef = doc(db, 'boards', currentBoard.id)
+                updateDoc(docRef, {
+                    invitedMembers: [...currentBoard.invitedMembers, userRef.id],
+                })
+            })
+            .then(() => {
+                setSearchTerm('')
+                setShowDropList(false)
+                setIsSuccessfulSend(true)
+            })
+        }, (error) => {
+            console.log(error.text)
+        })
+    }
+
     return (
         <>
             <div 
@@ -137,6 +173,7 @@ const InviteMembers = ({currentBoard}) => {
                         onChange={(e) => {
                             setSearchTerm(e.target.value)
                             setShowDropList(true)
+                            setIsSuccessfulSend(false)
                         }}
                     />
                     <div className={style.dropmembersList}>
@@ -159,13 +196,32 @@ const InviteMembers = ({currentBoard}) => {
                                     Add their email address to send an invitation. 
                                 </div>):null)
                         }
+                        {isSuccessfulSend &&
+                            (<div style={{padding:'20px'}}>
+                                The invitation to the specified email has been sent.
+                            </div>)
+                        }
                     </div>
+                    {showDropList && 
+                            ((dropMemberList.length === 0 && searchTerm.includes('@')) 
+                                ? (<div style={{display:'flex', justifyContent:'center'}}>
+                                    <form className="contact-form" onSubmit={sendEmail}>
+                                        <input style={{display:'none'}} name='name' value={user.firstName + ' ' + user.lastName} readOnly/>
+                                        <input style={{display:'none'}} name='email' value={searchTerm} readOnly/>
+                                        <input className={`${style.sendInvitationButton} ${disabled}`}
+                                            type="submit" 
+                                            value='Send an invitation' />
+                                    </form>
+                                  </div>)
+                                :null)
+                    }
                     <hr className={styles.line} />
                     <p className={styles.boardsGroup} style={{marginBottom:'10px'}}>Members of this board</p>
                     <div style={{display:'flex', alignItems:'center', gap:'10px'}}>
                         <Initials user={user} />
-                        {user.firstName + ' ' + user.lastName}
-                        <span style={{marginLeft:'20px',color:'#666'}}>owner</span>
+                        {currentOwner.firstName + ' ' + currentOwner.lastName}
+                        <span style={{marginLeft:'15px',color:'#666'}}>{currentOwner.email}</span>
+                        <span style={{marginLeft:'20px',color:'#333'}}>(owner)</span>
                     </div>
                     {currentBoard.invitedMembers.length 
                         ? currentBoard.invitedMembers.map((memberID, id) => {
@@ -174,6 +230,7 @@ const InviteMembers = ({currentBoard}) => {
                                 <div style={{display:'flex', alignItems:'center', gap:'10px', marginTop:'4px'}}>
                                     <Initials user={currentMember} />
                                     {currentMember.firstName + ' ' + currentMember.lastName}
+                                    <span style={{marginLeft:'15px',color:'#666'}}>{currentMember.email}</span>
                                 </div>)
                         })
                         : null

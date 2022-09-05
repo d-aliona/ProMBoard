@@ -6,6 +6,7 @@ import { onIdTokenChanged } from 'firebase/auth'
 import { db, auth, usersCollection } from '../../firebase-client'
 
 import { setUser } from '../../store/slices/userSlice'
+import { setUsers } from '../../store/slices/usersSlice'
 import { setPersonalBoards } from '../../store/slices/personalBoardsSlice'
 import { setNotPersonalBoards } from '../../store/slices/notPersonalBoardsSlice'
 
@@ -52,6 +53,17 @@ const GetState = ({ children }) => {
       })
     }
     
+  }, [user])
+
+  useEffect(() => {
+    const listsCol = collection(db, 'users')
+        
+    onSnapshot(listsCol, (snapshot) => {
+        const listSnap = snapshot.docs.map((doc) => {
+            return { ...doc.data(), id: doc.id }
+        })
+        dispatch(setUsers(listSnap))
+    })
   }, [user])
 
   // useEffect(() => {

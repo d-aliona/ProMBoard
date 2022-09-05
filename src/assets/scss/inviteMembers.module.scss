@@ -88,3 +88,21 @@
 .closeMemberToInvite:hover {
     background-color: rgba(38, 70, 177, .4);
 }
+
+.sendInvitationButton {
+    margin: 10px 0 0 0;
+    padding: 6px 12px;
+    font-size: 16px;
+    border-radius: 4px;
+    background-color: rgba(38, 70, 177, .1);
+    border: 1px solid rgba(38, 70, 177, .2);
+}
+
+.sendInvitationButton:hover {
+    background-color: rgba(38, 70, 177, .4);
+}
+
+.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
