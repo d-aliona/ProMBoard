@@ -7,12 +7,9 @@ import useOutsideClick from '../../hooks/useOutsideClick'
 import style from '../../assets/scss/card.module.scss'
 
 const CardDescription = ({card}) => {
-    // console.log(card)
     const [clickDescription, setClickDescription] = useState(false)
     const [description, setDescription] = useState(card.description)
-    // console.log(card)
-    // console.log(card.description)
-    // console.log(description)
+    
     const updateCardDescription = async (e) => {
         const docRef = doc(db, 'cards', card.id)
                 

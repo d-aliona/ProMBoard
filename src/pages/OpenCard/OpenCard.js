@@ -15,6 +15,7 @@ import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
 import AddCardForm from '../../features/AddCardForm'
 import useOutsideClick from '../../hooks/useOutsideClick'
 import CardTitle from '../../components/Card/CardTitle'
+import CardMembers from '../../components/Card/CardMembers'
 import CardDescription from '../../components/Card/CardDescription'
 import CardCommentForm from '../../components/Card/comments/CardCommentForm'
 import CardComments from '../../components/Card/comments/CardComments'
@@ -33,7 +34,6 @@ const OpenCard = () => {
   const { list } = location.state
   const cards = useSelector(currentCardsState)
   const card = cards.find(ob => ob.id === title.idcard)
-
   const ref = useOutsideClick(() => navigate(-1))
 
   return (
@@ -44,7 +44,7 @@ const OpenCard = () => {
           <CardTitle card={card} list={list} clickTitle={clickTitle} setClickTitle={setClickTitle}/>
           <div style={{display: 'flex'}}>
             <div style={{width:'75%'}}>
-              {/* <CardMembers /> */}
+              {card.assignedUsers.length > 0 ? <CardMembers card={card} /> : null}
               <CardDescription card={card} />
               <CardCommentForm card={card} />
               <CardComments card={card} />

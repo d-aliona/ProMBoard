@@ -1,8 +1,8 @@
 import style from '../../assets/scss/topbar.module.scss'
 
-const Initials = ({user}) => {
+const Initials = ({user, size, font}) => {
     return (
-        <div className={style.circle}>
+        <div className={style.circle} style={{width: size, height:size, fontSize:font}}>
             {user?.firstName[0] + user?.lastName[0]}
         </div>
     )

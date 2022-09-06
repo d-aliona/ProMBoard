@@ -33,9 +33,7 @@ const SignupGoogleForm = (props) => {
                 })
             } else {
                 const userFound = users.find(el => el.email === user.email)
-                console.log(userFound)
-                console.log(users)
-                console.log(user)
+                
                 if ((userFound.firstName === '?') && (userFound.lastName === '?')) {
                     const docRef = doc(db, 'users', userFound.id)
                     await updateDoc(docRef, {

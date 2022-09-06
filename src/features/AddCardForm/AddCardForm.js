@@ -29,7 +29,7 @@ const AddCardForm = ({list, curBoardId}) => {
       await addDoc(cardsCol, {
         cardTitle: cardTitle,
         description: '',
-        users: [],
+        assignedUsers: [],
         listID: list.id,
         boardID: curBoardId,
         commentsExist: false,

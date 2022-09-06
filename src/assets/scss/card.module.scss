@@ -55,7 +55,7 @@
     z-index: 100;
     width: 750px;
     color: rgb(23, 43, 77);
-    background-color: #eee;
+    background-color: #f4f5f7;
     border: 1px solid #e3e6f0;
     border-radius: 4px;
 }
@@ -84,6 +84,12 @@
     width: 35px;
     height: 35px;
     background-image: url(../images/cardTitle.png);
+}
+
+.displayMembersicon {
+    width: 32px;
+    height: 32px;
+    background-image: url(../images/membersicon.png);
 }
 
 .descriptionicon {
@@ -246,11 +252,11 @@
     gap: 8px;
 }
 
-.membersicon {
+.addmembericon {
     width: 20px;
     height: 20px;
     background-size: 20px;
-    background-image: url(../images/membersicon.png);
+    background-image: url(../images/addmembericon.png);
 }
 .covericon {
     width: 20px;
@@ -298,3 +304,40 @@
     font-size: 20px;
     font-weight: 600;
 }
+
+.assignMember {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 26px;
+    background-color:#ddd;
+    border-radius: 50%;
+    width: 35px;
+    height:35px;
+}
+
+.assignMember:hover {
+    cursor: pointer;
+}
+
+.assignedMember {
+    position: relative;
+}
+
+.assignedMember:hover {
+    cursor: pointer;
+}
+
+.assignedMember[data-descr]:hover::after {
+    content: attr(data-descr);
+    position: absolute;
+    left: 0;
+    top: 36px;
+    min-width: 200px;
+    border: 1px white solid;
+    border-radius: 3px;
+    background-color: #ffffcc;
+    padding: 10px;
+    font-size: 16px;
+    z-index: 1;
+  }
