@@ -30,6 +30,7 @@ const SignupGoogleForm = (props) => {
                     firstName: user.displayName.split(' ')[0],
                     lastName: user.displayName.split(' ')[1],
                     guestBoards: [],
+                    newNotificationExist: false,
                 })
             } else {
                 const userFound = users.find(el => el.email === user.email)

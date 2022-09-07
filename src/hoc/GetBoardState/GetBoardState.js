@@ -17,16 +17,18 @@ const GetBoardState = ({ children }) => {
     const notUserBoards = useSelector(notPersonalBoardsState)
     const lists = useSelector(currentListsState)
     const cards = useSelector(currentCardsState)
-    const currentBoard = boards.find(ob => ob.id === title.id)|| notUserBoards.find(ob => ob.id === title.id)
+    const currentBoard = boards.find(ob => ob.id === title?.id)|| notUserBoards.find(ob => ob.id === title?.id)
     
     useEffect(() => {
         const listsCol = collection(db, 'lists')
-        const qLists = query(listsCol, where('boardID', '==', currentBoard.id), orderBy('position'))
-        
+        // console.log(listsCol)
+        const qLists = query(listsCol, where('boardID', '==', currentBoard?.id), orderBy('position'))
+        // console.log(qLists)
         onSnapshot(qLists, (snapshot) => {
-            const listSnap = snapshot.docs.map((doc) => {
-                return { ...doc.data(), id: doc.id }
+            const listSnap = snapshot?.docs.map((doc) => {
+                return { ...doc?.data(), id: doc?.id }
             })
+            // console.log(listSnap)
             dispatch(setCurrentLists(listSnap))
         })
     }, [title, currentBoard, user])
@@ -44,7 +46,7 @@ const GetBoardState = ({ children }) => {
         })
     }, [title, currentBoard])
     
-    if (lists && cards) {
+    if (!!lists && !!cards) {
        return children
     } 
     // return children

@@ -35,8 +35,16 @@
 }
 
 .closeForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
     font-size: 26px;
+    width: 26px;
+}
+.closeForm:hover {
+    background-color: #eee;
+    border-radius: 4px;
 }
 
 .line {

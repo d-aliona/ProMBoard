@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 
 import { updateDoc, doc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
+import MemberOnCard from './MemberOnCard'
 import DeleteMemberFromCardForm from '../../features/DeleteMemberFromCardForm'
 import AssignMemberForm from '../../features/AssignMemberForm'
 import Initials from '../../components/Initials'
@@ -24,31 +25,8 @@ const CardMembers = ({card}) => {
                 <div style={{display:'flex', gap:'10px', flexWrap:'wrap', margin:'10px 0 0 45px'}}>
                     {card.assignedUsers &&
                         card.assignedUsers.map((memberID, key) => {
-                            const currentMember = users.find(user => user.id === memberID)
-                            
-                            return (<>
-                                {/* <MemberOnCard /> */}
-                                <div key={key} style={{display:'flex'}}>
-                                    <div className={style.assignedMember}
-                                        onClick={(e) => {
-                                            e.stopPropagation()}} 
-                                        data-descr={currentMember.firstName + ' ' + currentMember.lastName + ' ' + currentMember.email}>
-                                        <Initials user={currentMember} />
-                                    </div>
-                                    <DeleteMemberFromCardForm /> 
-                                    {/* {true ? 
-                                        (<div>
-                                            <div>
-                                                <Initials user={currentMember} />
-                                                <div>
-                                                    <p>{currentMember.firstName + ' ' + currentMember.lastName}</p>
-                                                    <p>{currentMember.email}</p>
-                                                </div>
-                                            </div>
-                                            <div>Remove from card</div>
-                                        </div>) : null} */}
-                                </div>
-                                </>)
+                            // const currentMember = users.find(user => user.id === memberID)
+                            return <MemberOnCard key={key} card={card} memberID={memberID}/>
                         })}
                     <div className={style.assignMember}
                         onClick={(e) => {setClickAddMembers(true); e.stopPropagation()}}>

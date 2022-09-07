@@ -19,14 +19,14 @@ const Card = ({card, list}) => {
         <>
             <div className={style.cardWrapper} >
                 <div className={style.cardTitle} onClick={handleClickToOpenCard}>
-                    {card.cardTitle}
+                    {card?.cardTitle}
                     <div style={{display:'flex', flexWrap:'wrap', gap:'10px'}}>
-                        {card.description ? 
+                        {card?.description ? 
                             <abbr title="This card has a description">
                                 <div className={style.descriptioniconMini}></div>
                             </abbr> 
                             : null }
-                        {card.commentsExist ? 
+                        {card?.commentsExist ? 
                             <div style={{display:'flex', gap:'4px', justifyContent:'center'}}>
                                 <abbr title="This card has comments">
                                     <div className={style.commenticonMini}></div>
@@ -34,7 +34,7 @@ const Card = ({card, list}) => {
                                 <div style={{color:'black',display:'flex',alignItems:'center'}}>{card.commentsNumber}</div>
                             </div>
                         : null }   
-                        {card.assignedUsers.length > 0 
+                        {card?.assignedUsers?.length > 0 
                             ? (<div style={{display:'flex', flexWrap:'wrap', gap:'4px', marginLeft:'auto'}}>
                                     {card.assignedUsers &&
                                         card.assignedUsers.map((memberID) => {

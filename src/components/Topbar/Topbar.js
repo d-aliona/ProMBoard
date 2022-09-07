@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { useNavigate, Navigate, useParams } from 'react-router-dom'
+import React, { useState, useContext } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { auth } from '../../firebase-client'
@@ -67,7 +67,6 @@ function Topbar() {
                 <div className={style.authbox} onClick={toggle}>
                     <div style={{marginRight:'10px'}}>{user.firstName + ' ' + user.lastName}</div>
                     <Initials user={user}/> 
-                    {/* <div className={style.circle}>{user.firstName[0] + user.lastName[0]}</div> */}
                 </div>
             </div>
             {show && (

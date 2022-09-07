@@ -1,34 +1,64 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect} from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { collection, addDoc, orderBy, doc, query, onSnapshot, where, updateDoc } from 'firebase/firestore'
-import { db, usersCollection } from '../../firebase-client'
+import { doc, updateDoc, collection, addDoc } from 'firebase/firestore'
+import { db } from '../../firebase-client'
 
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
 import Input from '../../components/Input'
 import useOutsideClick from '../../hooks/useOutsideClick'
 import Initials from '../../components/Initials'
-import { currentCardsState } from '../../store/slices/currentCardsSlice'
 import style from '../../assets/scss/inviteMembers.module.scss'
 import styles from '../../assets/scss/boardsList.module.scss'
 
 const AssignMemberForm = ({card, setClickAddMembers}) => {
+    const user = useSelector((state) => state.user.user)
     const users = useSelector((state) => state.users.users)
     const boards = useSelector(personalBoardsState)
     const [searchMember, setSearchMember] = useState('')
-    const [isSuccessfulSend , setIsSuccessfulSend ] = useState(false)
     const currentBoard = boards.find(ob => ob.id === card.boardID)
     const membersToBeAssigned = [...currentBoard.invitedMembers, currentBoard.owner]
-
+    const [dropMemberList, setDropMemberList] = useState(membersToBeAssigned)
     const ref = useOutsideClick(() => {
         setClickAddMembers(false)
         setSearchMember('')
-        // setDropMemberList([])
-        // setSelectedToBeInvited([])
-        // setShowDropList(false)
-        setIsSuccessfulSend(false)
     })
+    
+    useEffect(() => {
+        const list = 
+            membersToBeAssigned.filter((memberID) => {
+                if (searchMember !== '') {
+                    const member = users.find(ob => ob.id === memberID)
+                    if (searchMember) {
+                        if (((member.firstName.toLowerCase()+member.lastName.toLowerCase()).includes(searchMember.toLowerCase()) 
+                        || (member.email.includes(searchMember)))) {
+                            return member
+                        }
+                    }
+                } else return memberID
+            })
+        setDropMemberList(list)
+    }, [searchMember])
 
+    const changeDataBase = async(memberID, text) => {
+        const colRef = collection(db, 'users', memberID, 'notifications')
+        
+        addDoc(colRef, {
+            fromUser: user.id,
+            time: new Date().toLocaleString('en-GB'),
+            read: false,
+            text: text,
+            cardID: card.id,
+            boardID: card.boardID, 
+        })
+        .catch((error) => {
+            console.error(error.message)
+        })
+
+        const docRef = doc(db, 'users', memberID)
+        await updateDoc(docRef, {
+            newNotificationExist: true,
+        }) 
+    }
 
     const toggleAssignMember = async(e, memberID) => {
         e.stopPropagation()
@@ -41,11 +71,13 @@ const AssignMemberForm = ({card, setClickAddMembers}) => {
             await updateDoc(docRef, {
                 assignedUsers: [...changedData],
             })
+            changeDataBase(memberID, 'removed from this card')
         } else {
             const docRef = doc(db, 'cards', card.id)
             await updateDoc(docRef, {
                 assignedUsers: [...card.assignedUsers, memberID],
             })
+            changeDataBase(memberID, 'added to this card')
         }
     }
 
@@ -59,7 +91,7 @@ const AssignMemberForm = ({card, setClickAddMembers}) => {
                     </span>
                     <span
                         className={styles.closeForm} 
-                        onClick={() => setClickAddMembers(false)}> 
+                        onClick={(e) => {e.stopPropagation(); setClickAddMembers(false)}}> 
                         × 
                     </span>
                 </div>
@@ -68,19 +100,14 @@ const AssignMemberForm = ({card, setClickAddMembers}) => {
                     type={'text'}
                     placeholder={'Search member'}
                     value={searchMember}
-                    onChange={(e) => {
-                        setSearchMember(e.target.value)
-                        // setShowDropList(true)
-                        setIsSuccessfulSend(false)
-                    }}
+                    onChange={(e) => setSearchMember(e.target.value)}
                 />
                 <p className={styles.boardsGroup} style={{marginBottom:'10px'}}>Board members</p>
-                <div>
-                    {membersToBeAssigned &&
-                        membersToBeAssigned.map((memberID) => {
-                            const currentMember = users.find(user => user.id === memberID)
-                            return (
-                                <div className={style.memberToAssign}
+                {dropMemberList &&
+                    dropMemberList.map((memberID) => {
+                        const currentMember = users.find(ob => ob.id === memberID)
+                        return (
+                            <div className={style.memberToAssign}
                                     onClick={(e) => toggleAssignMember(e, memberID)}>
                                     <Initials user={currentMember} />
                                     {currentMember.firstName + ' ' + currentMember.lastName}
@@ -88,74 +115,9 @@ const AssignMemberForm = ({card, setClickAddMembers}) => {
                                     {card.assignedUsers.includes(memberID) 
                                         ? (<span style={{marginLeft:'auto'}}>✓</span>)
                                         : null}
-                                </div>)
-                        }
-                            // <div className={style.dropMember} onClick={(e) => assignMember(e,member)}>
-                            //     <div style={{display:'flex', alignItems:'center', gap:'10px'}}>
-                            //         <Initials user={member} />
-                            //         {member.firstName + ' ' + member.lastName}
-                            //         <span style={{marginLeft:'15px',color:'#666'}}>{member.email}</span>
-                            //     </div>
-                            // </div>
-                        )}
-                    {/* {showDropList && 
-                        ((dropMemberList.length > 0) ? 
-                        dropMemberList.map((member) => (
-                            <div className={style.dropMember} onClick={(e) => assignMember(e,member)}>
-                                <div style={{display:'flex', alignItems:'center', gap:'10px'}}>
-                                    <Initials user={member} />
-                                    {member.firstName + ' ' + member.lastName}
-                                    <span style={{marginLeft:'15px',color:'#666'}}>{member.email}</span>
                                 </div>
-                            </div>
-                        )): null)
-                    } */}
-                    {/* {showDropList && 
-                        ((dropMemberList.length === 0 && searchTerm !== '') ? 
-                            (<div style={{padding:'20px'}}>
-                                Looks like that person isn't a member of ProMBoard yet. 
-                                Add their email address to send an invitation. 
-                            </div>):null)
-                    }
-                    {isSuccessfulSend &&
-                        (<div style={{padding:'20px'}}>
-                            The invitation to the specified email has been sent.
-                        </div>)
-                    } */}
-                </div>
-                {/* {showDropList && 
-                        ((dropMemberList.length === 0 && searchTerm.includes('@')) 
-                            ? (<div style={{display:'flex', justifyContent:'center'}}>
-                                <form className="contact-form" onSubmit={sendEmail}>
-                                    <input style={{display:'none'}} name='name' value={user.firstName + ' ' + user.lastName} readOnly/>
-                                    <input style={{display:'none'}} name='email' value={searchTerm} readOnly/>
-                                    <input className={`${style.sendInvitationButton} ${disabled}`}
-                                        type="submit" 
-                                        value='Send an invitation' />
-                                </form>
-                                </div>)
-                            :null)
-                } */}
-                
-                {/* <p className={styles.boardsGroup} style={{marginBottom:'10px'}}>Members of this board</p> */}
-                {/* <div style={{display:'flex', alignItems:'center', gap:'10px'}}>
-                    <Initials user={user} />
-                    {currentOwner.firstName + ' ' + currentOwner.lastName}
-                    <span style={{marginLeft:'15px',color:'#666'}}>{currentOwner.email}</span>
-                    <span style={{marginLeft:'20px',color:'#333'}}>(owner)</span>
-                </div> */}
-                {/* {currentBoard.invitedMembers.length 
-                    ? currentBoard.invitedMembers.map((memberID, id) => {
-                        const currentMember = users.find(user => user.id === memberID)
-                        return (
-                            <div style={{display:'flex', alignItems:'center', gap:'10px', marginTop:'4px'}}>
-                                <Initials user={currentMember} />
-                                {currentMember.firstName + ' ' + currentMember.lastName}
-                                <span style={{marginLeft:'15px',color:'#666'}}>{currentMember.email}</span>
-                            </div>)
-                    })
-                    : null
-                }                 */}
+                    )})
+                }            
             </div>     
         </div>
     </>

@@ -45,6 +45,7 @@ const SignupForm = () => {
                                 firstName: firstName,
                                 lastName: lastName,
                                 guestBoards: [],
+                                newNotificationExist: false,
                             })
                         })
                         .then(() => {

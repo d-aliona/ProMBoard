@@ -37,7 +37,6 @@ const CardCommentForm = ({card}) => {
             commentsExist: true,
             commentsNumber: card.commentsNumber + 1,
         })
-
     }
 
     const handleInputComment = (e) => {

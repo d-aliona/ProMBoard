@@ -1,7 +1,7 @@
-import React, {useState, useEffect, useRef, useContext} from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, {useState, useEffect} from 'react'
+import { useSelector } from 'react-redux'
 import emailjs from '@emailjs/browser'
-import { doc, deleteDoc, updateDoc, addDoc, collection } from 'firebase/firestore'
+import { doc, updateDoc, addDoc, collection } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
 import Input from '../../components/Input'
@@ -31,8 +31,6 @@ const InviteMembers = ({currentBoard}) => {
         setUsersNotPresentOnBoard(filteredUsers)    
     },[currentBoard])
               
-    // const [usersNotPresentOnBoard, setUsersNotPresentOnBoard] = useState(users)
-
     const ref = useOutsideClick(() => {
         setShow(false)
         setSearchTerm('')
@@ -103,7 +101,6 @@ const InviteMembers = ({currentBoard}) => {
         
         emailjs.sendForm('gmail', 'template_5wbqx98', e.target, 'WNtAQiomd_4bK-q2C')
         .then(() => {
-            // console.log(result.text)
             addDoc(collection(db, 'users'), {
                 email: searchTerm,
                 firstName: '?',
