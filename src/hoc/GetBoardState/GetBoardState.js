@@ -4,8 +4,7 @@ import { useParams } from 'react-router-dom'
 
 import { collection, where, query, onSnapshot, orderBy } from 'firebase/firestore'
 import { db } from '../../firebase-client'
-import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
-import { notPersonalBoardsState } from '../../store/slices/notPersonalBoardsSlice'
+import { allBoardsState } from '../../store/slices/allBoardsSlice'
 import { setCurrentLists, currentListsState } from '../../store/slices/currentListsSlice'
 import { setCurrentCards, currentCardsState } from '../../store/slices/currentCardsSlice'
 
@@ -13,28 +12,24 @@ const GetBoardState = ({ children }) => {
     const dispatch = useDispatch()
     const user = useSelector((state) => state.user.user)
     const title = useParams()
-    const boards = useSelector(personalBoardsState)
-    const notUserBoards = useSelector(notPersonalBoardsState)
+    const allBoards = useSelector(allBoardsState)
     const lists = useSelector(currentListsState)
     const cards = useSelector(currentCardsState)
-    const currentBoard = boards.find(ob => ob.id === title?.id)|| notUserBoards.find(ob => ob.id === title?.id)
+    const currentBoard = allBoards.find(ob => ob.id === title?.id)
     
     useEffect(() => {
         const listsCol = collection(db, 'lists')
-        // console.log(listsCol)
         const qLists = query(listsCol, where('boardID', '==', currentBoard?.id), orderBy('position'))
-        // console.log(qLists)
+        
         onSnapshot(qLists, (snapshot) => {
             const listSnap = snapshot?.docs.map((doc) => {
                 return { ...doc?.data(), id: doc?.id }
             })
-            // console.log(listSnap)
             dispatch(setCurrentLists(listSnap))
         })
     }, [title, currentBoard, user])
 
     useEffect(() => {
-        
         const cardsCol = collection(db, 'cards')
         const qCards = query(cardsCol, where('boardID', '==', currentBoard.id))
         
@@ -49,7 +44,6 @@ const GetBoardState = ({ children }) => {
     if (!!lists && !!cards) {
        return children
     } 
-    // return children
 }
 
 export default GetBoardState

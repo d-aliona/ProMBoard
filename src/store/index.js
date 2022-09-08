@@ -8,6 +8,8 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import userReducer from './slices/userSlice'
 import usersReducer from './slices/usersSlice'
 import allBoardsReducer from './slices/allBoardsSlice'
+import allCardsReducer from './slices/allCardsSlice'
+import allListsReducer from './slices/allListsSlice'
 import personalBoardsReducer from './slices/personalBoardsSlice'
 import notPersonalBoardsReducer from './slices/notPersonalBoardsSlice'
 import boardReducer from './slices/boardSlice'
@@ -26,6 +28,8 @@ const reducers = combineReducers({
     user: userReducer,
     users: usersReducer,
     allBoards: allBoardsReducer,
+    allCards: allCardsReducer,
+    allLists: allListsReducer,
     personalBoards: personalBoardsReducer,
     notPersonalBoards: notPersonalBoardsReducer,
     board: boardReducer,

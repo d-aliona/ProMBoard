@@ -8,6 +8,8 @@ import { db, auth, usersCollection } from '../../firebase-client'
 import { setUser } from '../../store/slices/userSlice'
 import { setUsers } from '../../store/slices/usersSlice'
 import { setAllBoards } from '../../store/slices/allBoardsSlice'
+import { setAllLists } from '../../store/slices/allListsSlice'
+import { setAllCards } from '../../store/slices/allCardsSlice'
 import { setPersonalBoards } from '../../store/slices/personalBoardsSlice'
 import { setNotPersonalBoards } from '../../store/slices/notPersonalBoardsSlice'
 
@@ -71,6 +73,28 @@ const GetState = ({ children }) => {
             return { ...doc.data(), id: doc.id }
         })
         dispatch(setUsers(listSnap))
+    })
+  }, [user])
+
+  useEffect(() => {
+    const listsCol = collection(db, 'lists')
+        
+    onSnapshot(listsCol, (snapshot) => {
+        const listSnap = snapshot.docs.map((doc) => {
+            return { ...doc.data(), id: doc.id }
+        })
+        dispatch(setAllLists(listSnap))
+    })
+  }, [user])
+
+  useEffect(() => {
+    const listsCol = collection(db, 'cards')
+        
+    onSnapshot(listsCol, (snapshot) => {
+        const listSnap = snapshot.docs.map((doc) => {
+            return { ...doc.data(), id: doc.id }
+        })
+        dispatch(setAllCards(listSnap))
     })
   }, [user])
 

@@ -16,7 +16,7 @@ const BoardsList = () => {
     const ref = useOutsideClick(() => setShow(false))
     let navigate = useNavigate()
     
-    const guestBoards = notUserBoards && notUserBoards.length ? notUserBoards.filter((board) => board.invitedMembers.includes(user.id)): []
+    const guestBoards = notUserBoards && notUserBoards.length > 0 ? notUserBoards.filter((board) => board.invitedMembers.includes(user.id)): []
 
     const navigateBoard = (boardID) => {
         navigate('/auth/board/' + boardID)

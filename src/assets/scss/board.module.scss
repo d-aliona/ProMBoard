@@ -60,3 +60,14 @@
 .listBackgroundOpacity {
     opacity: 0;
 }
+
+.viewMember {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 4px;
+}
+.viewMember:hover {
+    background-color: rgba(73, 136, 245, 0.1);
+    border-radius: 3px;
+}

@@ -26,7 +26,7 @@ const Sidebar = () => {
     const boardColor = useBoardColor(title)
     const {textColor} = useContext(MenuContext)
     const notUserBoards = useSelector(notPersonalBoardsState)
-    const guestBoards = notUserBoards && notUserBoards.length ? notUserBoards.filter((board) => board.invitedMembers.includes(user.id)): []
+    const guestBoards = notUserBoards && notUserBoards.length > 0 ? notUserBoards.filter((board) => board.invitedMembers.includes(user.id)): []
 
     useEffect(() => {
         setChangeTick(toggleClick ? style.tickLeft : style.tickRight)

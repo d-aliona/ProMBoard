@@ -59,12 +59,19 @@ const InviteMembers = ({currentBoard}) => {
             let newArr = prevArr.filter((mem) => mem.id !== member.id)
             return newArr
         })
+        console.log(selectedToBeInvited)
         setShowDropList(false)
         setSearchTerm('')
-        setSelectedToBeInvited(prevArr => {
-            return [...prevArr, member]
-        })
+        const data = [...selectedToBeInvited]
+        const changedData = [...data, member]
+        setSelectedToBeInvited(changedData)
+        // setSelectedToBeInvited(prevArr => {
+        //     return [...prevArr, member]
+        // })
         setShow(true) 
+        console.log(changedData)
+        console.log(member)
+        console.log(selectedToBeInvited)
     }
 
     const cancelToInvite = (e, member) => {
@@ -80,7 +87,7 @@ const InviteMembers = ({currentBoard}) => {
 
     const inviteMembers = (e) => {
         e.stopPropagation()
-
+        console.log(selectedToBeInvited)
         selectedToBeInvited && 
             selectedToBeInvited.map(async(member) => {
                 const docRef = doc(db, 'boards', currentBoard.id)

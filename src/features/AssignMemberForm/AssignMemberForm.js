@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { doc, updateDoc, collection, addDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
-import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
+import { allBoardsState } from '../../store/slices/allBoardsSlice'
 import Input from '../../components/Input'
 import useOutsideClick from '../../hooks/useOutsideClick'
 import Initials from '../../components/Initials'
@@ -13,10 +13,10 @@ import styles from '../../assets/scss/boardsList.module.scss'
 const AssignMemberForm = ({card, setClickAddMembers}) => {
     const user = useSelector((state) => state.user.user)
     const users = useSelector((state) => state.users.users)
-    const boards = useSelector(personalBoardsState)
+    const boards = useSelector(allBoardsState)
     const [searchMember, setSearchMember] = useState('')
     const currentBoard = boards.find(ob => ob.id === card.boardID)
-    const membersToBeAssigned = [...currentBoard.invitedMembers, currentBoard.owner]
+    const membersToBeAssigned = [...currentBoard?.invitedMembers, currentBoard.owner]
     const [dropMemberList, setDropMemberList] = useState(membersToBeAssigned)
     const ref = useOutsideClick(() => {
         setClickAddMembers(false)
@@ -71,13 +71,13 @@ const AssignMemberForm = ({card, setClickAddMembers}) => {
             await updateDoc(docRef, {
                 assignedUsers: [...changedData],
             })
-            changeDataBase(memberID, 'removed from this card')
+            changeDataBase(memberID, 'removed you from this card')
         } else {
             const docRef = doc(db, 'cards', card.id)
             await updateDoc(docRef, {
                 assignedUsers: [...card.assignedUsers, memberID],
             })
-            changeDataBase(memberID, 'added to this card')
+            changeDataBase(memberID, 'added you to this card')
         }
     }
 
