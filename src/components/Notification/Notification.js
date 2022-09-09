@@ -27,7 +27,6 @@ const Notification = () => {
     let navigate = useNavigate()
     
     useEffect(() => {
-        
         const notificationsCol = collection(db, 'users', user.id, 'notifications')
         const qNotifications = query(notificationsCol, orderBy('time', "desc"))
         
@@ -37,9 +36,10 @@ const Notification = () => {
             })
             dispatch(setNotifications(notificationsSnap))
         })
-    }, [user])
+    }, [user, notifications])
 
     const changeReadStatus = () => {
+        console.log('ok')
         if (notifications.length > 0) {
             const dataToChange = notifications.filter(ob => ob.read === false)
             dataToChange.map(async(item) => {
@@ -51,7 +51,7 @@ const Notification = () => {
         }
     }
 
-    const ref = useOutsideClick((e) => {
+    const ref = useOutsideClick(() => {
         changeReadStatus();
         setShowDropWindow(false)
     })

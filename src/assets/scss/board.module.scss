@@ -71,3 +71,19 @@
     background-color: rgba(73, 136, 245, 0.1);
     border-radius: 3px;
 }
+
+.deleteMemberForm {
+    padding: 8px;
+    border-radius: 3px;
+    border: 1px solid rgba(129, 3, 3, .2);
+    background-image: linear-gradient(rgba(129, 3, 3, .1) 40%, transparent 50%);
+}
+
+.line {
+    display: block;
+    width: 100%;
+    height: 1px;
+    border-top: 1px solid #ccc;
+    margin: 10px 0;
+    padding: 0;
+}

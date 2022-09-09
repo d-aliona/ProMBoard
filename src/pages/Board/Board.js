@@ -2,38 +2,38 @@ import React, {useState, useEffect, useRef, useContext} from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { collection, where, query, onSnapshot, orderBy, doc, updateDoc } from 'firebase/firestore'
+import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
+import { collection, where, query, onSnapshot, orderBy } from 'firebase/firestore'
 
 import List from '../../components/List'
 import ViewMembers from '../../components/ViewMembers'
 import InviteMembers from '../../features/InviteMembers'
 import AddListForm from '../../features/AddListForm'
-import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
-import { notPersonalBoardsState } from '../../store/slices/notPersonalBoardsSlice'
-import style from '../../assets/scss/board.module.scss'
+import { allBoardsState } from '../../store/slices/allBoardsSlice'
 import useBoardColor from '../../hooks/useBoardColor'
 import MenuContext from '../../context/MenuContext'
-import { setCurrentLists, currentListsState } from '../../store/slices/currentListsSlice'
-import { setCurrentCards, currentCardsState } from '../../store/slices/currentCardsSlice'
+import {setCurrentLists, currentListsState } from '../../store/slices/currentListsSlice'
+import {setCurrentCards, currentCardsState } from '../../store/slices/currentCardsSlice'
 import { setCurrentDragStartCard, currentDragStartCardState } from '../../store/slices/currentDragStartCardSlice'
+import style from '../../assets/scss/board.module.scss'
 
 const Board = () => {
   const dispatch = useDispatch()
   const title = useParams()
   const user = useSelector((state) => state.user.user)
-  const boards = useSelector(personalBoardsState)
-  const notUserBoards = useSelector(notPersonalBoardsState)
+  const allBoards = useSelector(allBoardsState)
   const lists = useSelector(currentListsState)
   const cards = useSelector(currentCardsState)
   const currentDragStartCard = useSelector(currentDragStartCardState)
-  const currentBoard = boards.find(ob => ob.id === title.id) || notUserBoards.find(ob => ob.id === title.id)
+  const currentBoard = allBoards.find(ob => ob.id === title.id)
   const boardColor = useBoardColor(title)
   const {textColor, setTextColor} = useContext(MenuContext)
   const [draggingList, setDraggingList] = useState(false)
   const [draggingCard, setDraggingCard] = useState(false)
   const dragItemList = useRef()
   const dragItemListNode = useRef()
+  const isPersonalBoard = user.id === currentBoard.owner
   
   let allListsCards = []
   let i = 0
@@ -51,10 +51,10 @@ const Board = () => {
   allListsCards.sort((a,b) => a.list.position - b.list.position) 
   allListsCards.forEach(el => {el.cards.sort((a,b) => a.position - b.position)})
 
-  const [listsCardsToRender, setListsCardsToRender] = useState(allListsCards)
+  const [listsCardsToRender, setListsCardsToRender] = useState(allListsCards)  
   
   useEffect(() => {
-      setListsCardsToRender(allListsCards);
+    setListsCardsToRender(allListsCards);
   }, [lists, cards])
 
   const handleDragStartList = (e, item) => {
@@ -142,9 +142,11 @@ const Board = () => {
       <div className={style.head}>
         <div className={style.title}>
           {currentBoard.boardTitle}
+        </div> 
+        <div style={{display:'flex', gap:'20px', marginRight:'auto'}}>
+          <ViewMembers currentBoard={currentBoard} />
+          {isPersonalBoard ? <InviteMembers currentBoard={currentBoard} /> : null}
         </div>
-        <ViewMembers currentBoard={currentBoard} />
-        <InviteMembers currentBoard={currentBoard} />
         <div className={style.headMenu}>
           Choose text color: 
           <div className={style.changeColor_light} onClick={chooseLight}>light</div>

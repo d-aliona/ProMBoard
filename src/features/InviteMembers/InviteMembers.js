@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import emailjs from '@emailjs/browser'
 import { doc, updateDoc, addDoc, collection } from 'firebase/firestore'
@@ -10,7 +10,7 @@ import Initials from '../../components/Initials'
 import style from '../../assets/scss/inviteMembers.module.scss'
 import styles from '../../assets/scss/boardsList.module.scss'
 
-const InviteMembers = ({currentBoard}) => {
+const InviteMembers = ({ currentBoard }) => {
     const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/gi
     const user = useSelector((state) => state.user.user)
     const users = useSelector((state) => state.users.users)
@@ -19,18 +19,18 @@ const InviteMembers = ({currentBoard}) => {
     const [searchTerm, setSearchTerm] = useState('')
     const [dropMemberList, setDropMemberList] = useState([])
     const [selectedToBeInvited, setSelectedToBeInvited] = useState([])
-    const [isSuccessfulSend , setIsSuccessfulSend ] = useState(false)
+    const [isSuccessfulSend, setIsSuccessfulSend] = useState(false)
     const disabled = searchTerm.match(regex) ? '' : style.disabled
     const [usersNotPresentOnBoard, setUsersNotPresentOnBoard] = useState([])
     const currentOwner = users.find(member => member.id === currentBoard.owner)
 
     useEffect(() => {
-        const filteredUsers = users    
+        const filteredUsers = users
             .filter(member => member.id !== user.id)
             .filter(member => !currentBoard.invitedMembers.includes(member.id))
-        setUsersNotPresentOnBoard(filteredUsers)    
-    },[currentBoard])
-              
+        setUsersNotPresentOnBoard(filteredUsers)
+    }, [currentBoard])
+
     const ref = useOutsideClick(() => {
         setShow(false)
         setSearchTerm('')
@@ -41,37 +41,31 @@ const InviteMembers = ({currentBoard}) => {
     })
 
     useEffect(() => {
-        const list = 
+        const list =
             usersNotPresentOnBoard.filter((member) => {
                 if (searchTerm) {
-                    if (((member.firstName.toLowerCase()+member.lastName.toLowerCase()).includes(searchTerm.toLowerCase()) 
-                    || (member.email.includes(searchTerm)))) {
+                    if (((member.firstName.toLowerCase() + member.lastName.toLowerCase()).includes(searchTerm.toLowerCase())
+                        || (member.email.includes(searchTerm)))) {
                         return member
                     }
                 }
             })
         setDropMemberList(list)
     }, [searchTerm])
-    
+
     const selectMember = (e, member) => {
         e.stopPropagation()
         setUsersNotPresentOnBoard(prevArr => {
             let newArr = prevArr.filter((mem) => mem.id !== member.id)
             return newArr
         })
-        console.log(selectedToBeInvited)
+
         setShowDropList(false)
         setSearchTerm('')
         const data = [...selectedToBeInvited]
         const changedData = [...data, member]
         setSelectedToBeInvited(changedData)
-        // setSelectedToBeInvited(prevArr => {
-        //     return [...prevArr, member]
-        // })
-        setShow(true) 
-        console.log(changedData)
-        console.log(member)
-        console.log(selectedToBeInvited)
+        setShow(true)
     }
 
     const cancelToInvite = (e, member) => {
@@ -85,16 +79,16 @@ const InviteMembers = ({currentBoard}) => {
         })
     }
 
-    const inviteMembers = (e) => {
+    const inviteMembers = async (e) => {
         e.stopPropagation()
-        console.log(selectedToBeInvited)
-        selectedToBeInvited && 
-            selectedToBeInvited.map(async(member) => {
-                const docRef = doc(db, 'boards', currentBoard.id)
-                await updateDoc(docRef, {
-                    invitedMembers: [...currentBoard.invitedMembers, member.id],
-                })
+        const data = [...selectedToBeInvited.map(member => member.id)]
+        const docRef = doc(db, 'boards', currentBoard.id)
+        await updateDoc(docRef, {
+            invitedMembers: [...currentBoard.invitedMembers, ...data],
+        })
 
+        selectedToBeInvited &&
+            selectedToBeInvited.map(async (member) => {
                 const docMemberRef = doc(db, 'users', member.id)
                 await updateDoc(docMemberRef, {
                     guestBoards: [...member.guestBoards, currentBoard.id],
@@ -105,49 +99,49 @@ const InviteMembers = ({currentBoard}) => {
 
     const sendEmail = (e) => {
         e.preventDefault()
-        
+
         emailjs.sendForm('gmail', 'template_5wbqx98', e.target, 'WNtAQiomd_4bK-q2C')
-        .then(() => {
-            addDoc(collection(db, 'users'), {
-                email: searchTerm,
-                firstName: '?',
-                lastName: '?',
-                guestBoards: [currentBoard.id],
-            })
-            .then((userRef) => {
-                const docRef = doc(db, 'boards', currentBoard.id)
-                updateDoc(docRef, {
-                    invitedMembers: [...currentBoard.invitedMembers, userRef.id],
-                })
-            })
             .then(() => {
-                setSearchTerm('')
-                setShowDropList(false)
-                setIsSuccessfulSend(true)
+                addDoc(collection(db, 'users'), {
+                    email: searchTerm,
+                    firstName: '?',
+                    lastName: '?',
+                    guestBoards: [currentBoard.id],
+                })
+                    .then((userRef) => {
+                        const docRef = doc(db, 'boards', currentBoard.id)
+                        updateDoc(docRef, {
+                            invitedMembers: [...currentBoard.invitedMembers, userRef.id],
+                        })
+                    })
+                    .then(() => {
+                        setSearchTerm('')
+                        setShowDropList(false)
+                        setIsSuccessfulSend(true)
+                    })
+            }, (error) => {
+                console.log(error.text)
             })
-        }, (error) => {
-            console.log(error.text)
-        })
     }
 
     return (
         <>
-            <div 
-                className={style.headMenu} 
-                style={{marginRight: 'auto', cursor:'pointer'}}
-                onClick={(e) => {setShow(prev => !prev); e.stopPropagation()}}>
+            <div
+                className={style.headMenu}
+                style={{ marginRight: 'auto', cursor: 'pointer' }}
+                onClick={(e) => { setShow(prev => !prev); e.stopPropagation() }}>
                 Invite members
             </div>
             {show && (
                 <div className={style.inviteMembersWindow} ref={ref}>
                     <div className={styles.title}>
-                        <span className={styles.titleName} style={{fontSize:'20px', marginBottom: '20px'}}>
-                            Invite new members 
+                        <span className={styles.titleName} style={{ fontSize: '20px', marginBottom: '20px' }}>
+                            Invite new members
                         </span>
                         <span
-                            className={styles.closeForm} 
-                            onClick={() => setShow(false)}> 
-                            × 
+                            className={styles.closeForm}
+                            onClick={() => setShow(false)}>
+                            ×
                         </span>
                     </div>
                     {selectedToBeInvited.length > 0 &&
@@ -157,14 +151,14 @@ const InviteMembers = ({currentBoard}) => {
                                     <div className={style.memberToInvite}>
                                         <span>{member.firstName + ' ' + member.lastName}</span>
                                         <span
-                                            className={style.closeMemberToInvite} 
-                                            onClick={(e) => cancelToInvite(e, member)}> 
-                                            × 
+                                            className={style.closeMemberToInvite}
+                                            onClick={(e) => cancelToInvite(e, member)}>
+                                            ×
                                         </span>
                                     </div>
                                 ))}
                             </div>
-                            <button className={style.inviteButton} 
+                            <button className={style.inviteButton}
                                 onClick={(e) => inviteMembers(e)}>
                                 Invite
                             </button>
@@ -181,64 +175,64 @@ const InviteMembers = ({currentBoard}) => {
                         }}
                     />
                     <div className={style.dropmembersList}>
-                        {showDropList && 
-                            ((dropMemberList.length > 0) ? 
-                            dropMemberList.map((member) => (
-                                <div className={style.dropMember} onClick={(e) => selectMember(e,member)}>
-                                    <div style={{display:'flex', alignItems:'center', gap:'10px'}}>
-                                        <Initials user={member} />
-                                        {member.firstName + ' ' + member.lastName}
-                                        <span style={{marginLeft:'15px',color:'#666'}}>{member.email}</span>
+                        {showDropList &&
+                            ((dropMemberList.length > 0) ?
+                                dropMemberList.map((member) => (
+                                    <div className={style.dropMember} onClick={(e) => selectMember(e, member)}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                            <Initials user={member} />
+                                            {member.firstName + ' ' + member.lastName}
+                                            <span style={{ marginLeft: '15px', color: '#666' }}>{member.email}</span>
+                                        </div>
                                     </div>
-                                </div>
-                            )): null)
+                                )) : null)
                         }
-                        {showDropList && 
-                            ((dropMemberList.length === 0 && searchTerm !== '') ? 
-                                (<div style={{padding:'20px'}}>
-                                    Looks like that person isn't a member of ProMBoard yet. 
-                                    Add their email address to send an invitation. 
-                                </div>):null)
+                        {showDropList &&
+                            ((dropMemberList.length === 0 && searchTerm !== '') ?
+                                (<div style={{ padding: '20px' }}>
+                                    Looks like that person isn't a member of ProMBoard yet.
+                                    Add their email address to send an invitation.
+                                </div>) : null)
                         }
                         {isSuccessfulSend &&
-                            (<div style={{padding:'20px'}}>
+                            (<div style={{ padding: '20px' }}>
                                 The invitation to the specified email has been sent.
                             </div>)
                         }
                     </div>
-                    {showDropList && 
-                            ((dropMemberList.length === 0 && searchTerm.includes('@')) 
-                                ? (<div style={{display:'flex', justifyContent:'center'}}>
-                                    <form className="contact-form" onSubmit={sendEmail}>
-                                        <input style={{display:'none'}} name='name' value={user.firstName + ' ' + user.lastName} readOnly/>
-                                        <input style={{display:'none'}} name='email' value={searchTerm} readOnly/>
-                                        <input className={`${style.sendInvitationButton} ${disabled}`}
-                                            type="submit" 
-                                            value='Send an invitation' />
-                                    </form>
-                                  </div>)
-                                :null)
+                    {showDropList &&
+                        ((dropMemberList.length === 0 && searchTerm.includes('@'))
+                            ? (<div style={{ display: 'flex', justifyContent: 'center' }}>
+                                <form className="contact-form" onSubmit={sendEmail}>
+                                    <input style={{ display: 'none' }} name='name' value={user.firstName + ' ' + user.lastName} readOnly />
+                                    <input style={{ display: 'none' }} name='email' value={searchTerm} readOnly />
+                                    <input className={`${style.sendInvitationButton} ${disabled}`}
+                                        type="submit"
+                                        value='Send an invitation' />
+                                </form>
+                            </div>)
+                            : null)
                     }
                     <hr className={styles.line} />
-                    <p className={styles.boardsGroup} style={{marginBottom:'10px'}}>Members of this board</p>
-                    <div style={{display:'flex', alignItems:'center', gap:'10px'}}>
+                    <p className={styles.boardsGroup} style={{ marginBottom: '10px' }}>Members of this board</p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                         <Initials user={user} />
                         {currentOwner.firstName + ' ' + currentOwner.lastName}
-                        <span style={{marginLeft:'15px',color:'#666'}}>{currentOwner.email}</span>
-                        <span style={{marginLeft:'20px',color:'#333'}}>(owner)</span>
+                        <span style={{ marginLeft: '15px', color: '#666' }}>{currentOwner.email}</span>
+                        <span style={{ marginLeft: '20px', color: '#333' }}>(owner)</span>
                     </div>
-                    {currentBoard.invitedMembers.length 
+                    {currentBoard.invitedMembers.length
                         ? currentBoard.invitedMembers.map((memberID, id) => {
                             const currentMember = users.find(user => user.id === memberID)
                             return (
-                                <div style={{display:'flex', alignItems:'center', gap:'10px', marginTop:'4px'}}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '4px' }}>
                                     <Initials user={currentMember} />
                                     {currentMember.firstName + ' ' + currentMember.lastName}
-                                    <span style={{marginLeft:'15px',color:'#666'}}>{currentMember.email}</span>
+                                    <span style={{ marginLeft: '15px', color: '#666' }}>{currentMember.email}</span>
                                 </div>)
                         })
                         : null
-                    }                
+                    }
                 </div>
             )}
         </>
