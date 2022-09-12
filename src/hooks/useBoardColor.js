@@ -1,18 +1,15 @@
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { personalBoardsState } from '../store/slices/personalBoardsSlice'
-import { notPersonalBoardsState } from '../store/slices/notPersonalBoardsSlice'
+import { allBoardsState } from '../store/slices/allBoardsSlice'
 
 const useBoardColor = (title) => {
     
     const [boardColor, setBoardColor] = useState('') 
-    const boards = useSelector(personalBoardsState)
-    const notUserBoards = useSelector(notPersonalBoardsState)
-    const user = useSelector((state) => state.user.user)
+    const allBoards = useSelector(allBoardsState)
     
     useEffect(() => {
         if (title.id) {
-            const currentBoard = boards.find(ob => ob.id === title.id) || notUserBoards.find(ob => ob.id === title.id)
+            const currentBoard = allBoards.find(ob => ob.id === title.id)
             setBoardColor(currentBoard.boardColor)
         }
     },[title])

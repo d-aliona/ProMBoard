@@ -72,8 +72,8 @@ const Sidebar = () => {
                     {!showYourBoards && (
                         <div>
                             {boards 
-                                && boards.map((board, id) => 
-                                    <div key={id} 
+                                && boards.map((board) => 
+                                    <div key={board.id} 
                                         className={style.listItem}
                                         style={{backgroundColor: `${board.id === title.id ? 'rgba(23, 43, 77, .3)' : ''}`}} 
                                         onClick={() => handleClickBoard(board.id)}>
@@ -89,8 +89,8 @@ const Sidebar = () => {
                     {!showGuestBoards && (
                         <div>
                             {guestBoards 
-                                && guestBoards.map((board, id) => 
-                                    <div key={id} 
+                                && guestBoards.map((board) => 
+                                    <div key={board.id} 
                                         className={style.listItem}
                                         style={{backgroundColor: `${board.id === title.id ? 'rgba(23, 43, 77, .3)' : ''}`}} 
                                         onClick={() => handleClickBoard(board.id)}>

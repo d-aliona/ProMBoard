@@ -47,16 +47,20 @@ const BoardsList = () => {
                         <hr className={style.line} />
                         <p className={style.boardsGroup}>Personal boards</p>
                         {boards 
-                            && boards.map((board, id) => 
-                                <div key={id} className={style.listItem} onClick={() => navigateBoard(board.id)}>
+                            && boards.map((board) => 
+                                <div key={board.id} 
+                                    className={style.listItem} 
+                                    onClick={() => navigateBoard(board.id)}>
                                     {board.boardTitle}
                                 </div>
                         )}
                         <hr className={style.line} />
                         <p className={style.boardsGroup}>Guest boards</p>
                         {guestBoards 
-                                && guestBoards.map((board, id) => 
-                                    <div key={id} className={style.listItem} onClick={() => navigateBoard(board.id)}>
+                                && guestBoards.map((board) => 
+                                    <div key={board.id} 
+                                        className={style.listItem} 
+                                        onClick={() => navigateBoard(board.id)}>
                                         {board.boardTitle}
                                     </div>
                             )}

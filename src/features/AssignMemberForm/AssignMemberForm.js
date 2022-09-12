@@ -4,6 +4,7 @@ import { doc, updateDoc, collection, addDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
 import { allBoardsState } from '../../store/slices/allBoardsSlice'
+import {addNotificationToDataBase} from '../exportFunctions'
 import Input from '../../components/Input'
 import useOutsideClick from '../../hooks/useOutsideClick'
 import Initials from '../../components/Initials'
@@ -38,28 +39,7 @@ const AssignMemberForm = ({card, setClickAddMembers}) => {
             })
         setDropMemberList(list)
     }, [searchMember])
-
-    const changeDataBase = async(memberID, text) => {
-        const colRef = collection(db, 'users', memberID, 'notifications')
-        
-        addDoc(colRef, {
-            fromUser: user.id,
-            time: new Date().toLocaleString('en-GB'),
-            read: false,
-            text: text,
-            cardID: card.id,
-            boardID: card.boardID, 
-        })
-        .catch((error) => {
-            console.error(error.message)
-        })
-
-        const docRef = doc(db, 'users', memberID)
-        await updateDoc(docRef, {
-            newNotificationExist: true,
-        }) 
-    }
-
+    
     const toggleAssignMember = async(e, memberID) => {
         e.stopPropagation()
 
@@ -71,13 +51,13 @@ const AssignMemberForm = ({card, setClickAddMembers}) => {
             await updateDoc(docRef, {
                 assignedUsers: [...changedData],
             })
-            changeDataBase(memberID, 'removed you from this card')
+            addNotificationToDataBase(memberID, user.id, 'removed you from this card', card.id, card.boardID)
         } else {
             const docRef = doc(db, 'cards', card.id)
             await updateDoc(docRef, {
                 assignedUsers: [...card.assignedUsers, memberID],
             })
-            changeDataBase(memberID, 'added you to this card')
+            addNotificationToDataBase(memberID, user.id, 'added you to this card', card.id, card.boardID)
         }
     }
 
@@ -107,15 +87,16 @@ const AssignMemberForm = ({card, setClickAddMembers}) => {
                     dropMemberList.map((memberID) => {
                         const currentMember = users.find(ob => ob.id === memberID)
                         return (
-                            <div className={style.memberToAssign}
-                                    onClick={(e) => toggleAssignMember(e, memberID)}>
-                                    <Initials user={currentMember} />
-                                    {currentMember.firstName + ' ' + currentMember.lastName}
-                                    <span style={{marginLeft:'15px',color:'#666'}}>{currentMember.email}</span>
-                                    {card.assignedUsers.includes(memberID) 
-                                        ? (<span style={{marginLeft:'auto'}}>✓</span>)
-                                        : null}
-                                </div>
+                            <div key={memberID} 
+                                className={style.memberToAssign}
+                                onClick={(e) => toggleAssignMember(e, memberID)}>
+                                <Initials user={currentMember} />
+                                {currentMember.firstName + ' ' + currentMember.lastName}
+                                <span style={{marginLeft:'15px',color:'#666'}}>{currentMember.email}</span>
+                                {card.assignedUsers.includes(memberID) 
+                                    ? (<span style={{marginLeft:'auto'}}>✓</span>)
+                                    : null}
+                            </div>
                     )})
                 }            
             </div>     

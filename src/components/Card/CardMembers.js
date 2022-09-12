@@ -24,9 +24,9 @@ const CardMembers = ({card}) => {
                 </div>
                 <div style={{display:'flex', gap:'10px', flexWrap:'wrap', margin:'10px 0 0 45px'}}>
                     {card.assignedUsers &&
-                        card.assignedUsers.map((memberID, key) => {
+                        card.assignedUsers.map((memberID) => {
                             // const currentMember = users.find(user => user.id === memberID)
-                            return <MemberOnCard key={key} card={card} memberID={memberID}/>
+                            return <MemberOnCard key={memberID} card={card} memberID={memberID}/>
                         })}
                     <div className={style.assignMember}
                         onClick={(e) => {setClickAddMembers(true); e.stopPropagation()}}>

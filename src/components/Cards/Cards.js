@@ -94,8 +94,8 @@ const Cards = ({list, cards, draggingCard, setDraggingCard, listsCardsToRender, 
         cards && 
             cards.map((card, index) => {
                 return (
-                    <div className={style.cardBackground}>
-                        <div key={index} 
+                    <div key={card.id} className={style.cardBackground}>
+                        <div 
                             onDragStart={(e) => handleDragStartCard(e, {index, card})}
                             onDragEnter={draggingCard ? (e) => {handleDragEnterCard(e, {index, card})} : null}
                             onDragOver={draggingCard ? (e) => {allowDropCard(e)} : null}

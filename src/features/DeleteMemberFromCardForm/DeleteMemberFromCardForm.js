@@ -1,20 +1,18 @@
-import React, { useState, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useParams, useLocation } from 'react-router-dom'
+import React  from 'react'
+import {  useSelector } from 'react-redux'
 
-import { doc, deleteDoc, updateDoc } from 'firebase/firestore'
+import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
+import {addNotificationToDataBase} from '../exportFunctions'
 import Initials from '../../components/Initials'
 import useOutsideClick from '../../hooks/useOutsideClick'
-import { setCurrentCards, currentCardsState } from '../../store/slices/currentCardsSlice'
 
-// import style from '../../assets/scss/card.module.scss'
 import style from '../../assets/scss/deleteForm.module.scss'
 
 const DeleteMemberFromCardForm = ({card, memberID, currentMember, setShowDeleteMemberForm}) => {
-    const users = useSelector((state) => state.users.users)
-    
+    const user = useSelector((state) => state.user.user)
+
     const ref = useOutsideClick(() => {
         setShowDeleteMemberForm(false)
     })
@@ -30,6 +28,7 @@ const DeleteMemberFromCardForm = ({card, memberID, currentMember, setShowDeleteM
         await updateDoc(docRef, {
             assignedUsers: [...changedData],
         })
+        addNotificationToDataBase(memberID, user.id, 'removed you from this card', card.id, card.boardID)
     }
 
     return (

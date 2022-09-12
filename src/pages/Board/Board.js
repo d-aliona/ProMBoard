@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
-import { collection, where, query, onSnapshot, orderBy } from 'firebase/firestore'
 
 import List from '../../components/List'
 import ViewMembers from '../../components/ViewMembers'
@@ -13,8 +12,8 @@ import AddListForm from '../../features/AddListForm'
 import { allBoardsState } from '../../store/slices/allBoardsSlice'
 import useBoardColor from '../../hooks/useBoardColor'
 import MenuContext from '../../context/MenuContext'
-import {setCurrentLists, currentListsState } from '../../store/slices/currentListsSlice'
-import {setCurrentCards, currentCardsState } from '../../store/slices/currentCardsSlice'
+import { currentListsState } from '../../store/slices/currentListsSlice'
+import { currentCardsState } from '../../store/slices/currentCardsSlice'
 import { setCurrentDragStartCard, currentDragStartCardState } from '../../store/slices/currentDragStartCardSlice'
 import style from '../../assets/scss/board.module.scss'
 
@@ -157,9 +156,9 @@ const Board = () => {
         {listsCardsToRender && 
           listsCardsToRender.map((el, index) => {
             return (
-              <>
+              <div key={el.list.id}>
                 <div className={style.listBackground}>
-                  <div key={index} 
+                  <div  
                     onDragStart={(e) => handleDragStartList(e, {index, el})}
                     onDragEnter={draggingList || (draggingCard && !el.cards.length) ? (e) => {handleDragEnterList(e, {index, el})} : null}
                     onDragOver={draggingList ? (e) => {allowDrop(e)} : null}
@@ -177,7 +176,7 @@ const Board = () => {
                       setDraggingCard={setDraggingCard} />
                   </div>
                 </div>
-              </>
+              </div>
             )
           })
         }

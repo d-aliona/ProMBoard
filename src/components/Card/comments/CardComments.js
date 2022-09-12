@@ -30,8 +30,8 @@ const CardComments = ({card}) => {
         <>
             <div style={{padding: '20px 0 20px 20px'}}>
                 {comments &&
-                    comments.map((comment, index) => {
-                        return <Comment key={index} card={card} comment={comment}/>
+                    comments.map((comment) => {
+                        return <Comment key={comment.id} card={card} comment={comment}/>
                     })}
             </div>
         </>

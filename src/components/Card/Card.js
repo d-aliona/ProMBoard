@@ -40,7 +40,8 @@ const Card = ({card, list}) => {
                                         card.assignedUsers.map((memberID) => {
                                             const currentMember = users.find(user => user.id === memberID)
                                             return (
-                                                <div className={style.assignedMember} 
+                                                <div key={memberID} 
+                                                    className={style.assignedMember} 
                                                     data-descr={currentMember.firstName + ' ' + currentMember.lastName + ' ' + currentMember.email}>
                                                     <Initials user={currentMember} size={'28px'} font={'14px'}/>
                                                 </div>)

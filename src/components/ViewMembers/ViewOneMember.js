@@ -1,12 +1,12 @@
-import React, {useState, useEffect, useRef, useContext} from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, {useState, useEffect} from 'react'
+import { useSelector } from 'react-redux'
 
-import { doc, updateDoc, collection, addDoc } from 'firebase/firestore'
+import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
+import {addNotificationToDataBase} from '../../features/exportFunctions'
 import { currentCardsState } from '../../store/slices/currentCardsSlice'
 import { currentListsState } from '../../store/slices/currentListsSlice'
-import useOutsideClick from '../../hooks/useOutsideClick'
 import Initials from '../../components/Initials'
 import style from '../../assets/scss/board.module.scss'
 import styles from '../../assets/scss/boardsList.module.scss'
@@ -14,14 +14,10 @@ import styless from '../../assets/scss/deleteForm.module.scss'
 
 const ViewOneMember = ({currentBoard, currentMember}) => {
     const user = useSelector((state) => state.user.user)
-    const users = useSelector((state) => state.users.users)
     const cards = useSelector(currentCardsState)
     const lists = useSelector(currentListsState)
-    // const [showMembers, setShowMembers] = useState(false)
     const [clickRemove, setClickRemove] = useState(false)
     const [attachedToCards, setAttachedToCards] = useState([])
-    // const ref = useOutsideClick(() => setShowMembers(false))
-    // const currentOwner = users.find(member => member.id === currentBoard.owner)
     const isPersonalBoard = user.id === currentBoard.owner
 
     useEffect(() => {
@@ -34,7 +30,7 @@ const ViewOneMember = ({currentBoard, currentMember}) => {
             })
         setAttachedToCards(data)
     },[cards])
-    // console.log(currentMember.email, attachedToCards)
+    
     const removeMemberFromBoard = async(e) => {
         e.stopPropagation()
 
@@ -52,23 +48,7 @@ const ViewOneMember = ({currentBoard, currentMember}) => {
             guestBoards: [...changedDataUser],
         })
 
-        const colRef = collection(db, 'users', currentMember.id, 'notifications')
-        addDoc(colRef, {
-            fromUser: user.id,
-            time: new Date().toLocaleString('en-GB'),
-            read: false,
-            text: 'removed you from this board',
-            cardID: '',
-            boardID: currentBoard.id, 
-        })
-        .catch((error) => {
-            console.error(error.message)
-        })
-
-        const dcRef = doc(db, 'users', currentMember.id)
-        await updateDoc(dcRef, {
-            newNotificationExist: true,
-        }) 
+        addNotificationToDataBase(currentMember.id, user.id, 'removed you from this board', '', currentBoard.id)
     }
 
     const confirmRemoveMemberFromBoard = (e) => {
@@ -77,11 +57,12 @@ const ViewOneMember = ({currentBoard, currentMember}) => {
             attachedToCards.map(async(item) => {
                 const curCard = cards.find(ob => ob.id === item[2])
                 const data = [...curCard.assignedUsers]
-                const changedData = data.filter((id) => id !== curCard.id)
+                const changedData = data.filter((id) => id !== currentMember.id)
                 const docRef = doc(db, 'cards', curCard.id)
                 await updateDoc(docRef, {
                     assignedUsers: [...changedData],
                 })
+                addNotificationToDataBase(currentMember.id, user.id, 'removed you from this card', curCard.id, currentBoard.id)
             })
         removeMemberFromBoard(e)
     }
@@ -113,7 +94,9 @@ const ViewOneMember = ({currentBoard, currentMember}) => {
                             attachedToCards.map((item) => {
                                 const curList = lists.find(ob => ob.id === item[0])
                                 return (
-                                    <p><b>{item[1]}</b> {' (' + curList.listTitle + ')'}</p>
+                                    <p key={item[2]}>
+                                        <b>{item[1]}</b> {' (' + curList.listTitle + ')'}
+                                    </p>
                                 )
                             })}
                     </div>

@@ -22,8 +22,8 @@ const List = ({ list, cards, curBoardId, draggingCard, setDraggingCard, listsCar
             refInput.current.placeholder = 'There should be a title'
         } else {
             const docRef = doc(db, 'lists', a)
-            console.log(list.id)
-            console.log(a)
+            // console.log(list.id)
+            // console.log(a)
   
             await updateDoc(docRef, {
                 listTitle: refInput.current.value,
@@ -42,7 +42,7 @@ const List = ({ list, cards, curBoardId, draggingCard, setDraggingCard, listsCar
 
     const handleListTitle = (e) => {
         e.stopPropagation()
-        console.log(list.id)
+        // console.log(list.id)
         setClickTitle(true)
         refInput.current.style.border = '2px solid rgba(23, 43, 77, .7)'
     }

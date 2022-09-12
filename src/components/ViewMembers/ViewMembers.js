@@ -36,10 +36,10 @@ const ViewMembers = ({currentBoard}) => {
                     <hr className={styles.line} />
                     <p className={styles.boardsGroup} style={{marginBottom:'10px'}}>Invited members</p>
                     {currentBoard.invitedMembers.length > 0
-                        ? currentBoard.invitedMembers.map((memberID, id) => {
+                        ? currentBoard.invitedMembers.map((memberID) => {
                             const currentMember = users.find(user => user.id === memberID)
                             return <ViewOneMember 
-                                        key={id}
+                                        key={memberID}
                                         currentBoard={currentBoard}
                                         currentMember={currentMember}/>
                         })

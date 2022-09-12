@@ -4,6 +4,7 @@ import emailjs from '@emailjs/browser'
 import { doc, updateDoc, addDoc, collection } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
+import {addNotificationToDataBase} from '../../features/exportFunctions'
 import Input from '../../components/Input'
 import useOutsideClick from '../../hooks/useOutsideClick'
 import Initials from '../../components/Initials'
@@ -93,6 +94,7 @@ const InviteMembers = ({ currentBoard }) => {
                 await updateDoc(docMemberRef, {
                     guestBoards: [...member.guestBoards, currentBoard.id],
                 })
+                addNotificationToDataBase(member.id, user.id, 'added you to this board', '', currentBoard.id)
             })
         setSelectedToBeInvited([])
     }
@@ -113,6 +115,7 @@ const InviteMembers = ({ currentBoard }) => {
                         updateDoc(docRef, {
                             invitedMembers: [...currentBoard.invitedMembers, userRef.id],
                         })
+                        addNotificationToDataBase(userRef.id, user.id, 'added you to this board', '', currentBoard.id)
                     })
                     .then(() => {
                         setSearchTerm('')
@@ -148,7 +151,7 @@ const InviteMembers = ({ currentBoard }) => {
                         <div className={style.invitationForm}>
                             <div className={style.membersToInvite}>
                                 {selectedToBeInvited.map((member) => (
-                                    <div className={style.memberToInvite}>
+                                    <div key={member.id} className={style.memberToInvite}>
                                         <span>{member.firstName + ' ' + member.lastName}</span>
                                         <span
                                             className={style.closeMemberToInvite}
@@ -178,7 +181,9 @@ const InviteMembers = ({ currentBoard }) => {
                         {showDropList &&
                             ((dropMemberList.length > 0) ?
                                 dropMemberList.map((member) => (
-                                    <div className={style.dropMember} onClick={(e) => selectMember(e, member)}>
+                                    <div key={member.id}
+                                        className={style.dropMember} 
+                                        onClick={(e) => selectMember(e, member)}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                                             <Initials user={member} />
                                             {member.firstName + ' ' + member.lastName}
@@ -222,10 +227,11 @@ const InviteMembers = ({ currentBoard }) => {
                         <span style={{ marginLeft: '20px', color: '#333' }}>(owner)</span>
                     </div>
                     {currentBoard.invitedMembers.length
-                        ? currentBoard.invitedMembers.map((memberID, id) => {
+                        ? currentBoard.invitedMembers.map((memberID) => {
                             const currentMember = users.find(user => user.id === memberID)
                             return (
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '4px' }}>
+                                <div key={memberID} 
+                                    style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '4px' }}>
                                     <Initials user={currentMember} />
                                     {currentMember.firstName + ' ' + currentMember.lastName}
                                     <span style={{ marginLeft: '15px', color: '#666' }}>{currentMember.email}</span>

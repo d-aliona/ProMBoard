@@ -39,7 +39,7 @@ const GetBoardState = ({ children }) => {
             })
             dispatch(setCurrentCards(cardSnap))
         })
-    }, [title, currentBoard])
+    }, [title, currentBoard, cards.assignedUsers])
     
     if (!!lists && !!cards) {
        return children

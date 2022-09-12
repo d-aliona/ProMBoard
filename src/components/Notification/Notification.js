@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useNavigate } from "react-router-dom"
 
-import { collection, orderBy, doc, query, onSnapshot, updateDoc, deleteDoc } from 'firebase/firestore'
+import { doc, updateDoc, deleteDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
 import Initials from '../../components/Initials'
-import { setNotifications, notificationsState } from '../../store/slices/notificationsSlice'
+import { notificationsState } from '../../store/slices/notificationsSlice'
 import { allCardsState } from '../../store/slices/allCardsSlice'
 import { allListsState } from '../../store/slices/allListsSlice'
 import { allBoardsState } from '../../store/slices/allBoardsSlice'
@@ -16,7 +16,6 @@ import styles from '../../assets/scss/topbar.module.scss'
 import styless from '../../assets/scss/boardsList.module.scss'
 
 const Notification = () => {
-    const dispatch = useDispatch()
     const user = useSelector((state) => state.user.user)
     const boards = useSelector(allBoardsState)
     const cards = useSelector(allCardsState)
@@ -24,52 +23,35 @@ const Notification = () => {
     const users = useSelector((state) => state.users.users)
     const [showDropWindow, setShowDropWindow] = useState(false)
     const notifications = useSelector(notificationsState)
+    const [newNotificationExist, setNewNotificationExist] = useState(false)
     let navigate = useNavigate()
     
     useEffect(() => {
-        const notificationsCol = collection(db, 'users', user.id, 'notifications')
-        const qNotifications = query(notificationsCol, orderBy('time', "desc"))
-        
-        onSnapshot(qNotifications, (snapshot) => {
-            const notificationsSnap = snapshot.docs.map((doc) => {
-                return { ...doc.data(), id: doc.id }
-            })
-            dispatch(setNotifications(notificationsSnap))
-        })
-    }, [user, notifications])
-
-    const changeReadStatus = () => {
-        console.log('ok')
-        if (notifications.length > 0) {
+        if (notifications.some(el => el.read === false)) {
+            setNewNotificationExist(true)
+        } else {
+            setNewNotificationExist(false)
+        }
+    },[notifications])
+    
+    useEffect(() => {
+        if (notifications.length > 0 && !showDropWindow) {
             const dataToChange = notifications.filter(ob => ob.read === false)
-            dataToChange.map(async(item) => {
+            
+            dataToChange.forEach(async(item) => {
                 const docRef = doc(db, 'users', user.id, 'notifications', item.id)
                 await updateDoc(docRef, {
                     read: true,
                 })
             })
         }
-    }
+    },[showDropWindow])
 
-    const ref = useOutsideClick(() => {
-        changeReadStatus();
-        setShowDropWindow(false)
-    })
+    const ref = useOutsideClick(() => setShowDropWindow(false))
 
     const toggle = async(e) => {
         setShowDropWindow(prev => !prev)
         e.stopPropagation()
-
-        const docRef = doc(db, 'users', user.id)
-        await updateDoc(docRef, {
-            newNotificationExist: false,
-        })
-    }
-
-    const closeWindow = (e) => {
-        e.stopPropagation() 
-        setShowDropWindow(false)
-        changeReadStatus()
     }
 
     const handleNavigateBoard =(e, currentBoard) => {
@@ -81,17 +63,17 @@ const Notification = () => {
     const deleteAllNotifications = (e) => {
         e.stopPropagation()
         notifications &&
-            notifications.map(async(item) => {
+            notifications.forEach(async(item) => {
                 const docRef = doc(db, 'users', user.id, 'notifications', item.id)
                 await deleteDoc(docRef)
         })
     }
-        
+       
     return (
         <>
             <div className={style.logo} onClick={toggle}>
                 <div className={style.bellicon}>
-                    <div className={`${user.newNotificationExist ? style.newnotification : null}`}></div>
+                    <div className={`${newNotificationExist ? style.newnotification : null}`}></div>
                 </div>
             </div>
             {showDropWindow && (
@@ -104,7 +86,7 @@ const Notification = () => {
                         </span>
                         <span
                             className={styless.closeForm} 
-                            onClick={(e) => closeWindow(e)}> 
+                            onClick={(e) => setShowDropWindow(false)}> 
                             × 
                         </span>
                     </div>
@@ -125,7 +107,7 @@ const Notification = () => {
                             const color = currentBoard.boardColor
                             const isReadColor = item.read ? 'white' : 'rgba(73, 136, 245, 0.3)' 
                             return (
-                                <div style={{backgroundColor:isReadColor}}>
+                                <div key={item.id} style={{backgroundColor:isReadColor}}>
                                     <div className={styles.notificationCard} >
                                         <div 
                                             style={{width:'100%', backgroundColor: color, padding:'10px', lineHeight:'1.5', cursor:'pointer'}}

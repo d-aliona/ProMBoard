@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { collection, orderBy, doc, query, onSnapshot, where } from 'firebase/firestore'
+import { collection, orderBy, query, onSnapshot, where } from 'firebase/firestore'
 import { onIdTokenChanged } from 'firebase/auth'
-import { db, auth, usersCollection } from '../../firebase-client'
+import { db, auth } from '../../firebase-client'
 
 import { setUser } from '../../store/slices/userSlice'
 import { setUsers } from '../../store/slices/usersSlice'
@@ -12,6 +12,7 @@ import { setAllLists } from '../../store/slices/allListsSlice'
 import { setAllCards } from '../../store/slices/allCardsSlice'
 import { setPersonalBoards } from '../../store/slices/personalBoardsSlice'
 import { setNotPersonalBoards } from '../../store/slices/notPersonalBoardsSlice'
+import { setNotifications } from '../../store/slices/notificationsSlice'
 
 const GetState = ({ children }) => {
   const dispatch = useDispatch()
@@ -37,7 +38,7 @@ const GetState = ({ children }) => {
         })
       }
     })
-  }, [])
+  }, [dispatch])
       
   useEffect(() => {
     if (user.id) {
@@ -63,7 +64,7 @@ const GetState = ({ children }) => {
       })
     }
     
-  }, [user])
+  }, [user, dispatch])
 
   useEffect(() => {
     const listsCol = collection(db, 'users')
@@ -74,7 +75,7 @@ const GetState = ({ children }) => {
         })
         dispatch(setUsers(listSnap))
     })
-  }, [user])
+  }, [user, dispatch])
 
   useEffect(() => {
     const listsCol = collection(db, 'lists')
@@ -85,7 +86,7 @@ const GetState = ({ children }) => {
         })
         dispatch(setAllLists(listSnap))
     })
-  }, [user])
+  }, [user, dispatch])
 
   useEffect(() => {
     const listsCol = collection(db, 'cards')
@@ -96,7 +97,19 @@ const GetState = ({ children }) => {
         })
         dispatch(setAllCards(listSnap))
     })
-  }, [user])
+  }, [user, dispatch])
+
+  useEffect(() => {
+    const notificationsCol = collection(db, 'users', user.id, 'notifications')
+    const qNotifications = query(notificationsCol, orderBy('time', "desc"))
+    
+    onSnapshot(qNotifications, (snapshot) => {
+        const notificationsSnap = snapshot.docs.map((doc) => {
+            return { ...doc.data(), id: doc.id }
+        })
+        dispatch(setNotifications(notificationsSnap))
+    })
+  }, [user, dispatch])
 
   // useEffect(() => {
   //   if (user.id) {
