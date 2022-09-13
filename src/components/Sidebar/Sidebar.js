@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
 import { notPersonalBoardsState } from '../../store/slices/notPersonalBoardsSlice'
 
+import BoardItem from '../BoardItem'
 import useBoardColor from '../../hooks/useBoardColor'
 import { TickDown } from '../../assets/svg/svg-icons'
 import MenuContext from '../../context/MenuContext'
@@ -45,7 +46,6 @@ const Sidebar = () => {
     // }
 
     const handleClickBoard = (id) => {
-        // navigateBoard(board.boardTitle)
         navigate('/auth/board/' + id)
     }
 
@@ -66,20 +66,15 @@ const Sidebar = () => {
                         Members <span className={style.plus}>+</span>
                     </div>
                     <div className={style.dropBoards} onClick={() => setShowYourBoards(prev => !prev)}>
-                        Your boards 
+                        Personal boards 
                         <span className={`${tickUpDownPers}`}><TickDown /></span>
                     </div>
                     {!showYourBoards && (
                         <div>
                             {boards 
                                 && boards.map((board) => 
-                                    <div key={board.id} 
-                                        className={style.listItem}
-                                        style={{backgroundColor: `${board.id === title.id ? 'rgba(23, 43, 77, .3)' : ''}`}} 
-                                        onClick={() => handleClickBoard(board.id)}>
-                                        <div className={style.colorBoard} style={{backgroundColor: `${board.boardColor}`}}></div>
-                                        {board.boardTitle}
-                                    </div>)}
+                                <BoardItem key={board.id} board={board}/>
+                            )}
                         </div>
                     )}
                     <div className={style.dropBoards} onClick={() => setShowGuestBoards(prev => !prev)}>

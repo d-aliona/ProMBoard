@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState } from 'react'
 
 import { updateDoc, doc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
@@ -14,7 +14,7 @@ const List = ({ list, cards, curBoardId, draggingCard, setDraggingCard, listsCar
     const [listtitle, setListtitle] = useState(list.listTitle)
     const [clickTitle, setClickTitle] = useState(false)
     const ref = useOutsideClick(() => setShowMenu(false))
-    // console.log(list.id)
+    
     const updateListTitle = async (a) => {
         
         if (refInput.current.value === '') {
@@ -22,9 +22,7 @@ const List = ({ list, cards, curBoardId, draggingCard, setDraggingCard, listsCar
             refInput.current.placeholder = 'There should be a title'
         } else {
             const docRef = doc(db, 'lists', a)
-            // console.log(list.id)
-            // console.log(a)
-  
+              
             await updateDoc(docRef, {
                 listTitle: refInput.current.value,
             })
@@ -42,7 +40,6 @@ const List = ({ list, cards, curBoardId, draggingCard, setDraggingCard, listsCar
 
     const handleListTitle = (e) => {
         e.stopPropagation()
-        // console.log(list.id)
         setClickTitle(true)
         refInput.current.style.border = '2px solid rgba(23, 43, 77, .7)'
     }

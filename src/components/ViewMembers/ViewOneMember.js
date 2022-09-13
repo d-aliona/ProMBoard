@@ -76,7 +76,8 @@ const ViewOneMember = ({currentBoard, currentMember}) => {
                 <span style={{marginLeft:'15px',color:'#666'}}>{currentMember.email}</span>
                 {isPersonalBoard ? 
                     <span
-                        style={{marginLeft:'auto', backgroundColor: 'rgba(73, 136, 245, 0.1)', borderRadius:'3px'}}
+                        style={{marginLeft:'auto', borderRadius:'3px',
+                        background: 'linear-gradient(90deg, rgba(73, 136, 245, 0) 0%, rgba(73, 136, 245, 0.2) 100%)'}}
                         className={styles.closeForm} 
                         onClick={(e) => attachedToCards.length === 0 
                             ? removeMemberFromBoard(e) 
