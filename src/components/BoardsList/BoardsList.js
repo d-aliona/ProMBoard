@@ -4,9 +4,11 @@ import { useNavigate } from 'react-router-dom'
 
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
 import { notPersonalBoardsState } from '../../store/slices/notPersonalBoardsSlice'
-import style from '../../assets/scss/boardsList.module.scss'
 import { TickDown } from '../../assets/svg/svg-icons'
 import useOutsideClick from '../../hooks/useOutsideClick'
+import CloseButton from '../../ui/CloseButton'
+import Line from '../../ui/Line'
+import style from '../../assets/scss/boardsList.module.scss'
 
 const BoardsList = () => {
     const user = useSelector((state) => state.user.user)
@@ -38,13 +40,9 @@ const BoardsList = () => {
                     <div className={style.dropBoardsList} ref={ref}>
                         <div className={style.title}>
                             <span className={style.titleName}>Your boards</span>
-                            <span
-                                className={style.closeForm} 
-                                onClick={() => setShow(false)}> 
-                                × 
-                            </span>
+                            <CloseButton onClick={() => setShow(false)}/>
                         </div>
-                        <hr className={style.line} />
+                        <Line width={'96%'}/>
                         <p className={style.boardsGroup}>Personal boards</p>
                         {boards 
                             && boards.map((board) => 
@@ -54,7 +52,7 @@ const BoardsList = () => {
                                     {board.boardTitle}
                                 </div>
                         )}
-                        <hr className={style.line} />
+                        <Line width={'90%'}/>
                         <p className={style.boardsGroup}>Guest boards</p>
                         {guestBoards 
                                 && guestBoards.map((board) => 

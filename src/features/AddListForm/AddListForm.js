@@ -1,26 +1,22 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { collection, addDoc, orderBy, doc, query, onSnapshot, where } from 'firebase/firestore'
-import { db, usersCollection } from '../../firebase-client'
+
+import { collection, addDoc } from 'firebase/firestore'
+import { db } from '../../firebase-client'
 
 import { currentListsState } from '../../store/slices/currentListsSlice'
+import CloseButton from '../../ui/CloseButton'
 import style from '../../assets/scss/addListForm.module.scss'
 
 const AddListForm = (props) => {
     const title = props.title
     const curBoardId = props.curBoardId
-    
     const lists = useSelector(currentListsState)
-    const user = useSelector((state) => state.user.user)
     const [clickAddList, setClickAddList] = useState(false)
     const [listTitle, setListTitle] = useState('')
     const [showError, setShowError] =useState(false)
     const disabled = listTitle ? '' : style.disabled
-
-    const selectedLists = lists.filter((list) => list.boardID === curBoardId)
-    // console.log('lists',lists)
-    // console.log('selected',selectedLists)
+   
     const addList = (e) => {
       e.preventDefault()
 
@@ -84,7 +80,10 @@ const AddListForm = (props) => {
             <button className={`${style.action} ${disabled}`} type='submit'>
               Add list
             </button>
-            <span className={style.action} onClick={cancel}>×</span>
+            <div style={{marginLeft:'auto', borderRadius:'4px',
+                        backgroundColor: '#ffe'}}>
+              <CloseButton  onClick={cancel}/>
+            </div>
           </div>
         </form>
       }

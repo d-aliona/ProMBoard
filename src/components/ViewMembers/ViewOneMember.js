@@ -7,10 +7,10 @@ import { db } from '../../firebase-client'
 import {addNotificationToDataBase} from '../../features/exportFunctions'
 import { currentCardsState } from '../../store/slices/currentCardsSlice'
 import { currentListsState } from '../../store/slices/currentListsSlice'
-import Initials from '../../components/Initials'
+import Initials from '../../ui/Initials'
+import CloseButton from '../../ui/CloseButton'
 import style from '../../assets/scss/board.module.scss'
-import styles from '../../assets/scss/boardsList.module.scss'
-import styless from '../../assets/scss/deleteForm.module.scss'
+import styles from '../../assets/scss/deleteForm.module.scss'
 
 const ViewOneMember = ({currentBoard, currentMember}) => {
     const user = useSelector((state) => state.user.user)
@@ -74,21 +74,20 @@ const ViewOneMember = ({currentBoard, currentMember}) => {
                 <Initials user={currentMember} />
                 <span>{currentMember.firstName + ' ' + currentMember.lastName}</span>
                 <span style={{marginLeft:'15px',color:'#666'}}>{currentMember.email}</span>
-                {isPersonalBoard ? 
-                    <span
-                        style={{marginLeft:'auto', borderRadius:'3px',
-                        background: 'linear-gradient(90deg, rgba(73, 136, 245, 0) 0%, rgba(73, 136, 245, 0.2) 100%)'}}
-                        className={styles.closeForm} 
-                        onClick={(e) => attachedToCards.length === 0 
-                            ? removeMemberFromBoard(e) 
-                            : setClickRemove(true)}> 
-                        × 
-                    </span> 
-                    : null
+                {isPersonalBoard 
+                    ?   <div 
+                            style={{marginLeft:'auto', borderRadius:'6px',
+                            background: 'linear-gradient(90deg, rgba(73, 136, 245, 0) 0%, rgba(73, 136, 245, 0.2) 100%)'}}>
+                            <CloseButton 
+                                onClick={(e) => attachedToCards.length === 0 
+                                ? removeMemberFromBoard(e) 
+                                : setClickRemove(true)}/>
+                        </div>
+                    :   null
                 }
             </div>
             {clickRemove 
-                ? <div className={styless.deleteCardForm} style={{width:'70%',margin:'auto'}}>
+                ? <div className={styles.deleteCardForm} style={{width:'70%',margin:'auto'}}>
                     <span><b>{currentMember.firstName + ' ' + currentMember.lastName}</b></span> is attached to such cards: 
                     <div>
                         {attachedToCards &&
@@ -101,18 +100,17 @@ const ViewOneMember = ({currentBoard, currentMember}) => {
                                 )
                             })}
                     </div>
-                    <div className={style.line}></div>
-                    <p style={{padding:'0 10px'}}>
+                    <p style={{padding:'16px 10px 0'}}>
                         Remove from this board anyway 
                         and cancel attachment to all of these cards?
                     </p>
                     <div style={{marginTop:'-10px'}}>
-                        <button className={styless.buttonYes} 
+                        <button className={styles.buttonYes} 
                             style={{fontSize:'16px'}}
                             onClick={(e) => confirmRemoveMemberFromBoard(e)}>
                             Yes
                         </button>
-                        <button className={styless.buttonNo}
+                        <button className={styles.buttonNo}
                             style={{fontSize:'16px'}} 
                             onClick={(e) => {setClickRemove(false); e.stopPropagation()}}>
                             No

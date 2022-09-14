@@ -2,19 +2,22 @@ import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import useOutsideClick from '../../hooks/useOutsideClick'
-import style from '../../assets/scss/sidebar.module.scss'
 import ViewMembersPopup from '../ViewMembers/ViewMembersPopup'
+import InviteMembersPopup from '../../features/InviteMembers/InviteMembersPopup'
+import style from '../../assets/scss/sidebar.module.scss'
 
-const BoardItem = ({board}) => {
+const BoardItem = ({board, refSidebar}) => {
     const [showMenu, setShowMenu] = useState(false)
     const [showDropMenu, setShowDropMenu] = useState(false)
     const [showMembers, setShowMembers] = useState(false)
+    const [showInviteMembers, setShowInviteMembers] = useState(false)
     const title = useParams()
     let navigate = useNavigate()
     
     const ref = useOutsideClick(() => {
-        setShowDropMenu(false); 
+        setShowDropMenu(false) 
         setShowMembers(false)
+        setShowInviteMembers(false)
     })
 
     const handleClickBoard = (id) => {
@@ -45,7 +48,7 @@ const BoardItem = ({board}) => {
                 </div>}
             {showDropMenu && 
                 <div className={style.boardDropMenuBackGround} 
-                    style={{backgroundColor: board.boardColor}}
+                    style={{backgroundColor: board.boardColor, left: refSidebar.current.offsetWidth}}
                     ref={ref}>
                     <div className={style.boardDropMenu}>
                         <div className={style.boardDropItem}
@@ -55,9 +58,13 @@ const BoardItem = ({board}) => {
                         {showMembers && (
                             <ViewMembersPopup currentBoard={board} setShowMembers={setShowMembers} />
                         )} 
-                        <div className={style.boardDropItem}>
+                        <div className={style.boardDropItem}
+                            onClick={(e) => {e.stopPropagation(); setShowInviteMembers(prev => !prev)}}>
                             Invite members    
-                        </div>  
+                        </div> 
+                        {showInviteMembers && (
+                            <InviteMembersPopup currentBoard={board} setShowInviteMembers={setShowInviteMembers}/>
+                        )} 
                         <div className={style.boardDropItem}>
                             Change background    
                         </div> 

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
@@ -28,7 +28,8 @@ const Sidebar = () => {
     const {textColor} = useContext(MenuContext)
     const notUserBoards = useSelector(notPersonalBoardsState)
     const guestBoards = notUserBoards && notUserBoards.length > 0 ? notUserBoards.filter((board) => board.invitedMembers.includes(user.id)): []
-
+    const ref = useRef(null);
+    
     useEffect(() => {
         setChangeTick(toggleClick ? style.tickLeft : style.tickRight)
     }, [toggleClick])
@@ -41,10 +42,6 @@ const Sidebar = () => {
         setTickUpDownGuest(showGuestBoards ? style.tickDown : style.tickUp)
     }, [showGuestBoards])   
 
-    // const navigateBoard = (title) => {
-    //     navigate('/auth/board/' + title)
-    // }
-
     const handleClickBoard = (id) => {
         navigate('/auth/board/' + id)
     }
@@ -52,7 +49,7 @@ const Sidebar = () => {
     return (
         <>
             {toggleClick && (
-                <div 
+                <div ref={ref}
                     className={style.wrapper} 
                     style={{backgroundColor: `${title.id ? boardColor : '#f4f5f7' }`,
                     color: `${title.id ? textColor : 'rgb(23, 43, 77)'}`}}>
@@ -73,7 +70,7 @@ const Sidebar = () => {
                         <div>
                             {boards 
                                 && boards.map((board) => 
-                                <BoardItem key={board.id} board={board}/>
+                                <BoardItem key={board.id} board={board} refSidebar={ref}/>
                             )}
                         </div>
                     )}
@@ -86,7 +83,7 @@ const Sidebar = () => {
                             {guestBoards 
                                 && guestBoards.map((board) => 
                                     <div key={board.id} 
-                                        className={style.listItem}
+                                        className={style.boardItem}
                                         style={{backgroundColor: `${board.id === title.id ? 'rgba(23, 43, 77, .3)' : ''}`}} 
                                         onClick={() => handleClickBoard(board.id)}>
                                         <div className={style.colorBoard} style={{backgroundColor: `${board.boardColor}`}}></div>

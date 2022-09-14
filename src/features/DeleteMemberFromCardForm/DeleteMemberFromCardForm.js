@@ -5,7 +5,8 @@ import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
 import {addNotificationToDataBase} from '../exportFunctions'
-import Initials from '../../components/Initials'
+import Initials from '../../ui/Initials'
+import CloseButton from '../../ui/CloseButton'
 import useOutsideClick from '../../hooks/useOutsideClick'
 
 import style from '../../assets/scss/deleteForm.module.scss'
@@ -40,13 +41,9 @@ const DeleteMemberFromCardForm = ({card, memberID, currentMember, setShowDeleteM
                         <p>{currentMember.firstName + ' ' + currentMember.lastName}</p>
                         <p>{currentMember.email}</p>
                     </div>
-                    
-                </div>
-                <div
-                    className={style.closeMemberOnCardForm} 
-                    onClick={(e) => {e.stopPropagation(); setShowDeleteMemberForm(false)}}
-                    > 
-                    × 
+                    <div style={{position:'absolute', right:'0px', top:'0px'}}>
+                        <CloseButton border={'1px solid transparent'} onClick={(e) => {e.stopPropagation(); setShowDeleteMemberForm(false)}}/>
+                    </div>
                 </div>
                 <hr className={style.line} />
                 <div className={style.removeMember} onClick={(e) => removeMember(e)}>

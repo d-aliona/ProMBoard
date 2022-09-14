@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 
-import style from '../../assets/scss/list.module.scss'
 import DeleteListForm from '../DeleteListForm'
+import CloseButton from '../../ui/CloseButton'
+import style from '../../assets/scss/list.module.scss'
 
 const DropListMenu = ({list, curBoardId, setShowMenu, setClickTitle}) => {
     const [messageDeleteList, setMessageDeleteList] = useState(false)
@@ -17,11 +17,7 @@ const DropListMenu = ({list, curBoardId, setShowMenu, setClickTitle}) => {
         <>
             <div className={style.title}>
                 <span className={style.titleName}>List actions</span>
-                <span
-                    className={style.closeForm} 
-                    onClick={() => {setShowMenu(false)}}> 
-                    × 
-                </span>
+                <CloseButton onClick={() => setShowMenu(false)}/>
             </div>
             <hr className={style.line} />
             <div className={style.menuItem}

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { signInWithEmailAndPassword } from "firebase/auth"
 import { auth } from '../../firebase-client'
 
-import Input from '../../components/Input'
+import Input from '../../ui/Input'
 
 import style from '../../assets/scss/signupForm.module.scss'
 import { ShowPassword, HidePassword } from '../../assets/svg/svg-icons'

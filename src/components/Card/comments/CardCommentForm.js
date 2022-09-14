@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { updateDoc, doc, collection, addDoc } from 'firebase/firestore'
 import { db } from '../../../firebase-client'
 
-import Initials from '../../Initials'
+import Initials from '../../../ui/Initials'
 import useOutsideClick from '../../../hooks/useOutsideClick'
 import style from '../../../assets/scss/card.module.scss'
 

@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import SignupGoogleForm from '../../features/SignupGoogleForm'
-import Logo from '../../components/Logo'
+import Logo from '../../ui/Logo'
 import LoginForm from '../../features/LoginForm'
 import style from '../../assets/scss/signup.module.scss'
 

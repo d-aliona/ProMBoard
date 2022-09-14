@@ -1,15 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
-import { doc, addDoc, collection } from 'firebase/firestore'
-import { db, usersCollection } from '../../firebase-client'
+import { addDoc, collection } from 'firebase/firestore'
+import { db } from '../../firebase-client'
 
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
-import Input from '../../components/Input'
-import style from '../../assets/scss/createboardForm.module.scss'
+import Input from '../../ui/Input'
+import Line from '../../ui/Line'
+import CloseButton from '../../ui/CloseButton'
 import { Preview } from '../../assets/svg/svg-icons'
 import useOutsideClick from '../../hooks/useOutsideClick'
+import style from '../../assets/scss/createboardForm.module.scss'
 
 const CreateBoardForm = ({setShowCreateBoardForm}) => {
     let navigate = useNavigate()
@@ -61,17 +63,13 @@ const CreateBoardForm = ({setShowCreateBoardForm}) => {
                 <div className={style.dropCreateBoardForm} ref={ref}>
                     <div className={style.title}>
                         <span className={style.titleName}>Create a board</span>
-                        <span
-                            className={style.closeForm} 
-                            onClick={() => {
-                                setShowCreateBoardForm(false)
-                                setShowError(false)
-                                setTitle('')
-                            }}> 
-                            × 
-                        </span>
+                        <CloseButton onClick={() => {
+                            setShowCreateBoardForm(false);
+                            setShowError(false);
+                            setTitle('')
+                        }} />
                     </div>
-                    <hr className={style.line} />
+                    <Line />
                     <div className={style.previewImage} style={{backgroundColor: `${colorBoard}`}}>
                         <Preview />
                     </div>

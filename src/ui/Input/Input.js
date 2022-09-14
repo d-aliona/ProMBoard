@@ -1,4 +1,4 @@
-import style from '../../assets/scss/input.module.scss'
+import style from '../../assets/scss/ui.module.scss'
 
 const Input = ({ type, placeholder, value, onChange }) => {
   return (

@@ -1,4 +1,4 @@
-import style from '../../assets/scss/topbar.module.scss'
+import style from '../../assets/scss/ui.module.scss'
 
 const Initials = ({user, size, font}) => {
     return (

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
-import Initials from '../../components/Initials'
+import Initials from '../../ui/Initials'
 import style from '../../assets/scss/card.module.scss'
 
 const Card = ({card, list}) => {

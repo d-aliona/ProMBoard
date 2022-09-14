@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import Logo from '../../components/Logo'
+import Logo from '../../ui/Logo'
 import SignupForm from '../../features/SignupForm'
 import SignupGoogleForm from '../../features/SignupGoogleForm'
 

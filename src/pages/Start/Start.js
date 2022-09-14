@@ -6,7 +6,7 @@ import { onSnapshot } from 'firebase/firestore'
 import { usersCollection } from '../../firebase-client'
 
 import { setUsers } from '../../store/slices/usersSlice'
-import Logo from '../../components/Logo'
+import Logo from '../../ui/Logo'
 import style from '../../assets/scss/start.module.scss'
 
 function Start() {

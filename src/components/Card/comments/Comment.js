@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { db } from '../../../firebase-client'
 import { collection, orderBy, doc, deleteDoc, updateDoc, query, onSnapshot } from 'firebase/firestore'
 
-import Initials from '../../Initials'
+import Initials from '../../../ui/Initials'
 import { setCurrentComments, currentCommentsState } from '../../../store/slices/currentCommentsSlice'
 import useOutsideClick from '../../../hooks/useOutsideClick'
 import style from '../../../assets/scss/card.module.scss'

@@ -6,7 +6,7 @@ import { db } from '../../firebase-client'
 import MemberOnCard from './MemberOnCard'
 import DeleteMemberFromCardForm from '../../features/DeleteMemberFromCardForm'
 import AssignMemberForm from '../../features/AssignMemberForm'
-import Initials from '../../components/Initials'
+import Initials from '../../ui/Initials'
 import useOutsideClick from '../../hooks/useOutsideClick'
 import style from '../../assets/scss/card.module.scss'
 

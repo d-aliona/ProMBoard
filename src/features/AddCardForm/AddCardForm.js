@@ -1,49 +1,47 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState} from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { collection, addDoc, orderBy, doc, query, onSnapshot, where } from 'firebase/firestore'
-import { db, usersCollection } from '../../firebase-client'
+
+import { collection, addDoc } from 'firebase/firestore'
+import { db } from '../../firebase-client'
 
 import { currentCardsState } from '../../store/slices/currentCardsSlice'
+import CloseButton from '../../ui/CloseButton'
 import style from '../../assets/scss/addCardForm.module.scss'
 
 const AddCardForm = ({list, curBoardId}) => {
-    // const title = props.title
-    // const curBoardId = props.curBoardId
-    // const ref = useRef()
-    const cards = useSelector(currentCardsState)
-    const user = useSelector((state) => state.user.user)
-    const [clickAddCard, setClickAddCard] = useState(false)
-    const [cardTitle, setCardTitle] = useState('')
-    const disabled = cardTitle ? '' : style.disabled
+  const cards = useSelector(currentCardsState)
+  const user = useSelector((state) => state.user.user)
+  const [clickAddCard, setClickAddCard] = useState(false)
+  const [cardTitle, setCardTitle] = useState('')
+  const disabled = cardTitle ? '' : style.disabled
+  
+  const selectedCards = cards.filter((card) => card.boardID === curBoardId && card.listID === list.id)
+
+  const addCard = async (e) => {
+    e.preventDefault()
+    setCardTitle('')
+    setClickAddCard(false)
     
-    const selectedCards = cards.filter((card) => card.boardID === curBoardId && card.listID === list.id)
+    const cardsCol = collection(db, 'cards')
 
-    const addCard = async (e) => {
-      e.preventDefault()
-      setCardTitle('')
-      setClickAddCard(false)
-      
-      const cardsCol = collection(db, 'cards')
+    await addDoc(cardsCol, {
+      cardTitle: cardTitle,
+      description: '',
+      assignedUsers: [],
+      listID: list.id,
+      boardID: curBoardId,
+      commentsExist: false,
+      commentsNumber: 0,
+      position: selectedCards.length ? selectedCards.length + 1 : 1 
+    }).catch((err) => {
+      console.error(err)
+    })
+  }
 
-      await addDoc(cardsCol, {
-        cardTitle: cardTitle,
-        description: '',
-        assignedUsers: [],
-        listID: list.id,
-        boardID: curBoardId,
-        commentsExist: false,
-        commentsNumber: 0,
-        position: selectedCards.length ? selectedCards.length + 1 : 1 
-      }).catch((err) => {
-        console.error(err)
-      })
-    }
-
-    const cancel = () => {
-      setClickAddCard(false)
-      setCardTitle('')
-    }
+  const cancel = () => {
+    setClickAddCard(false)
+    setCardTitle('')
+  }
 
   return (
     <>
@@ -64,8 +62,10 @@ const AddCardForm = ({list, curBoardId}) => {
             <button className={`${style.action} ${disabled}`} type='submit'>
               Add card
             </button>
-            {/* <span className={style.action} onClick={addCard}>+</span> */}
-            <span className={style.action} onClick={cancel}>×</span>
+            <div style={{marginLeft:'auto', borderRadius:'6px',
+                        backgroundColor: '#ffe'}}>
+              <CloseButton  onClick={cancel}/>
+            </div>
           </div>
         </form>
       }

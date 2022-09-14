@@ -5,9 +5,11 @@ import { db } from '../../firebase-client'
 
 import { allBoardsState } from '../../store/slices/allBoardsSlice'
 import {addNotificationToDataBase} from '../exportFunctions'
-import Input from '../../components/Input'
+import Input from '../../ui/Input'
 import useOutsideClick from '../../hooks/useOutsideClick'
-import Initials from '../../components/Initials'
+import Initials from '../../ui/Initials'
+import CloseButton from '../../ui/CloseButton'
+import Line from '../../ui/Line'
 import style from '../../assets/scss/inviteMembers.module.scss'
 import styles from '../../assets/scss/boardsList.module.scss'
 
@@ -65,17 +67,13 @@ const AssignMemberForm = ({card, setClickAddMembers}) => {
     <>
         <div style={{position:'relative', display:'flex', justifyContent:'center'}}>
             <div className={style.assignMembersWindow} ref={ref}>
-                <div className={styles.title}>
+                <div className={styles.title} style={{padding:'0'}}>
                     <span className={styles.titleName} >
                         Assign members 
                     </span>
-                    <span
-                        className={styles.closeForm} 
-                        onClick={(e) => {e.stopPropagation(); setClickAddMembers(false)}}> 
-                        × 
-                    </span>
+                    <CloseButton onClick={(e) => {e.stopPropagation(); setClickAddMembers(false)}}/>
                 </div>
-                <hr className={styles.line} />
+                <Line />
                 <Input
                     type={'text'}
                     placeholder={'Search member'}

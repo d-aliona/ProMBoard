@@ -6,7 +6,7 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"
 import { collection, addDoc, doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
-import Input from '../../components/Input'
+import Input from '../../ui/Input'
 import { usersState } from '../../store/slices/usersSlice'
 import style from '../../assets/scss/signupForm.module.scss'
 import { ShowPassword, HidePassword } from '../../assets/svg/svg-icons'

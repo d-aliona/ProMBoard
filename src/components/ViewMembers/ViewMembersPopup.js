@@ -1,19 +1,15 @@
-import React, {useState, useEffect, useRef, useContext} from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-
-import { doc, updateDoc, collection, addDoc } from 'firebase/firestore'
-import { db } from '../../firebase-client'
+import React from 'react'
+import { useSelector } from 'react-redux'
 
 import ViewOneMember from './ViewOneMember'
 import useOutsideClick from '../../hooks/useOutsideClick'
-import Initials from '../../components/Initials'
-import style from '../../assets/scss/board.module.scss'
+import Initials from '../../ui/Initials'
+import Line from '../../ui/Line'
+import CloseButton from '../../ui/CloseButton'
 import styles from '../../assets/scss/boardsList.module.scss'
-import styless from '../../assets/scss/deleteForm.module.scss'
 
 const ViewMembersPopup = ({currentBoard, setShowMembers}) => {
     const users = useSelector((state) => state.users.users)
-    // const [showMembers, setShowMembers] = useState(false)
     const ref = useOutsideClick(() => setShowMembers(false))
     const currentOwner = users.find(member => member.id === currentBoard.owner)
     
@@ -24,20 +20,16 @@ const ViewMembersPopup = ({currentBoard, setShowMembers}) => {
                     <div className={styles.titleName} >
                         Members of the board <b>{currentBoard.boardTitle}</b>
                     </div>
-                    <span
-                        className={styles.closeForm}
-                        onClick={() => setShowMembers(false)}>
-                        ×
-                    </span>
+                    <CloseButton onClick={() => setShowMembers(false)}/>
                 </div>
-                <hr className={styles.line} />
+                <Line width={'99%'}/>
                 <p className={styles.boardsGroup} style={{marginBottom:'10px'}}>Owner</p>
-                    <div style={{display:'flex', alignItems:'center', gap:'10px'}}>
+                    <div style={{display:'flex', alignItems:'center', gap:'10px', padding:'0 10px'}}>
                         <Initials user={currentOwner} />
                         <span>{currentOwner.firstName + ' ' + currentOwner.lastName}</span>
                         <span style={{marginLeft:'15px',color:'#666'}}>{currentOwner.email}</span>
                     </div>
-                <hr className={styles.line} />
+                    <Line width={'96%'}/>
                 <p className={styles.boardsGroup} style={{marginBottom:'10px'}}>Invited members</p>
                 {currentBoard.invitedMembers.length > 0
                     ? currentBoard.invitedMembers.map((memberID) => {

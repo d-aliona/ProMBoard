@@ -5,13 +5,14 @@ import { useNavigate } from "react-router-dom"
 import { doc, updateDoc, deleteDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
-import Initials from '../../components/Initials'
+import Initials from '../../ui/Initials'
+import CloseButton from '../../ui/CloseButton'
+import Line from '../../ui/Line'
 import { notificationsState } from '../../store/slices/notificationsSlice'
 import { allCardsState } from '../../store/slices/allCardsSlice'
 import { allListsState } from '../../store/slices/allListsSlice'
 import { allBoardsState } from '../../store/slices/allBoardsSlice'
 import useOutsideClick from '../../hooks/useOutsideClick'
-import style from '../../assets/scss/logo.module.scss'
 import styles from '../../assets/scss/topbar.module.scss'
 import styless from '../../assets/scss/boardsList.module.scss'
 
@@ -71,30 +72,27 @@ const Notification = () => {
        
     return (
         <>
-            <div className={style.logo} onClick={toggle}>
-                <div className={style.bellicon}>
-                    <div className={`${newNotificationExist ? style.newnotification : null}`}></div>
+            <div onClick={toggle} 
+                style={{display:'flex', alignItems:'center', marginLeft:'20px'}}>
+                <div className={styles.bellicon}>
+                    <div className={`${newNotificationExist ? styles.newnotification : null}`}></div>
                 </div>
             </div>
             {showDropWindow && (
                 <div className={styles.dropListAuth} 
-                    style={{padding:'10px 0', maxHeight:'90vh', overflowY:'auto', minWidth:'340px'}} 
+                    style={{padding:'10px 0', maxHeight:'90vh', overflowY:'auto', minWidth:'340px',backgroundColor:'#ffe'}} 
                     ref={ref}>
                     <div className={styless.title}>
                         <span className={styless.titleName} >
                             Notifications 
                         </span>
-                        <span
-                            className={styless.closeForm} 
-                            onClick={(e) => setShowDropWindow(false)}> 
-                            × 
-                        </span>
+                        <CloseButton onClick={() => setShowDropWindow(false)}/>
                     </div>
-                    <hr className={styless.line} />
+                    <Line width={'96%'}/>
                     {notifications.length > 0 
                         ? <div
                             onClick={(e) => deleteAllNotifications(e)} 
-                            style={{cursor:'pointer', textDecoration:'underline', paddingLeft:'10px'}}>
+                            style={{cursor:'pointer', textDecoration:'underline', padding:'0 0 4px 10px'}}>
                             Delete all
                           </div> 
                         : <div style={{paddingLeft:'10px'}}>There are no notifications for you</div>}
@@ -105,7 +103,7 @@ const Notification = () => {
                             const currentList = currentCard ? lists.find(ob => ob.id === currentCard.listID) : null
                             const fromUser = users.find(ob => ob.id === item.fromUser)
                             const color = currentBoard.boardColor
-                            const isReadColor = item.read ? 'white' : 'rgba(73, 136, 245, 0.3)' 
+                            const isReadColor = item.read ? '#ffe' : 'rgba(73, 136, 245, 0.3)' 
                             return (
                                 <div key={item.id} style={{backgroundColor:isReadColor}}>
                                     <div className={styles.notificationCard} >

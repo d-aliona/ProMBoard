@@ -53,11 +53,6 @@
     margin: 10px 0;
 }
 
-.closeForm {
-    cursor: pointer;
-    font-size: 26px;
-}
-
 .title {
     display: flex;
     justify-content: end;
@@ -74,7 +69,7 @@
     position: absolute;
     display: flex;
     flex-direction: column;
-    top: 10px;
+    top: 0;
     left: 255px;
     padding: 10px 0;
     z-index: 10;
