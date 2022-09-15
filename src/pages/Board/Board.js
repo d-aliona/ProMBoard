@@ -12,9 +12,11 @@ import AddListForm from '../../features/AddListForm'
 import { allBoardsState } from '../../store/slices/allBoardsSlice'
 import useBoardColor from '../../hooks/useBoardColor'
 import MenuContext from '../../context/MenuContext'
+import useOutsideClick from '../../hooks/useOutsideClick'
 import { currentListsState } from '../../store/slices/currentListsSlice'
 import { currentCardsState } from '../../store/slices/currentCardsSlice'
 import { setCurrentDragStartCard, currentDragStartCardState } from '../../store/slices/currentDragStartCardSlice'
+import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
 import style from '../../assets/scss/board.module.scss'
 
 const Board = () => {
@@ -22,6 +24,7 @@ const Board = () => {
   const title = useParams()
   const user = useSelector((state) => state.user.user)
   const allBoards = useSelector(allBoardsState)
+  const persBoards = useSelector(personalBoardsState)
   const lists = useSelector(currentListsState)
   const cards = useSelector(currentCardsState)
   const currentDragStartCard = useSelector(currentDragStartCardState)
@@ -30,6 +33,9 @@ const Board = () => {
   const {textColor, setTextColor} = useContext(MenuContext)
   const [draggingList, setDraggingList] = useState(false)
   const [draggingCard, setDraggingCard] = useState(false)
+  const [boardtitle, setBoardtitle] = useState(currentBoard.boardTitle)
+  const [clickBoardTitle, setClickBoardTitle] = useState(false)
+  const [needToRename, setNeedToRename] = useState(false)
   const dragItemList = useRef()
   const dragItemListNode = useRef()
   const isPersonalBoard = user.id === currentBoard.owner
@@ -52,6 +58,10 @@ const Board = () => {
 
   const [listsCardsToRender, setListsCardsToRender] = useState(allListsCards)  
   
+  useEffect(() => {
+    setBoardtitle(currentBoard.boardTitle)
+  },[title])
+
   useEffect(() => {
     setListsCardsToRender(allListsCards);
   }, [lists, cards])
@@ -134,13 +144,69 @@ const Board = () => {
     setTextColor('rgb(23, 43, 77)')
   }
 
+  useEffect(() => {
+    if (needToRename) {
+      updateBoardTitle(currentBoard.id)
+    }
+  },[needToRename])
+
+  const refInput = useOutsideClick(() => setNeedToRename(true))
+
+  const handleBoardTitle = (e) => {
+    e.stopPropagation()
+    setClickBoardTitle(true)
+    refInput.current.style.border = '2px solid rgba(23, 43, 77, .7)'
+  }
+  
+  const updateBoardTitle = async (boardID) => {
+    refInput.current.placeholder = ''
+    if (refInput.current.value === '') {
+        refInput.current.style.border = '2px solid red'
+        refInput.current.placeholder = 'There should be a title'
+        setNeedToRename(false)
+    } else if (persBoards.some(el => el.boardTitle === refInput.current.value) 
+      && currentBoard.boardTitle != refInput.current.value) {
+      refInput.current.style.border = '2px solid red'
+      refInput.current.value = ''
+      setBoardtitle('')
+      refInput.current.placeholder = 'The board with such a title already exists'
+      setNeedToRename(false)  
+    } else {
+        const docRef = doc(db, 'boards', boardID)
+        await updateDoc(docRef, {
+            boardTitle: refInput.current.value,
+        })
+
+        setClickBoardTitle(false)
+        setNeedToRename(false)
+        refInput.current = null
+    }
+  }
+
+  const handleEnterKey = (e) => {
+    if (e.code === 'Enter') {
+      e.preventDefault()
+      setNeedToRename(true)
+    }
+  }
+
   return (
     <div 
       style={{backgroundColor: `${boardColor}cc`, 
       color: `${title.id ? textColor : 'rgb(23, 43, 77)'}`}}>
       <div className={style.head}>
-        <div className={style.title}>
-          {currentBoard.boardTitle}
+        <div className={style.title} onClick={handleBoardTitle}>
+          {clickBoardTitle 
+            ? <input 
+                ref={refInput}
+                type='text'
+                className={style.inputTitle}
+                value={boardtitle}
+                autoFocus
+                onChange={(e) => setBoardtitle(e.target.value)}
+                onKeyUp={(e) => handleEnterKey(e)}
+              />
+            : <div style={{height: '32px', lineHeight: '200%', wordBreak: 'break-all'}}> {currentBoard.boardTitle}</div>}
         </div> 
         <div style={{display:'flex', gap:'20px', marginRight:'auto'}}>
           <ViewMembers currentBoard={currentBoard} />

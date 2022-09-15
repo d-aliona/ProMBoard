@@ -131,7 +131,7 @@ const InviteMembersPopup = ({ currentBoard, setShowInviteMembers }) => {
     return (
         <>
             <div className={style.inviteMembersWindow} ref={ref}>
-                <div className={styles.title}>
+                <div className={styles.title} style={{marginBottom:'5px'}}>
                     <span className={styles.titleName}>
                         Invite new members
                     </span>
@@ -143,11 +143,10 @@ const InviteMembersPopup = ({ currentBoard, setShowInviteMembers }) => {
                             {selectedToBeInvited.map((member) => (
                                 <div key={member.id} className={style.memberToInvite}>
                                     <span>{member.firstName + ' ' + member.lastName}</span>
-                                    <span
-                                        className={style.closeMemberToInvite}
-                                        onClick={(e) => cancelToInvite(e, member)}>
-                                        ×
-                                    </span>
+                                    <CloseButton 
+                                        width={'20px'}
+                                        height={'20px'}
+                                        onClick={(e) => cancelToInvite(e, member)}/>
                                 </div>
                             ))}
                         </div>

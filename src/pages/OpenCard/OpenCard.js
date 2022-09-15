@@ -1,7 +1,5 @@
 // import React, {useRef} from 'react'
 
-import CreateBoardForm from '../../features/CreateBoardForm'
-import style from '../../assets/scss/card.module.scss'
 import Board from '../Board'
 import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -20,10 +18,8 @@ import CardDescription from '../../components/Card/CardDescription'
 import CardCommentForm from '../../components/Card/comments/CardCommentForm'
 import CardComments from '../../components/Card/comments/CardComments'
 import CardSidebar from '../../components/Card/CardSidebar'
-import { setCurrentCards, currentCardsState } from '../../store/slices/currentCardsSlice'
-
-
-// import style from '../../assets/scss/card.module.scss'
+import { currentCardsState } from '../../store/slices/currentCardsSlice'
+import style from '../../assets/scss/card.module.scss'
 
 const OpenCard = () => {
   // const dispatch = useDispatch()

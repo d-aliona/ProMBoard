@@ -15,7 +15,7 @@ const Layout = () => {
         <Topbar />
         <div style={{display: 'flex', width: '100vw'}}>
           <Sidebar />
-          <div style={{width: '100%', overflow: 'hidden'}}> 
+          <div style={{width: '100%', overflow:'hidden'}}> 
             <Outlet />
           </div>
         </div>

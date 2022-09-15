@@ -67,11 +67,13 @@ const Sidebar = () => {
                         <span className={`${tickUpDownPers}`}><TickDown /></span>
                     </div>
                     {!showYourBoards && (
-                        <div>
+                        <div style={{height:'40vh', overflow:'auto', transform: 'scaleX(-1)'}}>
+                            <div style={{transform: 'scaleX(-1)'}}>
                             {boards 
                                 && boards.map((board) => 
                                 <BoardItem key={board.id} board={board} refSidebar={ref}/>
                             )}
+                            </div>
                         </div>
                     )}
                     <div className={style.dropBoards} onClick={() => setShowGuestBoards(prev => !prev)}>

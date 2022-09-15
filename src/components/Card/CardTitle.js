@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { updateDoc, doc } from 'firebase/firestore'
@@ -34,6 +34,13 @@ const CardTitle = ({card, list, clickTitle, setClickTitle}) => {
         setClickTitle(true)
         refInput.current.style.border = '2px solid rgba(23, 43, 77, .7)'
     }
+
+    const handleEnterKey = (e) => {
+        if (e.code === 'Enter') {
+            e.preventDefault()
+            updateCardTitle()
+        }
+    }
     
     return (
         <>
@@ -50,6 +57,7 @@ const CardTitle = ({card, list, clickTitle, setClickTitle}) => {
                                     value={cardtitle}
                                     autoFocus
                                     onChange={(e) => setCardtitle(e.target.value)}
+                                    onKeyUp={(e) => handleEnterKey(e)}
                                     />
                                 : <div className={style.openCardTitle} style={{paddingLeft:'3px'}}>{card.cardTitle}</div>}
                         </div>
@@ -57,14 +65,6 @@ const CardTitle = ({card, list, clickTitle, setClickTitle}) => {
                     </div>
                 </div>
                 <CloseButton height={'26px'} onClick={() => navigate(-1)} />
-                {/* <div>
-                    <CloseButton onClick={(e) => {e.stopPropagation(); setClickAddMembers(false)}}/>
-                </div> */}
-                {/* <div
-                    className={style.closeModal} 
-                    onClick={() => navigate(-1)}> 
-                    × 
-                </div> */}
             </div>
         </>
     )
