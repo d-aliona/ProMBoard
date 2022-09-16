@@ -127,7 +127,6 @@
 
 .boardDropMenuBackGround {
     position: fixed;
-    margin-top: 131px;
     z-index: 100;
     border-radius: 0 3px 3px 0;
 }
@@ -152,13 +151,18 @@
     border-bottom: none;
 } 
 
-.hint {
-    position: fixed;
-    min-width: 180px;
-    border: 1px white solid;
-    border-radius: 3px;
-    background-color: #ffe;
-    padding: 0 5px;
-    font-size: 16px;
-    z-index: 1000;
+.scrollbar {
+    max-height:35vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.scrollbar::-webkit-scrollbar {
+    width: 10px;
+}
+.scrollbar::-webkit-scrollbar-thumb {
+background: rgba(23, 43, 77, .1);
+border-radius: 10px;
+}
+.scrollbar::-webkit-scrollbar-thumb:hover {
+background: rgba(23, 43, 77, .3);
 }

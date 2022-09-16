@@ -47,10 +47,10 @@ const CardTitle = ({card, list, clickTitle, setClickTitle}) => {
             <div className={style.openCardTitleWrapper}>
                 <div style={{display: 'flex', gap: '10px'}}>
                     <div className={style.titleicon}></div>
-                    <div>
+                    <div style={{width:'494px', wordBreak:'break-all'}}>
                         <div  onClick={handleCardTitle}>
                             {clickTitle ? 
-                                <input 
+                                <textarea 
                                     ref={refInput}
                                     type='text'
                                     className={style.inputCardTitle}
@@ -58,8 +58,8 @@ const CardTitle = ({card, list, clickTitle, setClickTitle}) => {
                                     autoFocus
                                     onChange={(e) => setCardtitle(e.target.value)}
                                     onKeyUp={(e) => handleEnterKey(e)}
-                                    />
-                                : <div className={style.openCardTitle} style={{paddingLeft:'3px'}}>{card.cardTitle}</div>}
+                                ></textarea>
+                                : <div className={style.openCardTitle}>{card.cardTitle}</div>}
                         </div>
                         <div style={{color: '#999'}}>in list {list.listTitle}</div>
                     </div>

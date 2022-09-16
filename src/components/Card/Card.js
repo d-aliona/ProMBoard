@@ -19,7 +19,9 @@ const Card = ({card, list}) => {
         <>
             <div className={style.cardWrapper} >
                 <div className={style.cardTitle} onClick={handleClickToOpenCard}>
-                    {card?.cardTitle}
+                    <div style={{overflowWrap:'break-word', whiteSpace: 'pre-wrap', lineHeight: '120%'}}>
+                        {card?.cardTitle}
+                    </div>
                     <div style={{display:'flex', flexWrap:'wrap', gap:'10px'}}>
                         {card?.description ? 
                             <abbr title="This card has a description">

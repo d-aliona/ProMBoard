@@ -8,6 +8,7 @@ import { db } from '../../firebase-client'
 import Initials from '../../ui/Initials'
 import CloseButton from '../../ui/CloseButton'
 import Line from '../../ui/Line'
+import ShortenTitle from '../../ui/ShortenTitle'
 import { notificationsState } from '../../store/slices/notificationsSlice'
 import { allCardsState } from '../../store/slices/allCardsSlice'
 import { allListsState } from '../../store/slices/allListsSlice'
@@ -110,10 +111,19 @@ const Notification = () => {
                                         <div 
                                             style={{width:'100%', backgroundColor: color, padding:'10px', lineHeight:'1.5', cursor:'pointer'}}
                                             onClick={(e) => handleNavigateBoard(e, currentBoard)}>
-                                            <b>{currentBoard.boardTitle} </b> 
-                                            {currentList ? ' : ' + currentList.listTitle : ''}
+                                            <div style={{display:'flex', gap:'10px'}}>
+                                                <b><ShortenTitle title={currentBoard.boardTitle} number={15}/></b> 
+                                                {currentList 
+                                                    ? <>
+                                                        :  
+                                                        <ShortenTitle title={currentList.listTitle} number={15}/>
+                                                    </> 
+                                                    : ''}
+                                            </div>
                                             <div style={{backgroundColor:'white', width:'100%', borderRadius:'3px', padding:'6px'}}>
-                                                {currentCard?.cardTitle}
+                                                {currentCard 
+                                                        ? <ShortenTitle title={currentCard.cardTitle} number={30}/>
+                                                        : ''}
                                             </div>
                                         </div>
                                         <div style={{display:'flex', alignItems:'center', gap:'10px', padding:'10px'}}>

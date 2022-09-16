@@ -77,3 +77,19 @@
     margin: 8px 0;
     padding: 0;
 }
+
+.hint {
+    position: fixed;
+    min-width: 190px;
+    max-width: 300px;
+    line-height: 150%;
+    left: 48px;
+    border: 1px white solid;
+    border-radius: 3px;
+    background-color: #ffe;
+    padding: 0 5px;
+    font-size: 16px;
+    z-index: 1000;
+    word-break: break-all;
+    box-shadow: 0 8px 16px -4px rgba(9, 30, 66, .25), 0 0 0 1px rgba(9, 30, 66,  .1);
+}

@@ -9,6 +9,7 @@ import { currentCardsState } from '../../store/slices/currentCardsSlice'
 import { currentListsState } from '../../store/slices/currentListsSlice'
 import Initials from '../../ui/Initials'
 import CloseButton from '../../ui/CloseButton'
+import ShortenTitle from '../../ui/ShortenTitle'
 import style from '../../assets/scss/board.module.scss'
 import styles from '../../assets/scss/deleteForm.module.scss'
 
@@ -94,8 +95,9 @@ const ViewOneMember = ({currentBoard, currentMember}) => {
                             attachedToCards.map((item) => {
                                 const curList = lists.find(ob => ob.id === item[0])
                                 return (
-                                    <p key={item[2]}>
-                                        <b>{item[1]}</b> {' (' + curList.listTitle + ')'}
+                                    <p key={item[2]} style={{display: 'flex', justifyContent:'center', gap:'10px'}}>
+                                        <b><ShortenTitle title={item[1]} number={15}/></b> 
+                                        (<ShortenTitle title={curList.listTitle} number={15}/>) 
                                     </p>
                                 )
                             })}

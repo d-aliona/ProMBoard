@@ -23,6 +23,17 @@
     box-shadow: 0 8px 16px -4px rgba(9, 30, 66, .25), 0 0 0 1px rgba(9, 30, 66,  .1);
     font-size: 16px;
 }
+.dropBoardsList::-webkit-scrollbar {
+    width: 10px;
+}
+.dropBoardsList::-webkit-scrollbar-thumb {
+background: rgba(23, 43, 77, .1);
+border-radius: 10px;
+}
+.dropBoardsList::-webkit-scrollbar-thumb:hover {
+background: rgba(23, 43, 77, .3);
+}
+
 
 .title {
     display: flex;
@@ -43,7 +54,9 @@
 }
 
 .listItem {
-    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    padding: 4px 16px;
     font-size: 16px;
     cursor: pointer;
 }
@@ -59,4 +72,12 @@
     box-shadow: 0 0 0 100vh rgba(9, 30, 66,  .4);
     width: 500px;
     cursor: auto;
+}
+
+.colorBoard {
+    width: 25px;
+    min-width: 25px;
+    height: 20px;
+    border-radius: 3px;
+    margin: 5px;
 }

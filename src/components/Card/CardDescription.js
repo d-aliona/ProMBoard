@@ -42,42 +42,40 @@ const CardDescription = ({card}) => {
                     <div style={{fontSize: '18px'}}>Description</div>
                 </div>
                 <div className={style.descriptionText} onClick={handleInputDescription}>
-                    {clickDescription ? 
-                        <>
-                            <textarea 
-                                ref={refInput}
-                                className={style.inputDescription}
-                                value={description}
-                                autoFocus
-                                onChange={(e) => setDescription(e.target.value)}
-                                >
-                            </textarea>
-                            <div>
-                                <button className={style.buttonTrue} onClick={updateCardDescription}>
-                                    Save
-                                </button>
-                                <button className={style.buttonCancel} onClick={cancel}>
-                                    Cancel
-                                </button>
-                            </div>
-                        </>
-                        :   
-                        <div style={{display:'flex', flexDirection:'column'}}>
-                            <pre>
-                                <div style={{minHeight: '50px'}}>
-                                    {card.description === '' ? 'Add a more detailed description...' : card.description}
+                    {clickDescription 
+                        ?   <>
+                                <textarea 
+                                    ref={refInput}
+                                    className={style.inputDescription}
+                                    value={description}
+                                    autoFocus
+                                    onChange={(e) => setDescription(e.target.value)}
+                                    >
+                                </textarea>
+                                <div>
+                                    <button className={style.buttonTrue} onClick={updateCardDescription}>
+                                        Save
+                                    </button>
+                                    <button className={style.buttonCancel} onClick={cancel}>
+                                        Cancel
+                                    </button>
                                 </div>
-                            </pre> 
-                            {!clickDescription && card.description && 
-                                <button 
-                                    style={{alignSelf:'flex-end'}}
-                                    className={style.buttonTrue} 
-                                    onClick={(e) => {e.stopPropagation(); setClickDescription(true)}}>
-                                    Edit
-                                </button>}
-                        </div>
-                        
-                        }
+                            </>
+                        :   <div style={{display:'flex', flexDirection:'column'}}>
+                                <pre>
+                                    <div style={{minHeight: '50px', overflowWrap:'break-word', whiteSpace: 'pre-wrap'}}>
+                                        {card.description === '' ? 'Add a more detailed description...' : card.description}
+                                    </div>
+                                </pre> 
+                                {!clickDescription && card.description && 
+                                    <button 
+                                        style={{alignSelf:'flex-end'}}
+                                        className={style.buttonTrue} 
+                                        onClick={(e) => {e.stopPropagation(); setClickDescription(true)}}>
+                                        Edit
+                                    </button>}
+                            </div>
+                    }
                 </div>
             </div>
         </>

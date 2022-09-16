@@ -8,6 +8,7 @@ import { TickDown } from '../../assets/svg/svg-icons'
 import useOutsideClick from '../../hooks/useOutsideClick'
 import CloseButton from '../../ui/CloseButton'
 import Line from '../../ui/Line'
+import ShortenTitle from '../../ui/ShortenTitle'
 import style from '../../assets/scss/boardsList.module.scss'
 
 const BoardsList = () => {
@@ -49,7 +50,8 @@ const BoardsList = () => {
                                 <div key={board.id} 
                                     className={style.listItem} 
                                     onClick={() => navigateBoard(board.id)}>
-                                    {board.boardTitle}
+                                    <div className={style.colorBoard} style={{backgroundColor: `${board.boardColor}`}}></div>    
+                                    <ShortenTitle title={board.boardTitle} number={40}/>
                                 </div>
                         )}
                         <Line width={'90%'}/>
@@ -59,7 +61,8 @@ const BoardsList = () => {
                                     <div key={board.id} 
                                         className={style.listItem} 
                                         onClick={() => navigateBoard(board.id)}>
-                                        {board.boardTitle}
+                                        <div className={style.colorBoard} style={{backgroundColor: `${board.boardColor}`}}></div>    
+                                        <ShortenTitle title={board.boardTitle} number={40}/>
                                     </div>
                             )}
                     </div>

@@ -13,6 +13,7 @@ import { allBoardsState } from '../../store/slices/allBoardsSlice'
 import useBoardColor from '../../hooks/useBoardColor'
 import MenuContext from '../../context/MenuContext'
 import useOutsideClick from '../../hooks/useOutsideClick'
+import ShortenTitle from '../../ui/ShortenTitle'
 import { currentListsState } from '../../store/slices/currentListsSlice'
 import { currentCardsState } from '../../store/slices/currentCardsSlice'
 import { setCurrentDragStartCard, currentDragStartCardState } from '../../store/slices/currentDragStartCardSlice'
@@ -165,7 +166,7 @@ const Board = () => {
         refInput.current.placeholder = 'There should be a title'
         setNeedToRename(false)
     } else if (persBoards.some(el => el.boardTitle === refInput.current.value) 
-      && currentBoard.boardTitle != refInput.current.value) {
+      && currentBoard.boardTitle !== refInput.current.value) {
       refInput.current.style.border = '2px solid red'
       refInput.current.value = ''
       setBoardtitle('')
@@ -197,7 +198,8 @@ const Board = () => {
       <div className={style.head}>
         <div className={style.title} onClick={handleBoardTitle}>
           {clickBoardTitle 
-            ? <input 
+            ? <>
+                <textarea 
                 ref={refInput}
                 type='text'
                 className={style.inputTitle}
@@ -205,8 +207,10 @@ const Board = () => {
                 autoFocus
                 onChange={(e) => setBoardtitle(e.target.value)}
                 onKeyUp={(e) => handleEnterKey(e)}
-              />
-            : <div style={{height: '32px', lineHeight: '200%', wordBreak: 'break-all'}}> {currentBoard.boardTitle}</div>}
+                ></textarea>
+                <div style={{width:'400px',visibility:'hidden'}}></div>
+              </>
+            : <ShortenTitle title={currentBoard.boardTitle} number={30}/>}
         </div> 
         <div style={{display:'flex', gap:'20px', marginRight:'auto'}}>
           <ViewMembers currentBoard={currentBoard} />

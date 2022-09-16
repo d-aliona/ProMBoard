@@ -9,6 +9,7 @@ import BoardItem from '../BoardItem'
 import useBoardColor from '../../hooks/useBoardColor'
 import { TickDown } from '../../assets/svg/svg-icons'
 import MenuContext from '../../context/MenuContext'
+import ShortenTitle from '../../ui/ShortenTitle'
 import style from '../../assets/scss/sidebar.module.scss'
 
 const Sidebar = () => {
@@ -67,13 +68,11 @@ const Sidebar = () => {
                         <span className={`${tickUpDownPers}`}><TickDown /></span>
                     </div>
                     {!showYourBoards && (
-                        <div style={{height:'40vh', overflow:'auto', transform: 'scaleX(-1)'}}>
-                            <div style={{transform: 'scaleX(-1)'}}>
+                        <div className={style.scrollbar} >
                             {boards 
                                 && boards.map((board) => 
                                 <BoardItem key={board.id} board={board} refSidebar={ref}/>
                             )}
-                            </div>
                         </div>
                     )}
                     <div className={style.dropBoards} onClick={() => setShowGuestBoards(prev => !prev)}>
@@ -81,7 +80,7 @@ const Sidebar = () => {
                         <span className={`${tickUpDownGuest}`}><TickDown /></span>
                     </div>
                     {!showGuestBoards && (
-                        <div>
+                        <div className={style.scrollbar}>
                             {guestBoards 
                                 && guestBoards.map((board) => 
                                     <div key={board.id} 
@@ -89,7 +88,7 @@ const Sidebar = () => {
                                         style={{backgroundColor: `${board.id === title.id ? 'rgba(23, 43, 77, .3)' : ''}`}} 
                                         onClick={() => handleClickBoard(board.id)}>
                                         <div className={style.colorBoard} style={{backgroundColor: `${board.boardColor}`}}></div>
-                                        {board.boardTitle}
+                                        <ShortenTitle title={board.boardTitle} number={13}/>
                                     </div>)}
                         </div>
                     )}

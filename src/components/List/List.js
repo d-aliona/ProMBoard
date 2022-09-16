@@ -6,10 +6,10 @@ import { db } from '../../firebase-client'
 
 import Cards from '../Cards'
 import AddCardForm from '../../features/AddCardForm'
-import style from '../../assets/scss/list.module.scss'
 import DropListMenu from '../../features/DropListMenu'
 import { currentListsState } from '../../store/slices/currentListsSlice'
 import useOutsideClick from '../../hooks/useOutsideClick'
+import style from '../../assets/scss/list.module.scss'
 
 const List = ({ list, cards, curBoardId, draggingCard, setDraggingCard, listsCardsToRender, setListsCardsToRender }) => {
     const [showMenu, setShowMenu] = useState(false)
@@ -64,17 +64,20 @@ const List = ({ list, cards, curBoardId, draggingCard, setDraggingCard, listsCar
             <div className={style.listWrapper}>
                 <div className={style.listHeader}>
                     <div className={style.listTitle} onClick={handleListTitle}>
-                        {clickTitle ? 
-                            <input 
-                                ref={refInput}
-                                type='text'
-                                className={style.inputTitle}
-                                value={listtitle}
-                                autoFocus
-                                onChange={(e) => setListtitle(e.target.value)}
-                                onKeyUp={(e) => handleEnterKey(e)}
-                                />
-                            : <span style={{height: '32px', lineHeight: '200%'}}> {list.listTitle} </span>}
+                        {clickTitle 
+                            ?   <textarea 
+                                    ref={refInput}
+                                    type='text'
+                                    className={style.inputTitle}
+                                    value={listtitle}
+                                    autoFocus
+                                    onChange={(e) => setListtitle(e.target.value)}
+                                    onKeyUp={(e) => handleEnterKey(e)}
+                                ></textarea>
+                            :   <div style={{lineHeight: '120%'}}>
+                                    {list.listTitle}
+                                </div>
+                        }
                     </div>
                     <div className={style.listMenu} onClick={toggle}>•••</div>
                 </div>

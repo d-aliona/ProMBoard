@@ -7,9 +7,11 @@ import { db } from '../../firebase-client'
 
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
 import useOutsideClick from '../../hooks/useOutsideClick'
+import ShortenTitle from '../../ui/ShortenTitle'
 import ViewMembersPopup from '../ViewMembers/ViewMembersPopup'
 import InviteMembersPopup from '../../features/InviteMembers/InviteMembersPopup'
 import style from '../../assets/scss/sidebar.module.scss'
+import ChangeBackgroundBoardForm from '../../features/ChangeBackgroundBoardForm/ChangeBackgroundBoardForm'
 
 const BoardItem = ({board, refSidebar}) => {
     const [showMenu, setShowMenu] = useState(false)
@@ -19,12 +21,12 @@ const BoardItem = ({board, refSidebar}) => {
     const [boardtitle, setBoardtitle] = useState(board.boardTitle)
     const [clickBoardTitle, setClickBoardTitle] = useState(false)
     const [needToRename, setNeedToRename] = useState(false)
-    const [showHint, setShowHint] = useState(false)
+    const [showChangeBackgroundForm, setShowChangeBackgroundForm] = useState(false)
+    const [coordY, setCoordY] = useState(0)
     const boards = useSelector(personalBoardsState)
     const title = useParams()
     let navigate = useNavigate()
-    const refEl = useRef(null)
-
+    
     const ref = useOutsideClick(() => {
         setShowDropMenu(false) 
         setShowMembers(false)
@@ -50,7 +52,7 @@ const BoardItem = ({board, refSidebar}) => {
             refInput.current.placeholder = 'There should be a title'
             setNeedToRename(false)
         } else if (boards.some(el => el.boardTitle === refInput.current.value) 
-          && board.boardTitle != refInput.current.value) {
+          && board.boardTitle !== refInput.current.value) {
           refInput.current.style.border = '2px solid red'
           refInput.current.value = ''
           setBoardtitle('')
@@ -78,42 +80,33 @@ const BoardItem = ({board, refSidebar}) => {
     return (
         <div key={board.id} 
             className={style.boardItem}
-            style={{backgroundColor: `${board.id === title.id ? 'rgba(23, 43, 77, .3)' : ''}`}} 
+            style={{backgroundColor: `${board.id === title.id ? 'rgba(23, 43, 77, .3)' : ''}`,
+                    height: `${clickBoardTitle ? 'auto' : '32px'}`}} 
             onClick={() => handleClickBoard(board.id)}
             onMouseOver={() => setShowMenu(true)}
             onMouseOut={() => setShowMenu(false)}
             >
             {clickBoardTitle 
-                ? <input 
+                ? <textarea 
                     ref={refInput}
                     type='text'
-                    style={{borderRadius:'2px', height:'20px', paddingLeft:'4px'}}
+                    style={{borderRadius:'4px', paddingLeft:'4px', zIndex:'2000', border:'1px solid rgba(23, 43, 77, .7)'}}
                     value={boardtitle}
                     autoFocus
                     onChange={(e) => setBoardtitle(e.target.value)}
                     onKeyUp={(e) => handleEnterKey(e)}
-                />
+                ></textarea>
                 :   <>
                         <div className={style.colorBoard} style={{backgroundColor: `${board.boardColor}`}}></div>
-                        <div style={{height: '32px', lineHeight: '200%', marginRight:'-15px'}} ref={refEl}> 
-                            {board.boardTitle.length < 13 
-                                ? board.boardTitle
-                                :<>
-                                    <div 
-                                        onMouseOver={() => setShowHint(true)}
-                                        onMouseOut={() => setShowHint(false)}>
-                                        {board.boardTitle.substr(0,12) + '...'}
-                                    </div>
-                                    {showHint && <div className={style.hint}>{board.boardTitle}</div> }
-                                </> 
-                                 
-                            }
-                        </div>
+                        <ShortenTitle title={board.boardTitle} number={13}/>
                     </> 
                 }
             <div className={style.threeDots}
-                style={{opacity: `${board.id === title.id ? '1' : '0'}`}} 
-                onClick={(e) => {e.stopPropagation(); setShowDropMenu(!showDropMenu)}}>
+                style={{opacity: `${board.id === title.id ? '1' : '0'}`, marginRight:`${board.id === title.id ? '0' : '-18px'}`}} 
+                onClick={(e) => {
+                    e.stopPropagation(); 
+                    setShowDropMenu(prev => board.id === title.id ? !prev : prev); 
+                    setCoordY(e.clientY - 10)}}>
                 •••
             </div>
             {showMenu &&
@@ -125,7 +118,7 @@ const BoardItem = ({board, refSidebar}) => {
                 </div>}
             {showDropMenu && 
                 <div className={style.boardDropMenuBackGround} 
-                    style={{backgroundColor: board.boardColor, left: refSidebar.current.offsetWidth}}
+                    style={{backgroundColor: board.boardColor, left: refSidebar.current.offsetWidth, top: coordY}}
                     ref={ref}>
                     <div className={style.boardDropMenu}>
                         <div className={style.boardDropItem}
@@ -142,9 +135,16 @@ const BoardItem = ({board, refSidebar}) => {
                         {showInviteMembers && (
                             <InviteMembersPopup currentBoard={board} setShowInviteMembers={setShowInviteMembers}/>
                         )} 
-                        <div className={style.boardDropItem}>
+                        <div className={style.boardDropItem}
+                            onClick={(e) => {setShowChangeBackgroundForm(prev => !prev); e.stopPropagation()}}>
                             Change background    
                         </div> 
+                        {showChangeBackgroundForm && (
+                            <ChangeBackgroundBoardForm 
+                                board={board} 
+                                setShowChangeBackgroundForm={setShowChangeBackgroundForm}
+                                setShowDropMenu={setShowDropMenu}/>
+                        )} 
                         <div className={style.boardDropItem}
                             onClick={(e) => {e.stopPropagation(); setClickBoardTitle(true); setShowDropMenu(false)}}>
                             Rename board    

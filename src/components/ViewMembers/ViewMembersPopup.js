@@ -5,6 +5,7 @@ import ViewOneMember from './ViewOneMember'
 import useOutsideClick from '../../hooks/useOutsideClick'
 import Initials from '../../ui/Initials'
 import Line from '../../ui/Line'
+import ShortenTitle from '../../ui/ShortenTitle'
 import CloseButton from '../../ui/CloseButton'
 import styles from '../../assets/scss/boardsList.module.scss'
 
@@ -18,7 +19,7 @@ const ViewMembersPopup = ({currentBoard, setShowMembers}) => {
             <div className={styles.dropViewMembers} ref={ref}>
                 <div className={styles.title}>
                     <div className={styles.titleName} >
-                        Members of the board <b>{currentBoard.boardTitle}</b>
+                        Members of the board <b><ShortenTitle title={currentBoard.boardTitle} number={13}/></b>
                     </div>
                     <CloseButton onClick={() => setShowMembers(false)}/>
                 </div>
