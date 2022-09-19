@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef, useContext} from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { doc, updateDoc } from 'firebase/firestore'
@@ -40,7 +40,8 @@ const Board = () => {
   const dragItemList = useRef()
   const dragItemListNode = useRef()
   const isPersonalBoard = user.id === currentBoard.owner
-  
+  let navigate = useNavigate()
+
   let allListsCards = []
   let i = 0
 
@@ -181,6 +182,7 @@ const Board = () => {
         setClickBoardTitle(false)
         setNeedToRename(false)
         refInput.current = null
+        navigate('/auth/board/' + currentBoard.id)
     }
   }
 
@@ -200,13 +202,13 @@ const Board = () => {
           {clickBoardTitle 
             ? <>
                 <textarea 
-                ref={refInput}
-                type='text'
-                className={style.inputTitle}
-                value={boardtitle}
-                autoFocus
-                onChange={(e) => setBoardtitle(e.target.value)}
-                onKeyUp={(e) => handleEnterKey(e)}
+                  ref={refInput}
+                  type='text'
+                  className={style.inputTitle}
+                  value={boardtitle}
+                  autoFocus
+                  onChange={(e) => setBoardtitle(e.target.value)}
+                  onKeyDown={(e) => handleEnterKey(e)}
                 ></textarea>
                 <div style={{width:'400px',visibility:'hidden'}}></div>
               </>

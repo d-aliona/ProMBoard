@@ -5,6 +5,7 @@ import Start from './pages/Start'
 import Signup from './pages/Signup'
 import Login from './pages/Login'
 import Home from './pages/Home'
+import Boards from './pages/Boards'
 import Profile from './pages/Profile'
 import Board from './pages/Board'
 import OpenCard from './pages/OpenCard'
@@ -29,6 +30,7 @@ function App() {
                 <Route path='' element={<Layout />}>
                   <Route path="home" element={<Home />} />
                   <Route exact path="profile" element={<Profile />} />
+                  <Route path="boards" element={<Boards />} />
                   <Route path='board/:id/*' element={
                     <GetBoardState>
                       <Routes>

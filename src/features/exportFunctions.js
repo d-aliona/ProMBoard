@@ -1,5 +1,3 @@
-import React, { useState, useEffect, useRef } from 'react'
-
 import { collection, addDoc } from 'firebase/firestore'
 import { db } from '../firebase-client'
 
@@ -18,3 +16,4 @@ export async function addNotificationToDataBase(memberID, userID, text, cardID, 
         console.error(error.message)
     })
 }
+

@@ -44,6 +44,7 @@ const CreateBoardForm = ({setShowCreateBoardForm}) => {
             boardTitle: title,
             boardColor: colorBoard,
             owner: user.id,
+            statusOpened: true,
             invitedMembers: [],
         })
         .then((docRef) => {

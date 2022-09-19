@@ -46,7 +46,8 @@ const BoardsList = () => {
                         <Line width={'96%'}/>
                         <p className={style.boardsGroup}>Personal boards</p>
                         {boards 
-                            && boards.map((board) => 
+                            && boards
+                            .map((board) => 
                                 <div key={board.id} 
                                     className={style.listItem} 
                                     onClick={() => navigateBoard(board.id)}>

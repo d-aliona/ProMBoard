@@ -27,7 +27,7 @@ const Notification = () => {
     const notifications = useSelector(notificationsState)
     const [newNotificationExist, setNewNotificationExist] = useState(false)
     let navigate = useNavigate()
-    
+
     useEffect(() => {
         if (notifications.some(el => el.read === false)) {
             setNewNotificationExist(true)
@@ -55,7 +55,7 @@ const Notification = () => {
         setShowDropWindow(prev => !prev)
         e.stopPropagation()
     }
-
+    
     const handleNavigateBoard =(e, currentBoard) => {
         if (currentBoard.invitedMembers.includes(user.id) || currentBoard.owner === user.id) {
             navigate('/auth/board/' + currentBoard.id)

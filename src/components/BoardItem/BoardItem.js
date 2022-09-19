@@ -8,20 +8,15 @@ import { db } from '../../firebase-client'
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
 import useOutsideClick from '../../hooks/useOutsideClick'
 import ShortenTitle from '../../ui/ShortenTitle'
-import ViewMembersPopup from '../ViewMembers/ViewMembersPopup'
-import InviteMembersPopup from '../../features/InviteMembers/InviteMembersPopup'
+import DropBoardMenu from '../../features/DropBoardMenu'
 import style from '../../assets/scss/sidebar.module.scss'
-import ChangeBackgroundBoardForm from '../../features/ChangeBackgroundBoardForm/ChangeBackgroundBoardForm'
 
 const BoardItem = ({board, refSidebar}) => {
     const [showMenu, setShowMenu] = useState(false)
     const [showDropMenu, setShowDropMenu] = useState(false)
-    const [showMembers, setShowMembers] = useState(false)
-    const [showInviteMembers, setShowInviteMembers] = useState(false)
     const [boardtitle, setBoardtitle] = useState(board.boardTitle)
     const [clickBoardTitle, setClickBoardTitle] = useState(false)
     const [needToRename, setNeedToRename] = useState(false)
-    const [showChangeBackgroundForm, setShowChangeBackgroundForm] = useState(false)
     const [coordY, setCoordY] = useState(0)
     const boards = useSelector(personalBoardsState)
     const title = useParams()
@@ -29,8 +24,6 @@ const BoardItem = ({board, refSidebar}) => {
     
     const ref = useOutsideClick(() => {
         setShowDropMenu(false) 
-        setShowMembers(false)
-        setShowInviteMembers(false)
     })
 
     const handleClickBoard = (id) => {
@@ -47,6 +40,7 @@ const BoardItem = ({board, refSidebar}) => {
 
     const updateBoardTitle = async (boardID) => {
         refInput.current.placeholder = ''
+        
         if (refInput.current.value === '') {
             refInput.current.style.border = '2px solid red'
             refInput.current.placeholder = 'There should be a title'
@@ -67,6 +61,7 @@ const BoardItem = ({board, refSidebar}) => {
             setClickBoardTitle(false)
             setNeedToRename(false)
             refInput.current = null
+            navigate('/auth/board/' + board.id)
         }
     }
 
@@ -94,7 +89,7 @@ const BoardItem = ({board, refSidebar}) => {
                     value={boardtitle}
                     autoFocus
                     onChange={(e) => setBoardtitle(e.target.value)}
-                    onKeyUp={(e) => handleEnterKey(e)}
+                    onKeyDown={(e) => handleEnterKey(e)}
                 ></textarea>
                 :   <>
                         <div className={style.colorBoard} style={{backgroundColor: `${board.boardColor}`}}></div>
@@ -120,39 +115,11 @@ const BoardItem = ({board, refSidebar}) => {
                 <div className={style.boardDropMenuBackGround} 
                     style={{backgroundColor: board.boardColor, left: refSidebar.current.offsetWidth, top: coordY}}
                     ref={ref}>
-                    <div className={style.boardDropMenu}>
-                        <div className={style.boardDropItem}
-                            onClick={(e) => {e.stopPropagation(); setShowMembers(prev => !prev)}}>
-                            View members    
-                        </div>
-                        {showMembers && (
-                            <ViewMembersPopup currentBoard={board} setShowMembers={setShowMembers} />
-                        )} 
-                        <div className={style.boardDropItem}
-                            onClick={(e) => {e.stopPropagation(); setShowInviteMembers(prev => !prev)}}>
-                            Invite members    
-                        </div> 
-                        {showInviteMembers && (
-                            <InviteMembersPopup currentBoard={board} setShowInviteMembers={setShowInviteMembers}/>
-                        )} 
-                        <div className={style.boardDropItem}
-                            onClick={(e) => {setShowChangeBackgroundForm(prev => !prev); e.stopPropagation()}}>
-                            Change background    
-                        </div> 
-                        {showChangeBackgroundForm && (
-                            <ChangeBackgroundBoardForm 
-                                board={board} 
-                                setShowChangeBackgroundForm={setShowChangeBackgroundForm}
-                                setShowDropMenu={setShowDropMenu}/>
-                        )} 
-                        <div className={style.boardDropItem}
-                            onClick={(e) => {e.stopPropagation(); setClickBoardTitle(true); setShowDropMenu(false)}}>
-                            Rename board    
-                        </div>
-                        <div className={style.boardDropItem}>
-                            Close board    
-                        </div>   
-                    </div>
+                        <DropBoardMenu 
+                            board={board} 
+                            setShowDropMenu={setShowDropMenu}
+                            setClickBoardTitle={setClickBoardTitle}
+                        />
                 </div>
                 } 
         </div>

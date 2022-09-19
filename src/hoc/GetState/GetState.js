@@ -17,7 +17,7 @@ import { setNotifications } from '../../store/slices/notificationsSlice'
 const GetState = ({ children }) => {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.user.user)
-
+  
   useEffect(() => {
     onIdTokenChanged(auth, (user) => {
       if (!user) {
@@ -50,13 +50,14 @@ const GetState = ({ children }) => {
         dispatch(setAllBoards(allBoardsSnap))
       })
 
-      const qPersBoards = query(colRef, where('owner', "==", user.id))
+      const qPersBoards = query(colRef, where('owner', "==", user.id), where('statusOpened', '==', true))
       
       onSnapshot(qPersBoards, (snapshot) => {
         const persBoardsSnap = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
         dispatch(setPersonalBoards(persBoardsSnap))
       })
-      const qNotPersBoards = query(colRef, where('owner', "!=", user.id))
+
+      const qNotPersBoards = query(colRef, where('owner', "!=", user.id), where('statusOpened', '==', true))
       
       onSnapshot(qNotPersBoards, (snapshot) => {
         const notPersBoardsSnap = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))

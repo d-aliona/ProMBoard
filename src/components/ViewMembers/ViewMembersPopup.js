@@ -40,7 +40,7 @@ const ViewMembersPopup = ({currentBoard, setShowMembers}) => {
                                     currentBoard={currentBoard}
                                     currentMember={currentMember}/>
                     })
-                    : <div>There are no invited members</div> 
+                    : <div style={{marginLeft:'10px'}}>There are no invited members</div> 
                 }
             </div>
         </>

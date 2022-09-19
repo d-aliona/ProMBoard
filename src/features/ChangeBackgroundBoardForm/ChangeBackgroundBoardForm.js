@@ -22,7 +22,7 @@ const ChangeBackgroundBoardForm = ({board, setShowChangeBackgroundForm, setShowD
         updateDoc(docRef, {
             boardColor: colorBoard,
         })
-        .then((docRef) => {
+        .then(() => {
             navigate('/auth/board/' + board.id)
             setShowChangeBackgroundForm(false)
             setShowDropMenu(false)

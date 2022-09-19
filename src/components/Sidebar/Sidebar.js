@@ -57,7 +57,7 @@ const Sidebar = () => {
                     <div className={`${changeTick}`} onClick={() => setToggleClick(prev => !prev)}>
                         <TickDown />
                     </div>
-                    <div className={style.dropBoards}>
+                    <div className={style.dropBoards} onClick={() => navigate('/auth/boards')}>
                         Boards
                     </div>
                     <div className={style.dropBoards}>
