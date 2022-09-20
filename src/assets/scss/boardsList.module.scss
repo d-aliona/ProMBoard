@@ -9,12 +9,11 @@
     position: fixed;
     display: flex;
     flex-direction: column;
-    top: 36px;
-    left: 254px;
+    top: 45px;
+    left: 230px;
     z-index: 10;
     min-width: 260px;
     max-height: 80vh;
-    overflow-y: auto;
     padding: 8px 0;
     color: rgb(23, 43, 77);
     background-color: #fff;
@@ -23,17 +22,20 @@
     box-shadow: 0 8px 16px -4px rgba(9, 30, 66, .25), 0 0 0 1px rgba(9, 30, 66,  .1);
     font-size: 16px;
 }
-.dropBoardsList::-webkit-scrollbar {
+
+.scrollbar {
+    overflow-y: auto;
+}
+.scrollbar::-webkit-scrollbar {
     width: 10px;
 }
-.dropBoardsList::-webkit-scrollbar-thumb {
+.scrollbar::-webkit-scrollbar-thumb {
 background: rgba(23, 43, 77, .1);
 border-radius: 10px;
 }
-.dropBoardsList::-webkit-scrollbar-thumb:hover {
+.scrollbar::-webkit-scrollbar-thumb:hover {
 background: rgba(23, 43, 77, .3);
 }
-
 
 .title {
     display: flex;

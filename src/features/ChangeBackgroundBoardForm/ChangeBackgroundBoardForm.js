@@ -8,7 +8,7 @@ import Line from '../../ui/Line'
 import CloseButton from '../../ui/CloseButton'
 import { Preview } from '../../assets/svg/svg-icons'
 import useOutsideClick from '../../hooks/useOutsideClick'
-import style from '../../assets/scss/createboardForm.module.scss'
+import style from '../../assets/scss/boardsForm.module.scss'
 
 const ChangeBackgroundBoardForm = ({board, setShowChangeBackgroundForm, setShowDropMenu}) => {
     let navigate = useNavigate()
@@ -33,7 +33,7 @@ const ChangeBackgroundBoardForm = ({board, setShowChangeBackgroundForm, setShowD
     return (
         <>
             <div className={style.window}>
-                <div className={style.dropCreateBoardForm} ref={ref}>
+                <div className={style.boardForm} ref={ref}>
                     <div className={style.title}>
                         <span className={style.titleName}>Change background</span>
                         <CloseButton onClick={() => {

@@ -44,21 +44,11 @@ const BoardsList = () => {
                             <CloseButton onClick={() => setShow(false)}/>
                         </div>
                         <Line width={'96%'}/>
-                        <p className={style.boardsGroup}>Personal boards</p>
-                        {boards 
-                            && boards
-                            .map((board) => 
-                                <div key={board.id} 
-                                    className={style.listItem} 
-                                    onClick={() => navigateBoard(board.id)}>
-                                    <div className={style.colorBoard} style={{backgroundColor: `${board.boardColor}`}}></div>    
-                                    <ShortenTitle title={board.boardTitle} number={40}/>
-                                </div>
-                        )}
-                        <Line width={'90%'}/>
-                        <p className={style.boardsGroup}>Guest boards</p>
-                        {guestBoards 
-                                && guestBoards.map((board) => 
+                        <div className={style.scrollbar}>
+                            <p className={style.boardsGroup}>Personal boards</p>
+                            {boards 
+                                && boards
+                                .map((board) => 
                                     <div key={board.id} 
                                         className={style.listItem} 
                                         onClick={() => navigateBoard(board.id)}>
@@ -66,6 +56,18 @@ const BoardsList = () => {
                                         <ShortenTitle title={board.boardTitle} number={40}/>
                                     </div>
                             )}
+                            <Line width={'90%'}/>
+                            <p className={style.boardsGroup}>Guest boards</p>
+                            {guestBoards 
+                                    && guestBoards.map((board) => 
+                                        <div key={board.id} 
+                                            className={style.listItem} 
+                                            onClick={() => navigateBoard(board.id)}>
+                                            <div className={style.colorBoard} style={{backgroundColor: `${board.boardColor}`}}></div>    
+                                            <ShortenTitle title={board.boardTitle} number={40}/>
+                                        </div>
+                                )}
+                        </div>
                     </div>
                 )}        
             </div>

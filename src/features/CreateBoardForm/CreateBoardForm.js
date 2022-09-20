@@ -11,7 +11,7 @@ import Line from '../../ui/Line'
 import CloseButton from '../../ui/CloseButton'
 import { Preview } from '../../assets/svg/svg-icons'
 import useOutsideClick from '../../hooks/useOutsideClick'
-import style from '../../assets/scss/createboardForm.module.scss'
+import style from '../../assets/scss/boardsForm.module.scss'
 
 const CreateBoardForm = ({setShowCreateBoardForm}) => {
     let navigate = useNavigate()
@@ -61,7 +61,7 @@ const CreateBoardForm = ({setShowCreateBoardForm}) => {
     return (
         <>
             <div className={style.window}>
-                <div className={style.dropCreateBoardForm} ref={ref}>
+                <div className={style.boardForm} ref={ref}>
                     <div className={style.title}>
                         <span className={style.titleName}>Create a board</span>
                         <CloseButton onClick={() => {
