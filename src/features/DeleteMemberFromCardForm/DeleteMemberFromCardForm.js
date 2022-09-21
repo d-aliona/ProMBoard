@@ -5,6 +5,8 @@ import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
 import {addNotificationToDataBase} from '../exportFunctions'
+import { currentListsState } from '../../store/slices/currentListsSlice'
+import { allBoardsState } from '../../store/slices/allBoardsSlice'
 import Initials from '../../ui/Initials'
 import CloseButton from '../../ui/CloseButton'
 import useOutsideClick from '../../hooks/useOutsideClick'
@@ -13,7 +15,7 @@ import style from '../../assets/scss/deleteForm.module.scss'
 
 const DeleteMemberFromCardForm = ({card, memberID, currentMember, setShowDeleteMemberForm}) => {
     const user = useSelector((state) => state.user.user)
-
+    const boards = useSelector(allBoardsState)
     const ref = useOutsideClick(() => {
         setShowDeleteMemberForm(false)
     })
@@ -29,7 +31,19 @@ const DeleteMemberFromCardForm = ({card, memberID, currentMember, setShowDeleteM
         await updateDoc(docRef, {
             assignedUsers: [...changedData],
         })
-        addNotificationToDataBase(memberID, user.id, 'removed you from this card', card.id, card.boardID)
+        
+        const currentBoard = boards.find(ob => ob.id === card.boardID)
+        if (user.id != currentMember.id) {
+            const ob = {
+                memberID: currentMember.id, 
+                userID: user.id, 
+                text: 'removed you from this card', 
+                boardTitle: currentBoard.boardTitle, 
+                boardColor: currentBoard.boardColor, 
+                cardTitle: card.cardTitle, 
+            }
+            addNotificationToDataBase(ob)
+        }
     }
 
     return (

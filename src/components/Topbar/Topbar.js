@@ -9,7 +9,7 @@ import { userState, removeUser } from '../../store/slices/userSlice'
 import Logo from '../../ui/Logo'
 import Initials from '../../ui/Initials'
 import CreateBoardForm from '../../features/CreateBoardForm'
-import Notification from '../Notification'
+import Notifications from '../Notifications'
 import BoardsList from '../../components/BoardsList'
 import useOutsideClick from '../../hooks/useOutsideClick'
 import style from '../../assets/scss/topbar.module.scss'
@@ -63,7 +63,7 @@ function Topbar() {
                 </div>
             )}
             <div className={style.authbox}>
-                <Notification />
+                <Notifications />
                 <div className={style.authbox} onClick={toggle}>
                     <div style={{marginRight:'10px'}}>{user.firstName + ' ' + user.lastName}</div>
                     <Initials user={user}/> 

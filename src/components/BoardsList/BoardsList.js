@@ -56,8 +56,11 @@ const BoardsList = () => {
                                         <ShortenTitle title={board.boardTitle} number={40}/>
                                     </div>
                             )}
-                            <Line width={'90%'}/>
-                            <p className={style.boardsGroup}>Guest boards</p>
+                            {guestBoards.length > 0 && 
+                                <>
+                                    <Line width={'90%'}/>
+                                    <p className={style.boardsGroup}>Guest boards</p>
+                                </>}
                             {guestBoards 
                                     && guestBoards.map((board) => 
                                         <div key={board.id} 

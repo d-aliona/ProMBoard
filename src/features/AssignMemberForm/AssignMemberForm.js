@@ -53,13 +53,35 @@ const AssignMemberForm = ({card, setClickAddMembers}) => {
             await updateDoc(docRef, {
                 assignedUsers: [...changedData],
             })
-            addNotificationToDataBase(memberID, user.id, 'removed you from this card', card.id, card.boardID)
+            if (user.id != memberID) {
+                const ob = {
+                    memberID: memberID, 
+                    userID: user.id, 
+                    text: 'removed you from this card', 
+                    boardTitle: currentBoard.boardTitle, 
+                    boardColor: currentBoard.boardColor, 
+                    cardTitle: card.cardTitle, 
+                }
+                addNotificationToDataBase(ob)
+            }
         } else {
             const docRef = doc(db, 'cards', card.id)
             await updateDoc(docRef, {
                 assignedUsers: [...card.assignedUsers, memberID],
             })
-            addNotificationToDataBase(memberID, user.id, 'added you to this card', card.id, card.boardID)
+            if (user.id != memberID) {
+                const ob = {
+                    memberID: memberID, 
+                    userID: user.id, 
+                    text: 'added you to this card',
+                    cardID: card.id, 
+                    boardID: card.boardID,
+                    boardTitle: currentBoard.boardTitle, 
+                    boardColor: currentBoard.boardColor, 
+                    cardTitle: card.cardTitle, 
+                }
+                addNotificationToDataBase(ob)
+            }
         }
     }
 

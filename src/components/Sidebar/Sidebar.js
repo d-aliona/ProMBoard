@@ -30,7 +30,8 @@ const Sidebar = () => {
     const notUserBoards = useSelector(notPersonalBoardsState)
     const guestBoards = notUserBoards && notUserBoards.length > 0 ? notUserBoards.filter((board) => board.invitedMembers.includes(user.id)): []
     const ref = useRef(null);
-    
+    // console.log(guestBoards)
+    // console.log(guestBoards.length)
     useEffect(() => {
         setChangeTick(toggleClick ? style.tickLeft : style.tickRight)
     }, [toggleClick])
@@ -75,10 +76,11 @@ const Sidebar = () => {
                             )}
                         </div>
                     )}
-                    <div className={style.dropBoards} onClick={() => setShowGuestBoards(prev => !prev)}>
-                        Guest boards 
-                        <span className={`${tickUpDownGuest}`}><TickDown /></span>
-                    </div>
+                    {guestBoards.length > 0 && 
+                        <div className={style.dropBoards} onClick={() => setShowGuestBoards(prev => !prev)}>
+                            Guest boards 
+                            <span className={`${tickUpDownGuest}`}><TickDown /></span>
+                        </div>}
                     {!showGuestBoards && (
                         <div className={style.scrollbar}>
                             {guestBoards 

@@ -22,58 +22,27 @@ const OneClosedBoard = ({currentBoard}) => {
     const lists = useSelector(allListsState)
     const [clickRemove, setClickRemove] = useState(false)
         
-    // useEffect(() => {
-    //     const data = []
-    //     cards && 
-    //         cards.map((card) => {
-    //             if (card.assignedUsers.includes(currentMember.id)) {
-    //                 data.push([card.listID, card.cardTitle, card.id])
-    //             }
-    //         })
-    //     setAttachedToCards(data)
-    // },[cards])
-    
-    // const removeMemberFromBoard = async(e) => {
-    //     e.stopPropagation()
-
-    //     const dataBoard = [...currentBoard.invitedMembers]
-    //     const changedDataBoard = dataBoard.filter((id) => id !== currentMember.id)
-    //     const docRef = doc(db, 'boards', currentBoard.id)
-    //     await updateDoc(docRef, {
-    //         invitedMembers: [...changedDataBoard],
-    //     })
-
-    //     const dataUser = [...currentMember.guestBoards]
-    //     const changedDataUser = dataUser.filter((id) => id !== currentBoard.id)
-    //     const doccRef = doc(db, 'users', currentMember.id)
-    //     await updateDoc(doccRef, {
-    //         guestBoards: [...changedDataUser],
-    //     })
-
-    //     addNotificationToDataBase(currentMember.id, user.id, 'removed you from this board', '', currentBoard.id)
-    // }
-
-    // const confirmRemoveMemberFromBoard = (e) => {
-    //     e.stopPropagation()
-    //     attachedToCards &&
-    //         attachedToCards.map(async(item) => {
-    //             const curCard = cards.find(ob => ob.id === item[2])
-    //             const data = [...curCard.assignedUsers]
-    //             const changedData = data.filter((id) => id !== currentMember.id)
-    //             const docRef = doc(db, 'cards', curCard.id)
-    //             await updateDoc(docRef, {
-    //                 assignedUsers: [...changedData],
-    //             })
-    //             addNotificationToDataBase(currentMember.id, user.id, 'removed you from this card', curCard.id, currentBoard.id)
-    //         })
-    //     removeMemberFromBoard(e)
-    // }
     const reopenBoard = async(e) => {
         e.preventDefault()
         const docRef = doc(db, 'boards', currentBoard.id)
         await updateDoc(docRef, {
             statusOpened: true,
         })
+        if (currentBoard.invitedMembers.length > 0) {
+            currentBoard.invitedMembers.forEach((mem) => {
+                console.log(mem)
+                const ob = {
+                    memberID: mem, 
+                    userID: user.id, 
+                    text: 'reopened this board',
+                    boardID: currentBoard.id, 
+                    boardTitle: currentBoard.boardTitle, 
+                    boardColor: currentBoard.boardColor, 
+                }
+                console.log(ob)
+                addNotificationToDataBase(ob)
+            })
+        }
     }
 
     const confirmDeleteBoard = async(e) => {
@@ -81,11 +50,6 @@ const OneClosedBoard = ({currentBoard}) => {
         
         cards.forEach(async(card) => {
             if (card.boardID === currentBoard.id) {
-                if (card.assignedUsers.length > 0) {
-                    card.assignedUsers.forEach((member) => {
-                        addNotificationToDataBase(member.id, user.id, 'removed you from this card', card.id, card.boardID)
-                    })
-                }
                 await deleteDoc(doc(db, "cards", card.id))
             }
         }) 
@@ -95,15 +59,24 @@ const OneClosedBoard = ({currentBoard}) => {
             .forEach(async(el) => await deleteDoc(doc(db, "lists", el.id)))
 
         users.forEach(async(member) => {
-            if (member.guestBoards.length > 0 && member.guestboards.includes(currentBoard.id)) {
-                const dataUser = [...member.guestBoards]
-                const changedDataUser = dataUser.filter((id) => id !== currentBoard.id)
-                const doccRef = doc(db, 'users', member.id)
-                await updateDoc(doccRef, {
-                    guestBoards: [...changedDataUser],
-                })
-
-                addNotificationToDataBase(member.id, user.id, 'removed you from this board', '', currentBoard.id)
+            if (member.guestBoards.length > 0) {
+                if (member.guestboards.includes(currentBoard.id)) {
+                    const dataUser = [...member.guestBoards]
+                    const changedDataUser = dataUser.filter((id) => id !== currentBoard.id)
+                    const doccRef = doc(db, 'users', member.id)
+                    
+                    await updateDoc(doccRef, {
+                        guestBoards: [...changedDataUser],
+                    })
+                    const ob = {
+                        memberID: member.id, 
+                        userID: user.id, 
+                        text: 'deleted this board', 
+                        boardTitle: currentBoard.boardTitle, 
+                        boardColor: currentBoard.boardColor, 
+                    }
+                    addNotificationToDataBase(ob)
+                }
             }
         })
         await deleteDoc(doc(db, "boards", currentBoard.id))

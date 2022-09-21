@@ -1,15 +1,18 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
+import {addNotificationToDataBase} from '../../features/exportFunctions'
 import ViewMembersPopup from '../../components/ViewMembers/ViewMembersPopup'
 import InviteMembersPopup from '../../features/InviteMembers/InviteMembersPopup'
 import style from '../../assets/scss/sidebar.module.scss'
 import ChangeBackgroundBoardForm from '../../features/ChangeBackgroundBoardForm/ChangeBackgroundBoardForm'
 
 const DropBoardMenu = ({board, setShowDropMenu, setClickBoardTitle}) => {
+    const user = useSelector((state) => state.user.user)
     const [showMembers, setShowMembers] = useState(false)
     const [showInviteMembers, setShowInviteMembers] = useState(false)
     const [showChangeBackgroundForm, setShowChangeBackgroundForm] = useState(false)
@@ -22,6 +25,19 @@ const DropBoardMenu = ({board, setShowDropMenu, setClickBoardTitle}) => {
             statusOpened: false,
         })
         .then(() => {
+            if (board.invitedMembers.length > 0) {
+                board.invitedMembers.forEach(mem => {
+                    const ob = {
+                        memberID: mem, 
+                        userID: user.id, 
+                        text: 'closed this board',
+                        boardID: board.id,
+                        boardTitle: board.boardTitle, 
+                        boardColor: board.boardColor, 
+                    }
+                    addNotificationToDataBase(ob)
+                })
+            }
             setShowDropMenu(false)
             navigate('/auth/home')
         })

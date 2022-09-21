@@ -95,7 +95,15 @@ const InviteMembersPopup = ({ currentBoard, setShowInviteMembers }) => {
                 await updateDoc(docMemberRef, {
                     guestBoards: [...member.guestBoards, currentBoard.id],
                 })
-                addNotificationToDataBase(member.id, user.id, 'added you to this board', '', currentBoard.id)
+                const ob = {
+                    memberID: member.id, 
+                    userID: user.id, 
+                    text: 'added you to this board',
+                    boardID: currentBoard.id,
+                    boardTitle: currentBoard.boardTitle, 
+                    boardColor: currentBoard.boardColor, 
+                }
+                addNotificationToDataBase(ob)
             })
         setSelectedToBeInvited([])
     }
@@ -116,7 +124,15 @@ const InviteMembersPopup = ({ currentBoard, setShowInviteMembers }) => {
                         updateDoc(docRef, {
                             invitedMembers: [...currentBoard.invitedMembers, userRef.id],
                         })
-                        addNotificationToDataBase(userRef.id, user.id, 'added you to this board', '', currentBoard.id)
+                        const ob = {
+                            memberID: userRef.id, 
+                            userID: user.id, 
+                            text: 'added you to this board',
+                            boardID: currentBoard.id,
+                            boardTitle: currentBoard.boardTitle, 
+                            boardColor: currentBoard.boardColor, 
+                        }
+                        addNotificationToDataBase(ob)
                     })
                     .then(() => {
                         setSearchTerm('')

@@ -48,8 +48,14 @@ const ViewOneMember = ({currentBoard, currentMember}) => {
         await updateDoc(doccRef, {
             guestBoards: [...changedDataUser],
         })
-
-        addNotificationToDataBase(currentMember.id, user.id, 'removed you from this board', '', currentBoard.id)
+        const ob = {
+            memberID: currentMember.id, 
+            userID: user.id, 
+            text: 'removed you from this board', 
+            boardTitle: currentBoard.boardTitle, 
+            boardColor: currentBoard.boardColor, 
+        }
+        addNotificationToDataBase(ob)
     }
 
     const confirmRemoveMemberFromBoard = (e) => {
@@ -63,7 +69,6 @@ const ViewOneMember = ({currentBoard, currentMember}) => {
                 await updateDoc(docRef, {
                     assignedUsers: [...changedData],
                 })
-                addNotificationToDataBase(currentMember.id, user.id, 'removed you from this card', curCard.id, currentBoard.id)
             })
         removeMemberFromBoard(e)
     }
