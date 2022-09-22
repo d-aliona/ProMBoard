@@ -11,13 +11,13 @@ import InviteMembersPopup from '../../features/InviteMembers/InviteMembersPopup'
 import style from '../../assets/scss/sidebar.module.scss'
 import ChangeBackgroundBoardForm from '../../features/ChangeBackgroundBoardForm/ChangeBackgroundBoardForm'
 
-const DropBoardMenu = ({board, setShowDropMenu, setClickBoardTitle}) => {
+const DropBoardMenu = ({board, setShowDropMenu, setClickBoardTitle, isOnBoards}) => {
     const user = useSelector((state) => state.user.user)
     const [showMembers, setShowMembers] = useState(false)
     const [showInviteMembers, setShowInviteMembers] = useState(false)
     const [showChangeBackgroundForm, setShowChangeBackgroundForm] = useState(false)
     let navigate = useNavigate()
-    
+     
     const closeBoard = () => {
         const docRef = doc(db, 'boards', board.id)
               
@@ -44,13 +44,15 @@ const DropBoardMenu = ({board, setShowDropMenu, setClickBoardTitle}) => {
     }
         
     return (
-        <div className={style.boardDropMenu}>
+        <div 
+            style={{backgroundColor: isOnBoards ? 'rgba(23, 43, 77, 0)' : 'rgba(23, 43, 77, .3)',
+            borderRadius: isOnBoards ? '3px 3px 0 0' : '0 3px 3px 0'}}>
             <div className={style.boardDropItem}
                 onClick={(e) => {e.stopPropagation(); setShowMembers(prev => !prev)}}>
                 View members    
             </div>
             {showMembers && (
-                <ViewMembersPopup currentBoard={board} setShowMembers={setShowMembers} />
+                <ViewMembersPopup currentBoard={board} setShowMembers={setShowMembers} isOnBoards={isOnBoards}/>
             )} 
             <div className={style.boardDropItem}
                 onClick={(e) => {e.stopPropagation(); setShowInviteMembers(prev => !prev)}}>

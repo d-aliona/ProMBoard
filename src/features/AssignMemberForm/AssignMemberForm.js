@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { useSelector } from 'react-redux'
-import { doc, updateDoc, collection, addDoc } from 'firebase/firestore'
+import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
 import { allBoardsState } from '../../store/slices/allBoardsSlice'
@@ -53,7 +53,7 @@ const AssignMemberForm = ({card, setClickAddMembers}) => {
             await updateDoc(docRef, {
                 assignedUsers: [...changedData],
             })
-            if (user.id != memberID) {
+            if (user.id !== memberID) {
                 const ob = {
                     memberID: memberID, 
                     userID: user.id, 
@@ -69,7 +69,7 @@ const AssignMemberForm = ({card, setClickAddMembers}) => {
             await updateDoc(docRef, {
                 assignedUsers: [...card.assignedUsers, memberID],
             })
-            if (user.id != memberID) {
+            if (user.id !== memberID) {
                 const ob = {
                     memberID: memberID, 
                     userID: user.id, 

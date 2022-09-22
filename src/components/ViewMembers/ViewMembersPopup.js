@@ -21,7 +21,7 @@ const ViewMembersPopup = ({currentBoard, setShowMembers}) => {
                     <div className={styles.titleName} >
                         Members of the board <b><ShortenTitle title={currentBoard.boardTitle} number={13}/></b>
                     </div>
-                    <CloseButton onClick={() => setShowMembers(false)}/>
+                    <CloseButton onClick={() => {setShowMembers(false)}}/>
                 </div>
                 <Line width={'99%'}/>
                 <p className={styles.boardsGroup} style={{marginBottom:'10px'}}>Owner</p>

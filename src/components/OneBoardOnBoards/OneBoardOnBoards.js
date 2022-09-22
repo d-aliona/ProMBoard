@@ -9,9 +9,9 @@ import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
 import useOutsideClick from '../../hooks/useOutsideClick'
 import ShortenTitle from '../../ui/ShortenTitle'
 import DropBoardMenu from '../../features/DropBoardMenu'
-import style from '../../assets/scss/sidebar.module.scss'
+import styles from '../../assets/scss/home.module.scss'
 
-const BoardItem = ({board, refSidebar}) => {
+const OneBoardOnBoards = ({board}) => {
     const [showMenu, setShowMenu] = useState(false)
     const [showDropMenu, setShowDropMenu] = useState(false)
     const [boardtitle, setBoardtitle] = useState(board.boardTitle)
@@ -26,7 +26,9 @@ const BoardItem = ({board, refSidebar}) => {
         setShowDropMenu(false) 
     })
 
-    const handleClickBoard = (id) => {
+    const handleClickBoard = (e, id) => {
+        // e.stopPropagation()
+        e.preventDefault()
         navigate('/auth/board/' + id)
     }
 
@@ -73,58 +75,47 @@ const BoardItem = ({board, refSidebar}) => {
     }
         
     return (
-        <div key={board.id} 
-            className={style.boardItem}
-            style={{backgroundColor: `${board.id === title.id ? 'rgba(23, 43, 77, .3)' : ''}`,
-                    height: `${clickBoardTitle ? 'auto' : '32px'}`}} 
-            onClick={() => handleClickBoard(board.id)}
-            onMouseOver={() => setShowMenu(true)}
-            onMouseOut={() => setShowMenu(false)}
-            >
-            {clickBoardTitle 
-                ? <textarea 
-                    ref={refInput}
-                    type='text'
-                    style={{borderRadius:'4px', paddingLeft:'4px', zIndex:'2000', border:'1px solid rgba(23, 43, 77, .7)'}}
-                    value={boardtitle}
-                    autoFocus
-                    onChange={(e) => setBoardtitle(e.target.value)}
-                    onKeyDown={(e) => handleEnterKey(e)}
-                ></textarea>
-                :   <>
-                        <div className={style.colorBoard} style={{backgroundColor: `${board.boardColor}`}}></div>
-                        <ShortenTitle title={board.boardTitle} number={13}/>
-                    </> 
+        <div className={styles.boardWrapper}
+            style={{backgroundColor: board.boardColor}} 
+            onClick={!clickBoardTitle && !showDropMenu ? (e) => handleClickBoard(e, board.id) : undefined}>
+            <div style={{padding:'0 10px' }}>
+                {clickBoardTitle 
+                    ? <textarea 
+                        ref={refInput}
+                        type='text'
+                        className={styles.titleInput}
+                        value={boardtitle}
+                        autoFocus
+                        onChange={(e) => setBoardtitle(e.target.value)}
+                        onKeyDown={(e) => handleEnterKey(e)}
+                    ></textarea>
+                    :   <span className={styles.hoverTitle}> {board.boardTitle} </span> 
                 }
-            <div className={style.threeDots}
-                style={{opacity: `${board.id === title.id ? '1' : '0'}`, marginRight:`${board.id === title.id ? '0' : '-18px'}`}} 
-                onClick={(e) => {
-                    e.stopPropagation(); 
-                    setShowDropMenu(prev => board.id === title.id ? !prev : prev); 
-                    setCoordY(e.clientY - 10)}}>
-                •••
-            </div>
-            {showMenu &&
-                <div>
-                    <div className={style.threeDotsWithoutHover}
-                        style={{display: `${board.id === title.id ? 'none' : ''}`}} 
-                        >•••
-                    </div>
-                </div>}
-            {showDropMenu && 
-                <div className={style.boardDropMenuBackGround} 
-                    style={{backgroundColor: board.boardColor, left: refSidebar.current.offsetWidth, top: coordY}}
-                    ref={ref}>
-                        <DropBoardMenu 
-                            board={board} 
-                            setShowDropMenu={setShowDropMenu}
-                            setClickBoardTitle={setClickBoardTitle}
-                            isOnBoards={false}
-                        />
+            </div>    
+            <div className={styles.dropupMenu} 
+                style={{boxShadow: showDropMenu ? '0px 0px 10px 4px rgba(9, 30, 66, .6)' : null}}>
+                <div className={styles.threeDots} ref={ref}
+                    onClick={(e) => {
+                        e.stopPropagation(); 
+                        setShowDropMenu(prev => !prev); 
+                        setCoordY(e.clientY - 180)}}>
+                    •••
                 </div>
-                } 
+                {showDropMenu && 
+                    <div className={styles.boardDropMenuBackGround} 
+                        style={{backgroundColor: board.boardColor, top: coordY}}
+                        >
+                            <DropBoardMenu 
+                                board={board} 
+                                setShowDropMenu={setShowDropMenu}
+                                setClickBoardTitle={setClickBoardTitle}
+                                isOnBoards={true}
+                            />
+                    </div>
+                    } 
+            </div>
         </div>
     )
 }
 
-export default BoardItem
+export default OneBoardOnBoards

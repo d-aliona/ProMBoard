@@ -5,12 +5,10 @@ import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
 import {addNotificationToDataBase} from '../exportFunctions'
-import { currentListsState } from '../../store/slices/currentListsSlice'
 import { allBoardsState } from '../../store/slices/allBoardsSlice'
 import Initials from '../../ui/Initials'
 import CloseButton from '../../ui/CloseButton'
 import useOutsideClick from '../../hooks/useOutsideClick'
-
 import style from '../../assets/scss/deleteForm.module.scss'
 
 const DeleteMemberFromCardForm = ({card, memberID, currentMember, setShowDeleteMemberForm}) => {
@@ -33,7 +31,7 @@ const DeleteMemberFromCardForm = ({card, memberID, currentMember, setShowDeleteM
         })
         
         const currentBoard = boards.find(ob => ob.id === card.boardID)
-        if (user.id != currentMember.id) {
+        if (user.id !== currentMember.id) {
             const ob = {
                 memberID: currentMember.id, 
                 userID: user.id, 

@@ -1,21 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from "react-router-dom"
 
-import { doc, updateDoc, deleteDoc } from 'firebase/firestore'
-import { db } from '../../firebase-client'
-
 import Initials from '../../ui/Initials'
-import CloseButton from '../../ui/CloseButton'
-import Line from '../../ui/Line'
 import ShortenTitle from '../../ui/ShortenTitle'
-import { notificationsState } from '../../store/slices/notificationsSlice'
 import { allCardsState } from '../../store/slices/allCardsSlice'
-// import { allListsState } from '../../store/slices/allListsSlice'
 import { allBoardsState } from '../../store/slices/allBoardsSlice'
-import useOutsideClick from '../../hooks/useOutsideClick'
 import styles from '../../assets/scss/topbar.module.scss'
-import styless from '../../assets/scss/boardsList.module.scss'
 
 const OneNotification = ({notification}) => {
     const user = useSelector((state) => state.user.user)
@@ -40,17 +31,17 @@ const OneNotification = ({notification}) => {
     }
     
     return (
-        <div key={notification.id} style={{backgroundColor:isReadColor}}>
+        <div  style={{backgroundColor:isReadColor}}>
             <div className={styles.notificationCard} >
                 <div 
                     style={{width:'100%', backgroundColor: color, padding:'10px', lineHeight:'1.5', 
                     cursor: requireNavigation ? 'pointer' : 'auto'}}
                     onClick={requireNavigation ? (e) => handleNavigateBoard(e, currentBoard) : undefined}>
                     <div style={{display:'flex', gap:'10px'}}>
-                        <b><ShortenTitle title={currentBoard ? currentBoard.boardTitle : notification.boardTitle} number={15}/></b> 
+                        <b><ShortenTitle title={currentBoard ? currentBoard.boardTitle : notification.boardTitle} number={28}/></b> 
                     </div>
                     <div style={{backgroundColor:'white', width:'100%', borderRadius:'3px', padding:'6px'}}>
-                        <ShortenTitle title={curCardTitle} number={30}/>
+                        <ShortenTitle title={curCardTitle} number={28}/>
                     </div>
                 </div>
                 <div style={{display:'flex', alignItems:'center', gap:'10px', padding:'10px'}}>

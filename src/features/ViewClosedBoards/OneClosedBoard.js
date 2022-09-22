@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import { useSelector } from 'react-redux'
 
 import { doc, updateDoc, deleteDoc } from 'firebase/firestore'
@@ -7,12 +7,9 @@ import { db } from '../../firebase-client'
 import {addNotificationToDataBase} from '../../features/exportFunctions'
 import { allCardsState } from '../../store/slices/allCardsSlice'
 import { allListsState } from '../../store/slices/allListsSlice'
-import Initials from '../../ui/Initials'
-import CloseButton from '../../ui/CloseButton'
 import ShortenTitle from '../../ui/ShortenTitle'
 import Button from '../../ui/Button'
 import style from '../../assets/scss/boardsList.module.scss'
-// import style from '../../assets/scss/board.module.scss'
 import styles from '../../assets/scss/deleteForm.module.scss'
 
 const OneClosedBoard = ({currentBoard}) => {
@@ -29,17 +26,15 @@ const OneClosedBoard = ({currentBoard}) => {
             statusOpened: true,
         })
         if (currentBoard.invitedMembers.length > 0) {
-            currentBoard.invitedMembers.forEach((mem) => {
-                console.log(mem)
+            currentBoard.invitedMembers.forEach((id) => {
                 const ob = {
-                    memberID: mem, 
+                    memberID: id, 
                     userID: user.id, 
                     text: 'reopened this board',
                     boardID: currentBoard.id, 
                     boardTitle: currentBoard.boardTitle, 
                     boardColor: currentBoard.boardColor, 
                 }
-                console.log(ob)
                 addNotificationToDataBase(ob)
             })
         }
@@ -60,7 +55,9 @@ const OneClosedBoard = ({currentBoard}) => {
 
         users.forEach(async(member) => {
             if (member.guestBoards.length > 0) {
-                if (member.guestboards.includes(currentBoard.id)) {
+                
+                const tempArray = [...member.guestBoards]    
+                if (tempArray.includes(currentBoard.id)) {
                     const dataUser = [...member.guestBoards]
                     const changedDataUser = dataUser.filter((id) => id !== currentBoard.id)
                     const doccRef = doc(db, 'users', member.id)

@@ -16,7 +16,8 @@
     left: 50%;
     transform: translate(-50%, 0);
     max-height: 80vh;
-    overflow-y: auto;
+    // overflow-y: auto;
+    overflow-x: hidden;
     padding: 10px;
     color: rgb(23, 43, 77);
     background-color: #fff;

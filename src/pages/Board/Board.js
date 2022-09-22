@@ -138,7 +138,7 @@ const Board = () => {
  
   const chooseLight = (e) => {
     e.preventDefault()
-    setTextColor('white')
+    setTextColor('#ffe')
   }
 
   const chooseDark = (e) => {

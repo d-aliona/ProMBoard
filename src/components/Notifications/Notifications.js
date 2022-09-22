@@ -1,30 +1,19 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-// import { useNavigate } from "react-router-dom"
 
 import { doc, updateDoc, deleteDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
-// import Initials from '../../ui/Initials'
 import CloseButton from '../../ui/CloseButton'
 import Line from '../../ui/Line'
-// import ShortenTitle from '../../ui/ShortenTitle'
 import { notificationsState } from '../../store/slices/notificationsSlice'
-// import { allCardsState } from '../../store/slices/allCardsSlice'
-// import { allListsState } from '../../store/slices/allListsSlice'
-// import { allBoardsState } from '../../store/slices/allBoardsSlice'
 import OneNotification from './OneNotification'
-// import NotificationRemove from './NotificationRemove'
 import useOutsideClick from '../../hooks/useOutsideClick'
 import styles from '../../assets/scss/topbar.module.scss'
 import styless from '../../assets/scss/boardsList.module.scss'
 
 const Notifications = () => {
     const user = useSelector((state) => state.user.user)
-    // const boards = useSelector(allBoardsState)
-    // const cards = useSelector(allCardsState)
-    // const lists = useSelector(allListsState)
-    // const users = useSelector((state) => state.users.users)
     const [showDropWindow, setShowDropWindow] = useState(false)
     const notifications = useSelector(notificationsState)
     const [newNotificationExist, setNewNotificationExist] = useState(false)
@@ -94,7 +83,7 @@ const Notifications = () => {
                         : <div style={{paddingLeft:'10px'}}>There are no notifications for you</div>}
                     {notifications &&
                         notifications.map((item) => {
-                            return <OneNotification notification={item} />
+                            return <OneNotification notification={item} key={item.id}/>
                         })}
                 </div>
             )}    

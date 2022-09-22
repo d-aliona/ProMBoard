@@ -5,6 +5,7 @@ import { doc, updateDoc, addDoc, collection } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
 import {addNotificationToDataBase} from '../exportFunctions'
+import ShortenTitle from '../../ui/ShortenTitle'
 import Input from '../../ui/Input'
 import CloseButton from '../../ui/CloseButton'
 import useOutsideClick from '../../hooks/useOutsideClick'
@@ -148,9 +149,9 @@ const InviteMembersPopup = ({ currentBoard, setShowInviteMembers }) => {
         <>
             <div className={style.inviteMembersWindow} ref={ref}>
                 <div className={styles.title} style={{marginBottom:'5px'}}>
-                    <span className={styles.titleName}>
-                        Invite new members
-                    </span>
+                    <div className={styles.titleName}>
+                        Invite new members on <b><ShortenTitle title={currentBoard.boardTitle} number={13}/></b>
+                    </div>
                     <CloseButton onClick={() => setShowInviteMembers(false)}/>
                 </div>
                 {selectedToBeInvited.length > 0 &&
