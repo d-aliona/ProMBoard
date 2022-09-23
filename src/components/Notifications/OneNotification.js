@@ -38,7 +38,7 @@ const OneNotification = ({notification}) => {
                     cursor: requireNavigation ? 'pointer' : 'auto'}}
                     onClick={requireNavigation ? (e) => handleNavigateBoard(e, currentBoard) : undefined}>
                     <div style={{display:'flex', gap:'10px'}}>
-                        <b><ShortenTitle title={currentBoard ? currentBoard.boardTitle : notification.boardTitle} number={28}/></b> 
+                        <b className={styles.hoverTitle}><ShortenTitle title={currentBoard ? currentBoard.boardTitle : notification.boardTitle} number={28}/></b> 
                     </div>
                     <div style={{backgroundColor:'white', width:'100%', borderRadius:'3px', padding:'6px'}}>
                         <ShortenTitle title={curCardTitle} number={28}/>
@@ -47,7 +47,7 @@ const OneNotification = ({notification}) => {
                 <div style={{display:'flex', alignItems:'center', gap:'10px', padding:'10px'}}>
                     { fromUser ?
                         <>
-                            <Initials user={fromUser}/>
+                            <Initials user={fromUser} size={'30px'}/>
                             {fromUser.firstName + ' ' + fromUser.lastName}
                         </>
                         : <span>Someone</span>}

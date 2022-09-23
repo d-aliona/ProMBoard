@@ -44,7 +44,7 @@ const ViewClosedBoards = ({setShowViewClosedBoards}) => {
                                             currentBoard={board}
                                         />
                             })
-                            : <div style={{marginLeft:'10px'}}>You have no closed boards</div> 
+                            : <div style={{marginLeft:'10px', overflowY:'hidden'}}>You have no closed boards</div> 
                         }   
                     </div>
                 </div>

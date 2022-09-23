@@ -25,7 +25,9 @@ const ViewOneMember = ({currentBoard, currentMember}) => {
         const data = []
         cards && 
             cards.map((card) => {
-                if (card.assignedUsers.includes(currentMember.id)) {
+                const tempArray = [...card.assignedUsers]
+
+                if (tempArray.includes(currentMember.id)) {
                     data.push([card.listID, card.cardTitle, card.id])
                 }
             })

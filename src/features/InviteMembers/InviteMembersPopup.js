@@ -150,7 +150,10 @@ const InviteMembersPopup = ({ currentBoard, setShowInviteMembers }) => {
             <div className={style.inviteMembersWindow} ref={ref}>
                 <div className={styles.title} style={{marginBottom:'5px'}}>
                     <div className={styles.titleName}>
-                        Invite new members on <b><ShortenTitle title={currentBoard.boardTitle} number={13}/></b>
+                        Invite new members on 
+                        <b  style={{position:'relative'}}>
+                            <ShortenTitle title={currentBoard.boardTitle} number={13} position={'absolute'} left={'10px'} top={'20px'}/>
+                        </b>
                     </div>
                     <CloseButton onClick={() => setShowInviteMembers(false)}/>
                 </div>
@@ -191,7 +194,7 @@ const InviteMembersPopup = ({ currentBoard, setShowInviteMembers }) => {
                                     className={style.dropMember} 
                                     onClick={(e) => selectMember(e, member)}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                        <Initials user={member} />
+                                        <Initials user={member} size={'30px'}/>
                                         {member.firstName + ' ' + member.lastName}
                                         <span style={{ marginLeft: '15px', color: '#666' }}>{member.email}</span>
                                     </div>
@@ -225,25 +228,27 @@ const InviteMembersPopup = ({ currentBoard, setShowInviteMembers }) => {
                         : null)
                 }
                 <p className={styles.boardsGroup} style={{ margin: '10px 0' }}>Members of this board</p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <Initials user={user} />
-                    {currentOwner.firstName + ' ' + currentOwner.lastName}
-                    <span style={{ marginLeft: '15px', color: '#666' }}>{currentOwner.email}</span>
-                    <span style={{ marginLeft: '20px', color: '#333' }}>(owner)</span>
+                <div className={styles.scrollbar}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <Initials user={user} />
+                        {currentOwner.firstName + ' ' + currentOwner.lastName}
+                        <span style={{ marginLeft: '15px', color: '#666' }}>{currentOwner.email}</span>
+                        <span style={{ marginLeft: '20px', color: '#333' }}>(owner)</span>
+                    </div>
+                    {currentBoard.invitedMembers.length
+                        ? currentBoard.invitedMembers.map((memberID) => {
+                            const currentMember = users.find(user => user.id === memberID)
+                            return (
+                                <div key={memberID} 
+                                    style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '4px' }}>
+                                    <Initials user={currentMember} />
+                                    {currentMember.firstName + ' ' + currentMember.lastName}
+                                    <span style={{ marginLeft: '15px', color: '#666' }}>{currentMember.email}</span>
+                                </div>)
+                        })
+                        : null
+                    }
                 </div>
-                {currentBoard.invitedMembers.length
-                    ? currentBoard.invitedMembers.map((memberID) => {
-                        const currentMember = users.find(user => user.id === memberID)
-                        return (
-                            <div key={memberID} 
-                                style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '4px' }}>
-                                <Initials user={currentMember} />
-                                {currentMember.firstName + ' ' + currentMember.lastName}
-                                <span style={{ marginLeft: '15px', color: '#666' }}>{currentMember.email}</span>
-                            </div>)
-                    })
-                    : null
-                }
             </div>
         </>
     )

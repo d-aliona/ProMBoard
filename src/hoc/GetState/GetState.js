@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { collection, orderBy, query, onSnapshot, where } from 'firebase/firestore'
+import { collection, orderBy, query, onSnapshot, where, limit } from 'firebase/firestore'
 import { onIdTokenChanged } from 'firebase/auth'
 import { db, auth } from '../../firebase-client'
 
@@ -102,7 +102,7 @@ const GetState = ({ children }) => {
 
   useEffect(() => {
     const notificationsCol = collection(db, 'users', user.id, 'notifications')
-    const qNotifications = query(notificationsCol, orderBy('time', "desc"))
+    const qNotifications = query(notificationsCol, orderBy('time', "desc"), limit(10))
     
     onSnapshot(qNotifications, (snapshot) => {
         const notificationsSnap = snapshot.docs.map((doc) => {

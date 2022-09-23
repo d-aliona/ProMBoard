@@ -7,19 +7,21 @@ import { db } from '../../firebase-client'
 
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
 import useOutsideClick from '../../hooks/useOutsideClick'
+import ViewMembersPopup from '../../components/ViewMembers/ViewMembersPopup'
 import ShortenTitle from '../../ui/ShortenTitle'
 import DropBoardMenu from '../../features/DropBoardMenu'
 import styles from '../../assets/scss/home.module.scss'
 
-const OneBoardOnBoards = ({board}) => {
-    const [showMenu, setShowMenu] = useState(false)
+const OneBoardOnBoards = ({board, isGuestBoard}) => {
+    // const [showMenu, setShowMenu] = useState(false)
     const [showDropMenu, setShowDropMenu] = useState(false)
+    const [showDropMenuGuest, setShowDropMenuGuest] = useState(false)
     const [boardtitle, setBoardtitle] = useState(board.boardTitle)
     const [clickBoardTitle, setClickBoardTitle] = useState(false)
     const [needToRename, setNeedToRename] = useState(false)
     const [coordY, setCoordY] = useState(0)
     const boards = useSelector(personalBoardsState)
-    const title = useParams()
+    // const title = useParams()
     let navigate = useNavigate()
     
     const ref = useOutsideClick(() => {
@@ -63,7 +65,9 @@ const OneBoardOnBoards = ({board}) => {
             setClickBoardTitle(false)
             setNeedToRename(false)
             refInput.current = null
-            navigate('/auth/board/' + board.id)
+            setTimeout(navigate('/auth/boards'), 0)
+            // navigate('/auth/home')
+            // navigate('/auth/boards')
         }
     }
 
@@ -91,29 +95,48 @@ const OneBoardOnBoards = ({board}) => {
                     ></textarea>
                     :   <span className={styles.hoverTitle}> {board.boardTitle} </span> 
                 }
-            </div>    
-            <div className={styles.dropupMenu} 
-                style={{boxShadow: showDropMenu ? '0px 0px 10px 4px rgba(9, 30, 66, .6)' : null}}>
-                <div className={styles.threeDots} ref={ref}
-                    onClick={(e) => {
-                        e.stopPropagation(); 
-                        setShowDropMenu(prev => !prev); 
-                        setCoordY(e.clientY - 180)}}>
-                    •••
-                </div>
-                {showDropMenu && 
-                    <div className={styles.boardDropMenuBackGround} 
-                        style={{backgroundColor: board.boardColor, top: coordY}}
-                        >
-                            <DropBoardMenu 
-                                board={board} 
-                                setShowDropMenu={setShowDropMenu}
-                                setClickBoardTitle={setClickBoardTitle}
-                                isOnBoards={true}
-                            />
+            </div> 
+            { !isGuestBoard && 
+                <div className={styles.dropupMenu} 
+                    style={{boxShadow: showDropMenu ? '0px 0px 10px 4px rgba(9, 30, 66, .6)' : null}}>
+                    <div className={styles.threeDots} ref={ref}
+                        onClick={(e) => {
+                            e.stopPropagation(); 
+                            setShowDropMenu(prev => !prev); 
+                            setCoordY(e.clientY - 180)}}>
+                        •••
                     </div>
-                    } 
-            </div>
+                    {showDropMenu && 
+                        <div className={styles.boardDropMenuBackGround} 
+                            style={{backgroundColor: board.boardColor, top: coordY}}
+                            >
+                                <DropBoardMenu 
+                                    board={board} 
+                                    setShowDropMenu={setShowDropMenu}
+                                    setClickBoardTitle={setClickBoardTitle}
+                                    isOnBoards={true}
+                                />
+                        </div>
+                        } 
+                </div>
+            }   
+            {isGuestBoard &&
+                <div className={styles.dropupMenu}>
+                    <div className={styles.threeDots} 
+                        onClick={(e) => {
+                            e.stopPropagation(); 
+                            setShowDropMenuGuest(prev => !prev); 
+                        }}
+                        >
+                        <span className={styles.hoverTitle} style={{fontSize:'14px',textDecoration:'overline #999'}}> 
+                            &nbsp; view members &nbsp;
+                        </span> 
+                    </div>
+                    {/* {setShowDropMenuGuest && (
+                        <ViewMembersPopup currentBoard={board} setShowDropMenuGuest={setShowDropMenuGuest} isOnBoards={isOnBoards}/>
+                    )}  */}
+                </div>
+            }            
         </div>
     )
 }

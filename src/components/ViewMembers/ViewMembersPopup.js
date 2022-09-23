@@ -13,13 +13,16 @@ const ViewMembersPopup = ({currentBoard, setShowMembers}) => {
     const users = useSelector((state) => state.users.users)
     const ref = useOutsideClick(() => setShowMembers(false))
     const currentOwner = users.find(member => member.id === currentBoard.owner)
-    
+    // console.log(ref)
     return (
         <>
             <div className={styles.dropViewMembers} ref={ref}>
                 <div className={styles.title}>
                     <div className={styles.titleName} >
-                        Members of the board <b><ShortenTitle title={currentBoard.boardTitle} number={13}/></b>
+                        Members of the board 
+                        <b style={{position:'relative'}}>
+                            <ShortenTitle title={currentBoard.boardTitle} number={13} position={'absolute'} left={'10px'} top={'20px'}/>
+                        </b>
                     </div>
                     <CloseButton onClick={() => {setShowMembers(false)}}/>
                 </div>
@@ -32,16 +35,18 @@ const ViewMembersPopup = ({currentBoard, setShowMembers}) => {
                     </div>
                     <Line width={'96%'}/>
                 <p className={styles.boardsGroup} style={{marginBottom:'10px'}}>Invited members</p>
-                {currentBoard.invitedMembers.length > 0
-                    ? currentBoard.invitedMembers.map((memberID) => {
-                        const currentMember = users.find(user => user.id === memberID)
-                        return <ViewOneMember 
-                                    key={memberID}
-                                    currentBoard={currentBoard}
-                                    currentMember={currentMember}/>
-                    })
-                    : <div style={{marginLeft:'10px'}}>There are no invited members</div> 
-                }
+                <div className={styles.scrollbar}>
+                    {currentBoard.invitedMembers.length > 0
+                        ? currentBoard.invitedMembers.map((memberID) => {
+                            const currentMember = users.find(user => user.id === memberID)
+                            return <ViewOneMember 
+                                        key={memberID}
+                                        currentBoard={currentBoard}
+                                        currentMember={currentMember}/>
+                        })
+                        : <div style={{marginLeft:'10px', overflowY:'hidden'}}>There are no invited members</div> 
+                    }
+                </div>
             </div>
         </>
     )

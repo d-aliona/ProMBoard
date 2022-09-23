@@ -69,8 +69,9 @@ background: rgba(23, 43, 77, .3);
 
 .dropViewMembers {
     @extend .dropBoardsList;
-    top: 90px;
-    margin-left: -30px;
+    top: 96px;
+    left: 50%;
+    transform: translate(-50%, 0);
     box-shadow: 0 0 0 100vh rgba(9, 30, 66,  .4);
     width: 500px;
     cursor: auto;
@@ -80,6 +81,6 @@ background: rgba(23, 43, 77, .3);
     width: 25px;
     min-width: 25px;
     height: 20px;
-    border-radius: 3px;
+    border-radius: 2px;
     margin: 5px;
 }

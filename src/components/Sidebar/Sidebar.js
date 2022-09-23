@@ -60,8 +60,9 @@ const Sidebar = () => {
                     <div className={style.dropBoards} onClick={() => navigate('/auth/boards')}>
                         Boards
                     </div>
-                    <div className={style.dropBoards}>
-                        Members <span className={style.plus}>+</span>
+                    <div className={style.dropBoards} onClick={() => navigate('/auth/members')}>
+                        Members 
+                        {/* <span className={style.plus}>+</span> */}
                     </div>
                     <div className={style.dropBoards} onClick={() => setShowYourBoards(prev => !prev)}>
                         Personal boards 

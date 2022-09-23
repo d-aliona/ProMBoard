@@ -28,7 +28,7 @@
 
 .createBoard {
     width: 200px;
-    height: 50px;
+    height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -56,7 +56,7 @@
     display: flex;
     gap: 60px;
     align-items: center;
-    margin: 40px;
+    margin: 20px 40px;
     color: rgb(23, 43, 77);
 }
 
@@ -71,11 +71,14 @@
     width:fit-content;
     background: linear-gradient(270deg, rgba(23, 43, 77, 0) 0%, rgba(23, 43, 77, .2) 100%);
 }
+// .boardgroupTitle:hover { 
+//     visibility: visible;
+// } 
 
 .boards {
     display: flex;
     flex-wrap: wrap;
-    gap: 30px;
+    gap: 20px;
     max-height:50vh;
     overflow-y: auto;
     overflow-x: hidden;
@@ -97,15 +100,15 @@ background: rgba(23, 43, 77, .3);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 180px;
+    width: 240px;
     height: 100px;
     padding: 10px 0px 0px;
     font-size: 16px;
     text-shadow: 0px 0px 5px white;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 2px;
     word-break: break-all;
-    box-shadow: 0px 5px 4px -4px rgba(9, 30, 66, .25), 0 0 0 1px rgba(9, 30, 66,  .1);
+    // box-shadow: 0px 5px 4px -4px rgba(9, 30, 66, .25);
 }
 
 .threeDots {
@@ -131,7 +134,7 @@ background: rgba(23, 43, 77, .3);
     position: fixed;
     z-index: 100;
     top: -160px;
-    width: 180px;
+    width: 240px;
     border-radius: 3px 3px 0 0;
     box-shadow: 0px 0px 10px 4px rgba(9, 30, 66, .6);
 }
@@ -141,11 +144,32 @@ background: rgba(23, 43, 77, .3);
     padding-left: 4px;
     z-index: 2000;
     border: 1px solid rgba(23, 43, 77, .7);
-    min-width: 160px;
-    max-width: 160px;
+    min-width: 220px;
+    max-width: 220px;
     max-height: 65px;
 }
 
 .hoverTitle:hover {
     color: #ffe;
 } 
+
+.searchField {
+    display: flex;
+    width:220px;
+    margin-left: auto;
+    position:relative;
+}
+.searchField::before {
+    content: url(../images/searchicon.png);
+    position: relative;
+    top: 23px;
+    left: 23px;
+}
+
+.statistics {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    margin-right: 40px;
+    gap: 5px;
+}

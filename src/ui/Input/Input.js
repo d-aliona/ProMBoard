@@ -1,8 +1,9 @@
 import style from '../../assets/scss/ui.module.scss'
 
-const Input = ({ type, placeholder, value, onChange }) => {
+const Input = ({ pad, type, placeholder, value, onChange }) => {
   return (
     <input
+      style={{paddingLeft:pad}}
       className={style.input}
       type={type}
       value={value}
