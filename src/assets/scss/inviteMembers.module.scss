@@ -12,10 +12,9 @@
     z-index: 100;
     top: 96px;
     box-shadow: 0 0 0 100vh rgba(9, 30, 66,  .6);
-    width: 500px;
+    min-width: 600px;
     left: 50%;
     transform: translate(-50%, 0);
-    max-height: 80vh;
     padding: 10px;
     color: rgb(23, 43, 77);
     background-color: #fff;
@@ -25,7 +24,7 @@
 }
 
 .dropmembersList {
-    width: 480px;
+    width: 100%;
     max-height: 200px;
     border: 1px solid rgb(23, 43, 77);
     border-radius: 3px;
@@ -55,7 +54,7 @@ background: rgba(23, 43, 77, .3);
 .invitationForm {
     @extend .dropmembersList;
     display: flex;
-    width: 480px;
+    width: 100%;
     gap: 10px;
     align-items: center;
     padding: 10px;

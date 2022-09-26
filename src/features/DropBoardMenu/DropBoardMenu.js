@@ -39,7 +39,9 @@ const DropBoardMenu = ({board, setShowDropMenu, setClickBoardTitle, isOnBoards})
                 })
             }
             setShowDropMenu(false)
-            navigate('/auth/home')
+            if (!isOnBoards) {
+                navigate('/auth/home')
+            }
         })
     }
         
@@ -52,7 +54,7 @@ const DropBoardMenu = ({board, setShowDropMenu, setClickBoardTitle, isOnBoards})
                 View members    
             </div>
             {showMembers && (
-                <ViewMembersPopup currentBoard={board} setShowMembers={setShowMembers} isOnBoards={isOnBoards}/>
+                <ViewMembersPopup currentBoard={board} setShowMembers={setShowMembers} />
             )} 
             <div className={style.boardDropItem}
                 onClick={(e) => {e.stopPropagation(); setShowInviteMembers(prev => !prev)}}>
@@ -69,7 +71,8 @@ const DropBoardMenu = ({board, setShowDropMenu, setClickBoardTitle, isOnBoards})
                 <ChangeBackgroundBoardForm 
                     board={board} 
                     setShowChangeBackgroundForm={setShowChangeBackgroundForm}
-                    setShowDropMenu={setShowDropMenu}/>
+                    setShowDropMenu={setShowDropMenu}
+                    isOnBoards={isOnBoards}/>
             )} 
             <div className={style.boardDropItem}
                 onClick={(e) => {e.stopPropagation(); setClickBoardTitle(true); setShowDropMenu(false)}}>

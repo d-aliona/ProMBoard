@@ -16,7 +16,7 @@
 .listTitle {
     display: flex;
     justify-content: flex-start;
-    align-items: center;
+    align-self: center;
     font-weight: 600;
     font-size: 16px;
     padding: 2px;
@@ -35,17 +35,17 @@
 }
 
 .listMenu {
-    font-size: 12px;
+    font-size: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 38px;
-    height: 38px;
+    width: 30px;
+    height: 28px;
 }
 
 .listMenu:hover {
-    background-color: rgba(0, 0, 0, .1);
-    border-radius: 3px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, rgba(23, 43, 77, .5) 0%, rgba(23, 43, 77, 0) 100%);
 }
 
 .line {
@@ -94,3 +94,20 @@
     background: rgba(0, 0, 0, .1);
 }
 
+.scrollbar {
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 5px;
+    margin-right: -6px;
+}
+.scrollbar::-webkit-scrollbar {
+    width: 6px;
+    
+}
+.scrollbar::-webkit-scrollbar-thumb {
+background: rgba(23, 43, 77, .2);
+border-radius: 10px;
+}
+.scrollbar::-webkit-scrollbar-thumb:hover {
+background: rgba(23, 43, 77, .3);
+}

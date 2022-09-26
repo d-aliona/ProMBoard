@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 import { doc, updateDoc } from 'firebase/firestore'
@@ -8,12 +8,10 @@ import { db } from '../../firebase-client'
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
 import useOutsideClick from '../../hooks/useOutsideClick'
 import ViewMembersPopup from '../../components/ViewMembers/ViewMembersPopup'
-import ShortenTitle from '../../ui/ShortenTitle'
 import DropBoardMenu from '../../features/DropBoardMenu'
 import styles from '../../assets/scss/home.module.scss'
 
 const OneBoardOnBoards = ({board, isGuestBoard}) => {
-    // const [showMenu, setShowMenu] = useState(false)
     const [showDropMenu, setShowDropMenu] = useState(false)
     const [showDropMenuGuest, setShowDropMenuGuest] = useState(false)
     const [boardtitle, setBoardtitle] = useState(board.boardTitle)
@@ -21,7 +19,6 @@ const OneBoardOnBoards = ({board, isGuestBoard}) => {
     const [needToRename, setNeedToRename] = useState(false)
     const [coordY, setCoordY] = useState(0)
     const boards = useSelector(personalBoardsState)
-    // const title = useParams()
     let navigate = useNavigate()
     
     const ref = useOutsideClick(() => {
@@ -29,7 +26,7 @@ const OneBoardOnBoards = ({board, isGuestBoard}) => {
     })
 
     const handleClickBoard = (e, id) => {
-        // e.stopPropagation()
+        e.stopPropagation()
         e.preventDefault()
         navigate('/auth/board/' + id)
     }
@@ -66,8 +63,6 @@ const OneBoardOnBoards = ({board, isGuestBoard}) => {
             setNeedToRename(false)
             refInput.current = null
             setTimeout(navigate('/auth/boards'), 0)
-            // navigate('/auth/home')
-            // navigate('/auth/boards')
         }
     }
 
@@ -81,7 +76,7 @@ const OneBoardOnBoards = ({board, isGuestBoard}) => {
     return (
         <div className={styles.boardWrapper}
             style={{backgroundColor: board.boardColor}} 
-            onClick={!clickBoardTitle && !showDropMenu ? (e) => handleClickBoard(e, board.id) : undefined}>
+            onClick={!clickBoardTitle && !showDropMenu && !showDropMenuGuest ? (e) => handleClickBoard(e, board.id) : undefined}>
             <div style={{padding:'0 10px' }}>
                 {clickBoardTitle 
                     ? <textarea 
@@ -97,11 +92,11 @@ const OneBoardOnBoards = ({board, isGuestBoard}) => {
                 }
             </div> 
             { !isGuestBoard && 
-                <div className={styles.dropupMenu} 
+                <div className={styles.dropupMenu} ref={ref}
                     style={{boxShadow: showDropMenu ? '0px 0px 10px 4px rgba(9, 30, 66, .6)' : null}}>
-                    <div className={styles.threeDots} ref={ref}
+                    <div className={styles.threeDots} 
                         onClick={(e) => {
-                            e.stopPropagation(); 
+                            e.stopPropagation()
                             setShowDropMenu(prev => !prev); 
                             setCoordY(e.clientY - 180)}}>
                         •••
@@ -132,9 +127,9 @@ const OneBoardOnBoards = ({board, isGuestBoard}) => {
                             &nbsp; view members &nbsp;
                         </span> 
                     </div>
-                    {/* {setShowDropMenuGuest && (
-                        <ViewMembersPopup currentBoard={board} setShowDropMenuGuest={setShowDropMenuGuest} isOnBoards={isOnBoards}/>
-                    )}  */}
+                    {showDropMenuGuest && (
+                        <ViewMembersPopup currentBoard={board} setShowDropMenuGuest={setShowDropMenuGuest} isGuestBoard={true}/>
+                    )} 
                 </div>
             }            
         </div>

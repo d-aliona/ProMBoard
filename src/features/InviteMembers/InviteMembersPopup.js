@@ -148,11 +148,11 @@ const InviteMembersPopup = ({ currentBoard, setShowInviteMembers }) => {
     return (
         <>
             <div className={style.inviteMembersWindow} ref={ref}>
-                <div className={styles.title} style={{marginBottom:'5px'}}>
+                <div className={styles.title} style={{marginBottom:'5px', padding:'0'}}>
                     <div className={styles.titleName}>
                         Invite new members on 
                         <b  style={{position:'relative'}}>
-                            <ShortenTitle title={currentBoard.boardTitle} number={13} position={'absolute'} left={'10px'} top={'20px'}/>
+                            <ShortenTitle title={currentBoard.boardTitle} number={25} position={'absolute'} left={'10px'} top={'20px'}/>
                         </b>
                     </div>
                     <CloseButton onClick={() => setShowInviteMembers(false)}/>
@@ -228,7 +228,7 @@ const InviteMembersPopup = ({ currentBoard, setShowInviteMembers }) => {
                         : null)
                 }
                 <p className={styles.boardsGroup} style={{ margin: '10px 0' }}>Members of this board</p>
-                <div className={styles.scrollbar}>
+                <div className={styles.scrollbar} style={{maxHeight: '60vh'}}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                         <Initials user={user} />
                         {currentOwner.firstName + ' ' + currentOwner.lastName}

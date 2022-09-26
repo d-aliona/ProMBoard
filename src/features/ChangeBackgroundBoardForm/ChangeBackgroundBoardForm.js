@@ -10,20 +10,23 @@ import { Preview } from '../../assets/svg/svg-icons'
 import useOutsideClick from '../../hooks/useOutsideClick'
 import style from '../../assets/scss/boardsForm.module.scss'
 
-const ChangeBackgroundBoardForm = ({board, setShowChangeBackgroundForm, setShowDropMenu}) => {
+const ChangeBackgroundBoardForm = ({board, setShowChangeBackgroundForm, setShowDropMenu, isOnBoards}) => {
     let navigate = useNavigate()
     const [colorBoard, setColorBoard] = useState(board.boardColor)
     const ref = useOutsideClick(() => {setShowChangeBackgroundForm(false)})
     
     const changeBackground = (e) => {
         e.preventDefault()
+        e.stopPropagation()
         const docRef = doc(db, 'boards', board.id)
               
         updateDoc(docRef, {
             boardColor: colorBoard,
         })
         .then(() => {
-            navigate('/auth/board/' + board.id)
+            if (!isOnBoards) {
+                navigate('/auth/board/' + board.id)
+            } 
             setShowChangeBackgroundForm(false)
             setShowDropMenu(false)
         })

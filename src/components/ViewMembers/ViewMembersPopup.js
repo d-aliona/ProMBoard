@@ -9,11 +9,27 @@ import ShortenTitle from '../../ui/ShortenTitle'
 import CloseButton from '../../ui/CloseButton'
 import styles from '../../assets/scss/boardsList.module.scss'
 
-const ViewMembersPopup = ({currentBoard, setShowMembers}) => {
+const ViewMembersPopup = ({currentBoard, setShowMembers, setShowDropMenuGuest, isGuestBoard}) => {
     const users = useSelector((state) => state.users.users)
-    const ref = useOutsideClick(() => setShowMembers(false))
+    const ref = useOutsideClick(() => {
+        if (isGuestBoard) {
+            setShowDropMenuGuest(false)
+        } else {
+            setShowMembers(false) 
+        }
+    })
     const currentOwner = users.find(member => member.id === currentBoard.owner)
-    // console.log(ref)
+    
+    const handlerClosePopupWindow = (e) => {
+        e.stopPropagation() 
+        e.preventDefault()
+        if (isGuestBoard) {
+            setShowDropMenuGuest(false)
+        } else {
+            setShowMembers(false) 
+        }
+    }
+
     return (
         <>
             <div className={styles.dropViewMembers} ref={ref}>
@@ -24,7 +40,7 @@ const ViewMembersPopup = ({currentBoard, setShowMembers}) => {
                             <ShortenTitle title={currentBoard.boardTitle} number={13} position={'absolute'} left={'10px'} top={'20px'}/>
                         </b>
                     </div>
-                    <CloseButton onClick={() => {setShowMembers(false)}}/>
+                    <CloseButton onClick={(e) => handlerClosePopupWindow(e)}/>
                 </div>
                 <Line width={'99%'}/>
                 <p className={styles.boardsGroup} style={{marginBottom:'10px'}}>Owner</p>

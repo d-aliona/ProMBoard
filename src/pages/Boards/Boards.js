@@ -85,7 +85,6 @@ const Boards = () => {
         </div>
       )}
       <div className={style.line1}></div>
-      {/* <hr className={style.line} style={{width:'60%'}}/> */}
       <div className={style.boardsGroup}>
         <div style={{display:'flex'}}>
           <h2 className={style.boardgroupTitle}>Personal boards</h2>
@@ -110,7 +109,6 @@ const Boards = () => {
           }
         </div>
       </div>
-      {/* <hr className={style.line} style={{width:'100%'}}/> */}
       <div className={style.boardsGroup}>
         <div style={{display:'flex'}}>
           <h2 className={style.boardgroupTitle}>Guest boards</h2>

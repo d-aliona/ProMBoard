@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
+import { collection, orderBy, query, onSnapshot, where, limit } from 'firebase/firestore'
 import { doc, updateDoc, deleteDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
 import CloseButton from '../../ui/CloseButton'
 import Line from '../../ui/Line'
-import { notificationsState } from '../../store/slices/notificationsSlice'
+import { TickDown } from '../../assets/svg/svg-icons'
+import { setNotifications, notificationsState } from '../../store/slices/notificationsSlice'
 import OneNotification from './OneNotification'
 import useOutsideClick from '../../hooks/useOutsideClick'
+import style from '../../assets/scss/home.module.scss'
 import styles from '../../assets/scss/topbar.module.scss'
 import styless from '../../assets/scss/boardsList.module.scss'
 
@@ -17,7 +20,21 @@ const Notifications = () => {
     const [showDropWindow, setShowDropWindow] = useState(false)
     const notifications = useSelector(notificationsState)
     const [newNotificationExist, setNewNotificationExist] = useState(false)
+    const [limitNumber, setLimitNumber] = useState(10)
+    const dispatch = useDispatch()
     
+    useEffect(() => {
+        const notificationsCol = collection(db, 'users', user.id, 'notifications')
+        const qNotifications = query(notificationsCol, orderBy('time', "desc"), limit(limitNumber))
+        
+        onSnapshot(qNotifications, (snapshot) => {
+            const notificationsSnap = snapshot.docs.map((doc) => {
+                return { ...doc.data(), id: doc.id }
+            })
+            dispatch(setNotifications(notificationsSnap))
+        })
+      }, [limitNumber])
+
     useEffect(() => {
         if (notifications.some(el => el.read === false)) {
             setNewNotificationExist(true)
@@ -65,7 +82,7 @@ const Notifications = () => {
             </div>
             {showDropWindow && (
                 <div className={styles.dropListAuth} 
-                    style={{padding:'10px 0', maxHeight:'90vh', overflowY:'auto', minWidth:'340px',backgroundColor:'#ffe'}} 
+                    style={{padding:'10px 0', minWidth:'340px',backgroundColor:'#ffe'}} 
                     ref={ref}>
                     <div className={styless.title}>
                         <span className={styless.titleName} >
@@ -81,10 +98,20 @@ const Notifications = () => {
                             Delete all
                           </div> 
                         : <div style={{paddingLeft:'10px'}}>There are no notifications for you</div>}
-                    {notifications &&
-                        notifications.map((item) => {
-                            return <OneNotification notification={item} key={item.id}/>
-                        })}
+                    <div className={styless.scrollbar} 
+                        style={{maxHeight: `calc(100vh - 150px)`, overflowY:'auto'}}>
+                        {notifications &&
+                            notifications.map((item) => {
+                                return <OneNotification notification={item} key={item.id}/>
+                            })}
+                        {(notifications.length > 9)  &&
+                            <div className={style.threeDots} 
+                                onClick={() => {setLimitNumber(prev => prev + 10)}}
+                                >
+                                <TickDown />
+                            </div>     
+                        }
+                    </div>    
                 </div>
             )}    
         </>
