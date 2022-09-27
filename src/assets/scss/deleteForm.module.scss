@@ -8,29 +8,29 @@
     background-color: rgba(161, 177, 206, 0.6);
 }
 
-.deleteListForm {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    top: 0;
-    bottom: 30%;
-    left: 0;
-    right: 0;
-    margin: auto;
-    z-index: 10;
-    max-width: 400px;
-    height: fit-content;
-    padding: 30px;
-    color: rgb(23, 43, 77);
-    background-color: #fff;
-    border: 1px solid #e3e6f0;
-    border-radius: 4px;
-    box-shadow: 0 0 0 100vh rgba(9, 30, 66,  .4);
-    // box-shadow: 0 8px 16px -4px rgba(9, 30, 66, .25), 0 0 0 1px rgba(9, 30, 66,  .1);
-    font-size: 18px;
-    text-align: center;
-    line-height: 2;
-}
+// .deleteListForm {
+//     position: absolute;
+//     display: flex;
+//     flex-direction: column;
+//     top: 0;
+//     bottom: 30%;
+//     left: 0;
+//     right: 0;
+//     margin: auto;
+//     z-index: 10;
+//     max-width: 400px;
+//     height: fit-content;
+//     padding: 30px;
+//     color: rgb(23, 43, 77);
+//     background-color: #fff;
+//     border: 1px solid #e3e6f0;
+//     border-radius: 4px;
+//     box-shadow: 0 0 0 100vh rgba(9, 30, 66,  .4);
+//     // box-shadow: 0 8px 16px -4px rgba(9, 30, 66, .25), 0 0 0 1px rgba(9, 30, 66,  .1);
+//     font-size: 18px;
+//     text-align: center;
+//     line-height: 2;
+// }
 
 .deleteCardForm {
     background-image: linear-gradient(rgba(129, 3, 3, .2) 40%, transparent 50%);

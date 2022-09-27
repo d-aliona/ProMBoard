@@ -1,71 +1,87 @@
-import React, { useState, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import React from 'react'
+import { useSelector } from 'react-redux'
 
 import { doc, deleteDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
-import useOutsideClick from '../../hooks/useOutsideClick'
 import { currentListsState } from '../../store/slices/currentListsSlice'
-
+import {addNotificationToDataBase} from '../exportFunctions'
 import style from '../../assets/scss/deleteForm.module.scss'
 
-const DeleteListForm = ({list, setShowMenu}) => {
-    
-    const [show, setShow] = useState(true)
-    const title = useParams()
+const DeleteListForm = ({list, cardsOnCurList, listWillbeDeleted, setMessageDeleteList, setMessageDeleteAllCards, setShowMenu}) => {
+    const user = useSelector((state) => state.user.user)
+    const persBoards = useSelector(personalBoardsState)
+    const noCards = cardsOnCurList.length === 0
     const lists = useSelector(currentListsState)  
-    const boards = useSelector(personalBoardsState)
-    const currentBoard = boards.find(ob => ob.id === title.id)
-
-    const handleClickOutside = () => {
-        setShow(false)
-    }
+    const currentBoard = persBoards.find(ob => ob.id === list.boardID)
 
     const deleteList = async () => {
-        
-        lists.forEach(async(el) => {
-            if (el.position > list.position) {
-              const docRef = doc(db, 'lists', el.id)
-                    
-              await updateDoc(docRef, {
-                  position: el.position - 1,
+
+        if (!noCards) {
+            cardsOnCurList.forEach(async(el) => {
+                el.assignedUsers.forEach((idn) => {
+                    if (user.id !== idn) {
+                        const ob = {
+                            memberID: idn, 
+                            userID: user.id, 
+                            text: 'deleted this card', 
+                            boardTitle: currentBoard.boardTitle, 
+                            boardColor: currentBoard.boardColor, 
+                            cardTitle: el.cardTitle, 
+                        }
+                        addNotificationToDataBase(ob)
+                    }
+                })
+                await deleteDoc(doc(db, "cards", el.id))
+            })
+        }
+        if (listWillbeDeleted) {
+            lists.forEach(async(el) => {
+                if (el.position > list.position) {
+                  const docRef = doc(db, 'lists', el.id)
+                        
+                  await updateDoc(docRef, {
+                      position: el.position - 1,
+                  })
+                }  
               })
-            }  
-          })
-
-        await deleteDoc(doc(db, "lists", list.id))
-               
-        setShow(false)
+    
+            await deleteDoc(doc(db, "lists", list.id))
+        }
+        listWillbeDeleted ? setMessageDeleteList(false) : setMessageDeleteAllCards(false)        
+        setShowMenu(false)       
     }
 
-    const cancel = () => {
-        setShow(false)
-        // setShowMenu(true)
-        
+    const clickButtonNo = (e) => {
+        e.stopPropagation()
+        listWillbeDeleted ? setMessageDeleteList(false) : setMessageDeleteAllCards(false) 
     }
-    const ref = useOutsideClick(handleClickOutside)
  
     return (
         <> 
-            {show &&
-                <div className={style.window}>
-                    <div className={style.deleteListForm} ref={ref}>
-                        <p>Are you sure you want to delete </p>
-                        <p>the list <strong>{list.listTitle} </strong></p>
-                        <p>from the board <strong>{currentBoard.boardTitle}</strong>?</p>
-                        <div>
-                            <button className={style.buttonYes} onClick={deleteList}>
-                                Yes
-                            </button>
-                            <button className={style.buttonNo} onClick={cancel}>
-                                No
-                            </button>
-                        </div>
-                    </div>
+            <div className={style.deleteCardForm} style={{margin:'0 10px'}}>
+                {listWillbeDeleted
+                    ? noCards ? <span>Delete this list?</span> : <span>Delete this list with all cards on it?</span>
+                    : ''
+                }
+                {!listWillbeDeleted
+                    ? !noCards ? <span>Delete all cards on this list?</span> : ''
+                    : ''
+                }
+                <div>
+                    <button className={style.buttonYes} 
+                        style={{fontSize:'16px'}}
+                        onClick={deleteList}>
+                        Yes
+                    </button>
+                    <button className={style.buttonNo}
+                        style={{fontSize:'16px'}} 
+                        onClick={(e) => clickButtonNo(e)}>
+                        No
+                    </button>
                 </div>
-            }
+            </div> 
         </>
     )
 }

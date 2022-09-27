@@ -21,6 +21,8 @@ const List = ({ list, cards, curBoardId, draggingCard, setDraggingCard, listsCar
     const lists = useSelector(currentListsState)
     const [headerHeight, setHeaderHeight] = useState(0)
 
+    const cardsOnCurList = listsCardsToRender.find(el => el.list.id === list.id).cards
+    
     useEffect(() => {
         setHeaderHeight(refListHeader.current.clientHeight)
     },[listtitle])
@@ -79,7 +81,7 @@ const List = ({ list, cards, curBoardId, draggingCard, setDraggingCard, listsCar
                                     value={listtitle}
                                     autoFocus
                                     onChange={(e) => setListtitle(e.target.value)}
-                                    onKeyUp={(e) => handleEnterKey(e)}
+                                    onKeyDown={(e) => handleEnterKey(e)}
                                 ></textarea>
                             :   <div style={{lineHeight: '120%'}}>
                                     {list.listTitle}
@@ -92,13 +94,15 @@ const List = ({ list, cards, curBoardId, draggingCard, setDraggingCard, listsCar
                     <div className={style.dropMenu} ref={ref}>
                         <DropListMenu 
                             list={list} 
-                            curBoardId={curBoardId} 
+                            lists={lists}
+                            listsCardsToRender={listsCardsToRender}
+                            cardsOnCurList={cardsOnCurList} 
                             setShowMenu={setShowMenu} 
                             setClickTitle={setClickTitle}/>
                     </div>
                 )}
                 <div className={style.scrollbar} 
-                    style={{maxHeight:`calc(100vh - 200px - ${headerHeight}px)`}}>
+                    style={{maxHeight:`calc(100vh - 210px - ${headerHeight}px)`}}>
                     {<Cards 
                         list={list} 
                         cards={cards}
