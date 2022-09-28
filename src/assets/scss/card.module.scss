@@ -343,3 +343,107 @@
     font-size: 16px;
     z-index: 1;
 }
+
+.cardCoverWrapper {
+    border: px solid rgba(73, 136, 245, 0.1);
+    padding: 4px 2px 8px;
+    background-color: white;
+    border-radius: 2px;
+}
+
+.colorList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 5px;
+}
+
+.colorItem {
+    width: 30px;
+    height: 26px;
+    border-radius: 2px;
+    cursor: pointer;
+    border: 1px solid rgba(73, 136, 245, 0.1);
+}
+
+.removeCover {
+    text-align: center;
+    width: 100%;
+    font-weight: 400;
+    margin-top: 2px;
+    padding: 4px;
+    border: 1px solid rgba(73, 136, 245, 0.1);
+    border-radius: 2px;
+    cursor: pointer;
+}
+.removeCover:hover {
+    background-color: rgba(73, 136, 245, 0.1);
+    font-weight: 600;
+}
+.copyCardButton {
+    @extend .removeCover;
+    background-color: rgba(73, 136, 245, 0.08);
+}
+
+.inputField {
+    width: 100%;
+    margin: 4px 0px;
+    border-radius: 2px;
+    outline: 1px solid rgb(227, 227, 230);
+    color: rgb(23, 43, 77);
+    background-color: #ffe;
+    font-size: 16px;
+}
+.inputField:focus {
+    outline: 1px solid rgba(35, 66, 119, 0.5);
+    background-color: rgb(255, 255, 255);
+}
+
+.copyCardItem {
+    position:relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0 0 2px 2px;
+    border: 1px solid rgba(35, 66, 119, 0.5); 
+    padding: 4px 2px;
+    background-color: #ffe;
+    cursor: pointer;
+}
+
+.copyCardDropMenu {
+    position: absolute;
+    bottom: 22px;
+    left: -1px;
+    padding: 5px 2px 8px 4px;
+    line-height: 1.4;
+    z-index: 1000;
+    width: 143px;
+    border: 1px solid rgba(35, 66, 119, 0.5);
+    background-color: #ffe;
+    font-weight: 500;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 350px;
+}
+.copyCardDropMenu::-webkit-scrollbar {
+    width: 6px;
+    
+}
+.copyCardDropMenu::-webkit-scrollbar-thumb {
+background: rgba(23, 43, 77, .2);
+border-radius: 10px;
+}
+.copyCardDropMenu::-webkit-scrollbar-thumb:hover {
+background: rgba(23, 43, 77, .3);
+}
+
+.copyCardDropItem:hover {
+    background-color: rgba(35, 66, 119, 0.1);
+}
+
+.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }

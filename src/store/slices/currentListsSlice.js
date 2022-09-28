@@ -9,16 +9,13 @@ const currentListsSlice = createSlice({
   initialState,
   reducers: {
     setCurrentLists(state, action) {
-      // console.log(action.payload)
-      // console.log(initialState)
-      // console.log(state)
-      // state.currentLists = action?.payload 
+      
       if (state) {
         state.currentLists = action?.payload
       } else  {
         state = { currentLists: action?.payload} 
         return state}
-      // console.log(state)
+      
     },
   },
 })

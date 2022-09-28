@@ -37,7 +37,9 @@ const OpenCard = () => {
       <Board /> 
       <div className={style.window}>
         <div className={style.openedCardModal} ref={ref}>
-          <CardTitle card={card} list={list} clickTitle={clickTitle} setClickTitle={setClickTitle}/>
+          <div style={{backgroundColor: card.cardColor, boxShadow:'0px 1px 3px #ddd'}}>
+            <CardTitle card={card} list={list} clickTitle={clickTitle} setClickTitle={setClickTitle}/>
+          </div>
           <div style={{display: 'flex'}}>
             <div style={{width:'75%'}}>
               {card.assignedUsers.length > 0 ? <CardMembers card={card} /> : null}

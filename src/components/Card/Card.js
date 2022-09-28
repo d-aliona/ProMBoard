@@ -17,7 +17,7 @@ const Card = ({card, list}) => {
 
     return (
         <>
-            <div className={style.cardWrapper} >
+            <div className={style.cardWrapper} style={{backgroundColor: card.cardColor}}>
                 <div className={style.cardTitle} onClick={handleClickToOpenCard}>
                     <div style={{overflowWrap:'break-word', whiteSpace: 'pre-wrap', lineHeight: '120%'}}>
                         {card?.cardTitle}
@@ -46,7 +46,8 @@ const Card = ({card, list}) => {
                                                     className={style.assignedMember} 
                                                     data-descr={currentMember.firstName + ' ' + currentMember.lastName + ' ' + currentMember.email}>
                                                     <Initials user={currentMember} size={'28px'} font={'14px'}/>
-                                                </div>)
+                                                </div>
+                                            )
                                         })}
                                </div>) 
                             : null}

@@ -26,6 +26,7 @@ const AddCardForm = ({list, curBoardId}) => {
 
     await addDoc(cardsCol, {
       cardTitle: cardTitle,
+      cardColor: 'white',
       description: '',
       assignedUsers: [],
       listID: list.id,
