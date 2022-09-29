@@ -18,7 +18,7 @@ import CardDescription from '../../components/Card/CardDescription'
 import CardCommentForm from '../../components/Card/comments/CardCommentForm'
 import CardComments from '../../components/Card/comments/CardComments'
 import CardSidebar from '../../components/Card/CardSidebar'
-import { currentCardsState } from '../../store/slices/currentCardsSlice'
+import { allCardsState } from '../../store/slices/allCardsSlice'
 import style from '../../assets/scss/card.module.scss'
 
 const OpenCard = () => {
@@ -28,21 +28,21 @@ const OpenCard = () => {
   const title = useParams()
   const location = useLocation()
   const { list } = location.state
-  const cards = useSelector(currentCardsState)
-  const card = cards.find(ob => ob.id === title.idcard)
+  const allCards = useSelector(allCardsState)
+  const card = allCards.find(ob => ob.id === title.idcard)
   const ref = useOutsideClick(() => navigate(-1))
-
+  
   return (
     <>
       <Board /> 
       <div className={style.window}>
         <div className={style.openedCardModal} ref={ref}>
-          <div style={{backgroundColor: card.cardColor, boxShadow:'0px 1px 3px #ddd'}}>
+          <div style={{backgroundColor: card?.cardColor, boxShadow:'0px 1px 3px #ddd'}}>
             <CardTitle card={card} list={list} clickTitle={clickTitle} setClickTitle={setClickTitle}/>
           </div>
           <div style={{display: 'flex'}}>
             <div style={{width:'75%'}}>
-              {card.assignedUsers.length > 0 ? <CardMembers card={card} /> : null}
+              {card?.assignedUsers.length > 0 ? <CardMembers card={card} /> : null}
               <CardDescription card={card} />
               <CardCommentForm card={card} />
               <CardComments card={card} />

@@ -252,6 +252,11 @@
     gap: 8px;
 }
 
+.sidebarItemBorder {
+    outline: 1px solid rgba(35, 66, 119, 0.5);
+    border-radius: 4px;
+}
+
 .addmembericon {
     width: 20px;
     height: 20px;
@@ -346,7 +351,7 @@
 
 .cardCoverWrapper {
     border: px solid rgba(73, 136, 245, 0.1);
-    padding: 4px 2px 8px;
+    padding: 4px 0px 8px;
     background-color: white;
     border-radius: 2px;
 }
@@ -383,6 +388,7 @@
 .copyCardButton {
     @extend .removeCover;
     background-color: rgba(73, 136, 245, 0.08);
+    font-size: 16px;
 }
 
 .inputField {
@@ -404,10 +410,10 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    align-items: center;
-    border-radius: 0 0 2px 2px;
+    // align-content: center;
+    border-radius: 0 0 4px 4px;
     border: 1px solid rgba(35, 66, 119, 0.5); 
-    padding: 4px 2px;
+    padding: 5px 3px;
     background-color: #ffe;
     cursor: pointer;
 }
@@ -419,7 +425,7 @@
     padding: 5px 2px 8px 4px;
     line-height: 1.4;
     z-index: 1000;
-    width: 143px;
+    width: 147px;
     border: 1px solid rgba(35, 66, 119, 0.5);
     background-color: #ffe;
     font-weight: 500;

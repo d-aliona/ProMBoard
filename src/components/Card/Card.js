@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 import Initials from '../../ui/Initials'
 import style from '../../assets/scss/card.module.scss'
@@ -9,7 +9,7 @@ const Card = ({card, list}) => {
     let navigate = useNavigate()
     const title = useParams()
     const users = useSelector((state) => state.users.users)
-        
+    
     const handleClickToOpenCard = (e) => {
         e.stopPropagation()
         navigate('/auth/board/' + title.id + '/' + card.id, {state: {list: list, card: card}})
@@ -28,7 +28,7 @@ const Card = ({card, list}) => {
                                 <div className={style.descriptioniconMini}></div>
                             </abbr> 
                             : null }
-                        {card?.commentsExist ? 
+                        {card.commentsExist ? 
                             <div style={{display:'flex', gap:'4px', justifyContent:'center'}}>
                                 <abbr title="This card has comments">
                                     <div className={style.commenticonMini}></div>

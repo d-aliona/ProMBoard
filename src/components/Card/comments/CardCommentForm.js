@@ -19,7 +19,7 @@ const CardCommentForm = ({card}) => {
         
         addDoc(colRef, {
             comment: comment,
-            user: user.email,
+            userID: user.id,
             time: new Date().toLocaleString('en-GB'),
             edited: false,
         })

@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 import { collection, addDoc, doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
@@ -14,7 +15,7 @@ import { allBoardsState } from '../../store/slices/allBoardsSlice'
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
 import style from '../../assets/scss/card.module.scss'
 
-const CopyCard = ({card, setClickCopyCard}) => {
+const MoveCard = ({card, setClickMoveCard}) => {
     const user = useSelector((state) => state.user.user)
     const persBoards = useSelector(personalBoardsState)
     const allBoards = useSelector(allBoardsState)
@@ -22,7 +23,7 @@ const CopyCard = ({card, setClickCopyCard}) => {
     const allCards = useSelector(allCardsState)
     const comments = useSelector(currentCommentsState)
     const [newTitle, setNewTitle] = useState('')
-    const ref = useOutsideClick(() => {setClickCopyCard(false)})
+    const ref = useOutsideClick(() => {setClickMoveCard(false)})
     const curList = allLists.find(el => el.id === card.listID)
     const curBoard = allBoards.find(el => el.id === card.boardID)
     const [openBoardList, setOpenBoardList] = useState(false)
@@ -36,8 +37,9 @@ const CopyCard = ({card, setClickCopyCard}) => {
     const [checkedMem, setCheckedMem] = useState(false)
     const [checkedCom, setCheckedCom] = useState(false)
     const isPersonalBoard = user.id === curBoard.owner
-    const disabled = newTitle && listsOfChosenBoard.length !== 0 ? '' : style.disabled
-    
+    const cardsOfCurrentList = allCards.filter(el => el.listID === curList.id)
+    let navigate = useNavigate()
+
     useEffect(() => {
         const data = allLists.filter(el => el.boardID === chosenBoard.id)
         setListsOfChosenBoard(data)
@@ -55,13 +57,22 @@ const CopyCard = ({card, setClickCopyCard}) => {
     },[chosenList])
 
     useEffect(() => {
-        setChosenPosition(cardsOfChosenList.length + 1)
+        setChosenPosition(chosenList?.id === card.listID ? cardsOfChosenList.length : cardsOfChosenList.length + 1)
     },[cardsOfChosenList])
 
-    const copyCard = async(e) => {
+    const moveCard = async(e) => {
         e.stopPropagation()
 
-        if (chosenPosition <= cardsOfChosenList.length) {
+        if (card.listID === chosenList.id) {
+            cardsOfChosenList
+            .filter(el => el.position > card.position)
+            .forEach(async(el) =>{
+                const docRef = doc(db, 'cards', el.id)
+                await updateDoc(docRef, {
+                    position: el.position - 1,
+                })
+            })
+        } else {
             cardsOfChosenList
             .filter(el => el.position >= chosenPosition)
             .forEach(async(el) => {
@@ -70,91 +81,62 @@ const CopyCard = ({card, setClickCopyCard}) => {
                     position: el.position + 1,
                 })
             })
-        }
-        const cardsCol = collection(db, 'cards')
 
-        await addDoc(cardsCol, {
-            cardTitle: newTitle,
-            cardColor: card.cardColor,
-            description: card.description,
-            assignedUsers: checkedMem ? [...card.assignedUsers] : [],
+            cardsOfCurrentList
+            .filter(el => el.position > card.position)
+            .forEach(async(el) => {
+                const docRef = doc(db, 'cards', el.id)
+                await updateDoc(docRef, {
+                    position: el.position - 1,
+                })
+            })
+        }
+
+        // if (chosenPosition <= cardsOfChosenList.length) {
+        //     cardsOfChosenList
+        //     .filter(el => el.position >= chosenPosition)
+        //     .forEach(async(el) => {
+        //         const docRef = doc(db, 'cards', el.id)
+        //         await updateDoc(docRef, {
+        //             position: el.position + 1,
+        //         })
+        //     })
+        // }
+        
+        if (chosenBoard.id !== card.boardID) {
+            card.assignedUsers.forEach(async(el) => {
+                if (!chosenBoard.invitedMembers.includes(el) && el !==chosenBoard.owner) {
+                    const docRef = doc(db, 'boards', chosenBoard.id)
+                    await updateDoc(docRef, {
+                        invitedMembers: [...chosenBoard.invitedMembers, el]
+                    })
+                    const ob = {
+                        memberID: el, 
+                        userID: user.id, 
+                        text: 'added you to this board',
+                        boardID: chosenBoard.id,
+                        boardTitle: chosenBoard.boardTitle, 
+                        boardColor: chosenBoard.boardColor, 
+                    }
+                    addNotificationToDataBase(ob)
+                }
+            })
+        }
+
+        const docRef = doc(db, 'cards', card.id)
+        await addDoc(docRef, {
             listID: chosenList.id,
             boardID: chosenBoard.id,
-            commentsExist: checkedCom ? true : false,
-            commentsNumber: checkedCom ? card.commentsNumber : 0,
             position: chosenPosition, 
         })
-        .then((docref) => {
-            if (checkedMem) {
-                if (chosenBoard.id !== card.boardID) {
-                    card.assignedUsers.forEach(async(el) => {
-                        if (!chosenBoard.invitedMembers.includes(el) && el !==chosenBoard.owner) {
-                            const docRef = doc(db, 'boards', chosenBoard.id)
-                            await updateDoc(docRef, {
-                                invitedMembers: [...chosenBoard.invitedMembers, el]
-                            })
-                            const ob = {
-                                memberID: el, 
-                                userID: user.id, 
-                                text: 'added you to this board',
-                                boardID: chosenBoard.id,
-                                boardTitle: chosenBoard.boardTitle, 
-                                boardColor: chosenBoard.boardColor, 
-                            }
-                            addNotificationToDataBase(ob)
-                        }
-                    })
-                }
-            }
-            if (checkedCom) {
-                comments.forEach(el => {
-                    const colRef = collection(db, 'cards', docref.id, 'comments')
         
-                    addDoc(colRef, {
-                        comment: el.comment,
-                        userID: el.userID,
-                        time: el.time,
-                        edited: el.edited,
-                    })
-                }) 
-            }
-            if (checkedMem) {
-                card.assignedUsers.forEach(async(el) => {
-                    if (el !== user.id) {
-                        const ob = {
-                            memberID: el, 
-                            userID: user.id, 
-                            text: 'added you to this card',
-                            cardID: docref.id, 
-                            boardID: chosenBoard.id,
-                            boardTitle: chosenBoard.boardTitle, 
-                            boardColor: chosenBoard.boardColor, 
-                            cardTitle: newTitle, 
-                        }
-                        addNotificationToDataBase(ob)
-                    }
-                })
-            }
-        }).then(() => {
-            setClickCopyCard(false)
-        })
-        .catch((err) => {
-            console.error(err)
-        })
+        setClickMoveCard(false)
+        navigate(-1)
     }  
     
     return (
         <> 
             <div className={style.cardCoverWrapper} ref={ref}>
-                <input
-                    className={style.inputField} 
-                    type={'text'}
-                    placeholder={'new title'}
-                    value={newTitle}
-                    onChange={(e) => {
-                        setNewTitle(e.target.value)
-                    }}
-                />
                 <p style={{fontWeight:'400', padding:'5px 0 0 2px'}}>board:</p>
                 <div className={style.copyCardItem} 
                     onClick={(e) => {setOpenBoardList(prev => !prev); e.stopPropagation()}}>
@@ -208,43 +190,24 @@ const CopyCard = ({card, setClickCopyCard}) => {
                     {openPositionList ? '' : '✓'}
                     {openPositionList &&
                         <div className={style.copyCardDropMenu}>
-                            {[...Array(cardsOfChosenList.length + 1)].map((x, index) => {
-                                return (
-                                    <div key={index} className={style.copyCardDropItem}
-                                        onClick={(e) => {e.stopPropagation(); setChosenPosition(index + 1); setOpenPositionList(false)}}>
-                                        {index + 1}
-                                    </div>
-                                )
+                            {[...Array(chosenList.id === card.listID ? cardsOfChosenList.length : cardsOfChosenList.length + 1)]
+                                .map((x, index) => {
+                                    return (
+                                        <div key={index} className={style.copyCardDropItem}
+                                            onClick={(e) => {e.stopPropagation(); setChosenPosition(index + 1); setOpenPositionList(false)}}>
+                                            {index + 1}
+                                        </div>
+                                    )
                             })}
                         </div>
                     }
                 </div>
-                <div style={{display:'flex', alignItems:'start'}}>
-                    {card.assignedUsers.length !== 0 || comments?.length !== 0 
-                        ? <p style={{fontWeight:'400', padding:'5px'}}>keep:</p>
-                        : ''
-                    }
-                    <div style={{padding:'5px', display:'flex', flexDirection:'column', fontWeight:'400'}}>
-                        {card.assignedUsers.length !== 0 &&
-                            <label style={{display:'flex', gap:'5px'}}>
-                                <input type="checkbox" checked={checkedMem} onChange={() => setCheckedMem(!checkedMem)} />
-                                members
-                            </label>
-                        }
-                        {comments.length !== 0 &&
-                            <label style={{display:'flex', gap:'5px'}}>
-                                <input type="checkbox" checked={checkedCom} onChange={() => setCheckedCom(!checkedCom)} />
-                                comments
-                            </label>
-                        }
-                    </div>
-                </div>
-                <div className={`${style.copyCardButton} ${disabled}`} onClick={copyCard}>
-                    Copy card
+                <div className={style.copyCardButton} style={{marginTop:'8px'}} onClick={moveCard}>
+                    Move card
                 </div>
             </div>
         </>
     )
 }
 
-export default CopyCard
+export default MoveCard

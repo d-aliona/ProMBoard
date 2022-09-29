@@ -12,6 +12,8 @@ import styles from '../../../assets/scss/deleteForm.module.scss'
 
 const Comment = ({card, comment}) => {
     const user = useSelector((state) => state.user.user)
+    const users = useSelector((state) => state.users.users)
+    const currentMember = users.find(pers => pers.id === comment.userID) 
     const [clickEditComment, setClickEditComment] = useState(false)
     const [confirmDelete, setConfirmDelete] = useState(false)
     const [commentText, setCommentText] = useState(comment.comment)
@@ -52,8 +54,8 @@ const Comment = ({card, comment}) => {
     return (
         <>
             <div  style={{display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px'}}>
-                <Initials user={user}/>
-                <div style={{fontSize: '16px', fontWeight: '600'}}>{comment.user} </div>
+                <Initials user={currentMember}/>
+                <div style={{fontSize: '16px', fontWeight: '600'}}>{currentMember.firstName} {currentMember.lastName} </div>
                 <div>{comment.time}</div>
                 <div>{comment.edited ? '(edited)' : null}</div>
             </div>
