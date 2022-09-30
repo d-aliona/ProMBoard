@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { useNavigate, useParams, Link } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
+import React from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 import Initials from '../../ui/Initials'
 import style from '../../assets/scss/card.module.scss'
 
-const Card = ({card, list}) => {
+const Card = ({card}) => {
     let navigate = useNavigate()
     const title = useParams()
     const users = useSelector((state) => state.users.users)
     
     const handleClickToOpenCard = (e) => {
         e.stopPropagation()
-        navigate('/auth/board/' + title.id + '/' + card.id, {state: {list: list, card: card}})
+        navigate('/auth/board/' + title.id + '/' + card.id)
     }
 
     return (

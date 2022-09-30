@@ -1,16 +1,8 @@
-// import React, {useRef} from 'react'
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import Board from '../Board'
-import React, { useState, useEffect, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useParams, useLocation } from 'react-router-dom'
-
-import { collection, orderBy, doc, query, onSnapshot } from 'firebase/firestore'
-import { db } from '../../firebase-client'
-
-import { setCurrentComments, currentCommentsState } from '../../store/slices/currentCommentsSlice'
-import { personalBoardsState } from '../../store/slices/personalBoardsSlice'
-import AddCardForm from '../../features/AddCardForm'
 import useOutsideClick from '../../hooks/useOutsideClick'
 import CardTitle from '../../components/Card/CardTitle'
 import CardMembers from '../../components/Card/CardMembers'
@@ -19,17 +11,17 @@ import CardCommentForm from '../../components/Card/comments/CardCommentForm'
 import CardComments from '../../components/Card/comments/CardComments'
 import CardSidebar from '../../components/Card/CardSidebar'
 import { allCardsState } from '../../store/slices/allCardsSlice'
+import { allListsState } from '../../store/slices/allListsSlice'
 import style from '../../assets/scss/card.module.scss'
 
 const OpenCard = () => {
-  // const dispatch = useDispatch()
   let navigate = useNavigate()
   const [clickTitle, setClickTitle] = useState(false) 
   const title = useParams()
-  const location = useLocation()
-  const { list } = location.state
   const allCards = useSelector(allCardsState)
+  const allLists = useSelector(allListsState)
   const card = allCards.find(ob => ob.id === title.idcard)
+  const list = allLists.find(el => el.id === card.listID)
   const ref = useOutsideClick(() => navigate(-1))
   
   return (

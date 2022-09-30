@@ -16,6 +16,7 @@ import boardReducer from './slices/boardSlice'
 import currentListsReducer from './slices/currentListsSlice'
 import currentCardsReducer from './slices/currentCardsSlice'
 import currentCommentsReducer from './slices/currentCommentsSlice'
+import currentRepliesReducer from './slices/currentRepliesSlice'
 import notificationsReducer from './slices/notificationsSlice'
 import currentDragStartCardReducer from './slices/currentDragStartCardSlice'
 
@@ -36,6 +37,7 @@ const reducers = combineReducers({
     currentLists: currentListsReducer,
     currentCards: currentCardsReducer,
     currentComments: currentCommentsReducer,
+    currentReplies: currentRepliesReducer,
     notifications: notificationsReducer,
     currentDragStartCard: currentDragStartCardReducer,
 })

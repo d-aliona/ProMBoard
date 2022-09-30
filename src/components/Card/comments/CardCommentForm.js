@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 import { updateDoc, doc, collection, addDoc } from 'firebase/firestore'
 import { db } from '../../../firebase-client'
@@ -7,10 +8,11 @@ import { db } from '../../../firebase-client'
 import Initials from '../../../ui/Initials'
 import useOutsideClick from '../../../hooks/useOutsideClick'
 import style from '../../../assets/scss/card.module.scss'
+// import { Navigate, useNavigate } from 'react-router-dom'
 
 const CardCommentForm = ({card}) => {
     const user = useSelector((state) => state.user.user)
-        
+    const navigate = useNavigate()    
     const [clickComment, setClickComment] = useState(false)
     const [comment, setComment] = useState('')
     
@@ -37,6 +39,7 @@ const CardCommentForm = ({card}) => {
             commentsExist: true,
             commentsNumber: card.commentsNumber + 1,
         })
+        navigate('/auth/board/' + card.boardID + '/' + card.id)
     }
 
     const handleInputComment = (e) => {

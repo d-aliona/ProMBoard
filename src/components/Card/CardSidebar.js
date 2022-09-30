@@ -1,16 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useParams, useLocation } from 'react-router-dom'
+import React, { useState } from 'react'
 
-import { updateDoc, doc, deleteDoc } from 'firebase/firestore'
-import { db } from '../../firebase-client'
-import { setCurrentCards, currentCardsState } from '../../store/slices/currentCardsSlice'
 import AssignMemberForm from '../../features/AssignMemberForm'
 import DeleteCardForm from '../../features/DeleteCardForm'
 import AddCardCover from '../../features/AddCardCover'
 import CopyCard from '../../features/CopyCard'
 import MoveCard from '../../features/MoveCard'
-import useOutsideClick from '../../hooks/useOutsideClick'
 import style from '../../assets/scss/card.module.scss'
 
 const CardSidebar = ({card, setClickTitle}) => {

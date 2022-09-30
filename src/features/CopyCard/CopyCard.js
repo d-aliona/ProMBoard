@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import { collection, addDoc, doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
 import { currentCommentsState } from '../../store/slices/currentCommentsSlice'
+import { currentRepliesState } from '../../store/slices/currentRepliesSlice'
 import ShortenTitle from '../../ui/ShortenTitle'
 import useOutsideClick from '../../hooks/useOutsideClick'
 import {addNotificationToDataBase} from '../exportFunctions'
@@ -21,6 +22,7 @@ const CopyCard = ({card, setClickCopyCard}) => {
     const allLists = useSelector(allListsState)
     const allCards = useSelector(allCardsState)
     const comments = useSelector(currentCommentsState)
+    const replies = useSelector(currentRepliesState)
     const [newTitle, setNewTitle] = useState('')
     const ref = useOutsideClick(() => {setClickCopyCard(false)})
     const curList = allLists.find(el => el.id === card.listID)
@@ -116,6 +118,20 @@ const CopyCard = ({card, setClickCopyCard}) => {
                         time: el.time,
                         edited: el.edited,
                     })
+                    .then((comRef) => {
+                        replies.forEach(re => {
+                            if (re.commentID === el.id) {
+                                const colReplyRef = collection(db, 'cards', docref.id, 'replies')
+        
+                                addDoc(colReplyRef, {
+                                    reply: re.reply,
+                                    userID: re.userID,
+                                    time: re.time,
+                                    commentID: comRef.id,
+                                })
+                            }
+                        })
+                    })
                 }) 
             }
             if (checkedMem) {
@@ -159,7 +175,7 @@ const CopyCard = ({card, setClickCopyCard}) => {
                 <div className={style.copyCardItem} 
                     onClick={(e) => {setOpenBoardList(prev => !prev); e.stopPropagation()}}>
                     <ShortenTitle title={chosenBoard.boardTitle} number={14}/>
-                    {openBoardList ? '' : '✓'}
+                    <div>{openBoardList ? '' : '✓'}</div>
                     {openBoardList &&
                         <div className={style.copyCardDropMenu}>
                             {persBoards && 
@@ -186,7 +202,7 @@ const CopyCard = ({card, setClickCopyCard}) => {
                         ? <span style={{color:'rgb(129, 3, 3)'}}>No lists</span>
                         : <ShortenTitle title={chosenList?.listTitle} number={14}/>
                     }    
-                    {openListsList ? '' : '✓'}
+                    <div>{openListsList ? '' : '✓'}</div>
                     {openListsList &&
                         <div className={style.copyCardDropMenu}>
                             {listsOfChosenBoard.length > 0 && 
@@ -205,7 +221,7 @@ const CopyCard = ({card, setClickCopyCard}) => {
                 <div className={style.copyCardItem}
                     onClick={(e) => {setOpenPositionList(prev => !prev); e.stopPropagation()}}>
                     {chosenList ? <span>{chosenPosition}</span> : '0'}
-                    {openPositionList ? '' : '✓'}
+                    <div>{openPositionList ? '' : '✓'}</div>
                     {openPositionList &&
                         <div className={style.copyCardDropMenu}>
                             {[...Array(cardsOfChosenList.length + 1)].map((x, index) => {

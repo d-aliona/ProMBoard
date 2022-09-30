@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
-import { collection, addDoc, doc, updateDoc } from 'firebase/firestore'
+import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../firebase-client'
 
-import { currentCommentsState } from '../../store/slices/currentCommentsSlice'
 import ShortenTitle from '../../ui/ShortenTitle'
 import useOutsideClick from '../../hooks/useOutsideClick'
 import {addNotificationToDataBase} from '../exportFunctions'
@@ -21,8 +20,6 @@ const MoveCard = ({card, setClickMoveCard}) => {
     const allBoards = useSelector(allBoardsState)
     const allLists = useSelector(allListsState)
     const allCards = useSelector(allCardsState)
-    const comments = useSelector(currentCommentsState)
-    const [newTitle, setNewTitle] = useState('')
     const ref = useOutsideClick(() => {setClickMoveCard(false)})
     const curList = allLists.find(el => el.id === card.listID)
     const curBoard = allBoards.find(el => el.id === card.boardID)
@@ -34,8 +31,6 @@ const MoveCard = ({card, setClickMoveCard}) => {
     const [chosenPosition, setChosenPosition] = useState(card.position)
     const [listsOfChosenBoard, setListsOfChosenBoard] = useState([])
     const [cardsOfChosenList, setCardsOfChosenList] = useState([])
-    const [checkedMem, setCheckedMem] = useState(false)
-    const [checkedCom, setCheckedCom] = useState(false)
     const isPersonalBoard = user.id === curBoard.owner
     const cardsOfCurrentList = allCards.filter(el => el.listID === curList.id)
     let navigate = useNavigate()
@@ -81,7 +76,6 @@ const MoveCard = ({card, setClickMoveCard}) => {
                     position: el.position + 1,
                 })
             })
-
             cardsOfCurrentList
             .filter(el => el.position > card.position)
             .forEach(async(el) => {
@@ -91,18 +85,6 @@ const MoveCard = ({card, setClickMoveCard}) => {
                 })
             })
         }
-
-        // if (chosenPosition <= cardsOfChosenList.length) {
-        //     cardsOfChosenList
-        //     .filter(el => el.position >= chosenPosition)
-        //     .forEach(async(el) => {
-        //         const docRef = doc(db, 'cards', el.id)
-        //         await updateDoc(docRef, {
-        //             position: el.position + 1,
-        //         })
-        //     })
-        // }
-        
         if (chosenBoard.id !== card.boardID) {
             card.assignedUsers.forEach(async(el) => {
                 if (!chosenBoard.invitedMembers.includes(el) && el !==chosenBoard.owner) {
@@ -122,16 +104,15 @@ const MoveCard = ({card, setClickMoveCard}) => {
                 }
             })
         }
+        setClickMoveCard(false)
+        navigate(-1)
 
         const docRef = doc(db, 'cards', card.id)
-        await addDoc(docRef, {
+        await updateDoc(docRef, {
             listID: chosenList.id,
             boardID: chosenBoard.id,
             position: chosenPosition, 
         })
-        
-        setClickMoveCard(false)
-        navigate(-1)
     }  
     
     return (
@@ -141,7 +122,7 @@ const MoveCard = ({card, setClickMoveCard}) => {
                 <div className={style.copyCardItem} 
                     onClick={(e) => {setOpenBoardList(prev => !prev); e.stopPropagation()}}>
                     <ShortenTitle title={chosenBoard.boardTitle} number={14}/>
-                    {openBoardList ? '' : '✓'}
+                    <div>{openBoardList ? '' : '✓'}</div>
                     {openBoardList &&
                         <div className={style.copyCardDropMenu}>
                             {persBoards && 
@@ -168,7 +149,7 @@ const MoveCard = ({card, setClickMoveCard}) => {
                         ? <span style={{color:'rgb(129, 3, 3)'}}>No lists</span>
                         : <ShortenTitle title={chosenList?.listTitle} number={14}/>
                     }    
-                    {openListsList ? '' : '✓'}
+                    <div>{openListsList ? '' : '✓'}</div>
                     {openListsList &&
                         <div className={style.copyCardDropMenu}>
                             {listsOfChosenBoard.length > 0 && 
@@ -187,7 +168,7 @@ const MoveCard = ({card, setClickMoveCard}) => {
                 <div className={style.copyCardItem}
                     onClick={(e) => {setOpenPositionList(prev => !prev); e.stopPropagation()}}>
                     {chosenList ? <span>{chosenPosition}</span> : '0'}
-                    {openPositionList ? '' : '✓'}
+                    <div>{openPositionList ? '' : '✓'}</div>
                     {openPositionList &&
                         <div className={style.copyCardDropMenu}>
                             {[...Array(chosenList.id === card.listID ? cardsOfChosenList.length : cardsOfChosenList.length + 1)]

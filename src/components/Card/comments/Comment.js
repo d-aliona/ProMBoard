@@ -1,28 +1,26 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 
 import { db } from '../../../firebase-client'
-import { collection, orderBy, doc, deleteDoc, updateDoc, query, onSnapshot } from 'firebase/firestore'
+import { doc, deleteDoc, updateDoc } from 'firebase/firestore'
 
 import Initials from '../../../ui/Initials'
-import { setCurrentComments, currentCommentsState } from '../../../store/slices/currentCommentsSlice'
-import useOutsideClick from '../../../hooks/useOutsideClick'
+import AddReplyForm from './replies/AddReplyForm'
+import Replies from './replies/Replies'
+import { TickDown } from '../../../assets/svg/svg-icons'
 import style from '../../../assets/scss/card.module.scss'
 import styles from '../../../assets/scss/deleteForm.module.scss'
 
-const Comment = ({card, comment}) => {
+const Comment = ({card, comment, repliesForComment}) => {
     const user = useSelector((state) => state.user.user)
     const users = useSelector((state) => state.users.users)
     const currentMember = users.find(pers => pers.id === comment.userID) 
     const [clickEditComment, setClickEditComment] = useState(false)
+    const [clickReplyComment, setClickReplyComment] = useState(false)
     const [confirmDelete, setConfirmDelete] = useState(false)
     const [commentText, setCommentText] = useState(comment.comment)
-
-    const handleInputComment = (e) => {
-        e.stopPropagation()
-        setClickEditComment(true)
-    }
-
+    const [showReplies, setShowReplies] = useState(true)
+    
     const cancel = (e) => {
         e.stopPropagation()
         setClickEditComment(false)
@@ -58,6 +56,18 @@ const Comment = ({card, comment}) => {
                 <div style={{fontSize: '16px', fontWeight: '600'}}>{currentMember.firstName} {currentMember.lastName} </div>
                 <div>{comment.time}</div>
                 <div>{comment.edited ? '(edited)' : null}</div>
+                {!confirmDelete && currentMember.id === user.id &&
+                    <div style={{textAlign:'end', marginLeft:'auto'}}>
+                        <span className={style.updateComment} style={{color:'rgb(38, 70, 177)'}}
+                            onClick={(e) => {setClickEditComment(true); e.stopPropagation()}}>
+                            Edit
+                        </span>
+                        <span className={style.updateComment} style={{color:'rgb(129, 3, 3)'}}
+                            onClick={(e) => {setConfirmDelete(true); e.stopPropagation()}}>
+                            Delete
+                        </span>
+                    </div>
+                }
             </div>
             <div>    
                 <div>
@@ -86,37 +96,47 @@ const Comment = ({card, comment}) => {
                                     {comment.comment}
                                 </div>
                             </pre>
-                            {!confirmDelete && 
-                                <div style={{textAlign:'end', paddingTop:'6px'}}>
-                                    <span className={style.updateComment} 
-                                        onClick={(e) => {setClickEditComment(true); e.stopPropagation()}}>
-                                        Edit
+                            {!confirmDelete &&
+                                <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', gap:'10px', marginLeft:'45px'}}>
+                                    <span className={style.updateComment} style={{color:'rgb(48, 121, 88)'}}
+                                        onClick={(e) => {setClickReplyComment(true); e.stopPropagation()}}>
+                                        Reply
                                     </span>
-                                    <span className={style.updateComment} 
-                                        onClick={(e) => {setConfirmDelete(true); e.stopPropagation()}}>
-                                        Delete
-                                    </span>
-                                </div>}
+                                    {repliesForComment.length > 0 &&
+                                        <div style={{cursor:'pointer', transform: showReplies ? 'rotate(180deg)' : ''}}
+                                            onClick={(e) => {e.stopPropagation(); setShowReplies(!showReplies)}}>
+                                            <TickDown />
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            {clickReplyComment && 
+                                <AddReplyForm card={card} comment={comment} setClickReplyComment={setClickReplyComment}/>
+                            }
                             {confirmDelete && 
-                                <div className={style.confirmDelete}>
-                                    Are you sure you want to delete this comment?
-                                    <button className={styles.buttonYes} 
-                                        style={{fontSize:'16px'}}
-                                        onClick={deleteComment}>
-                                        Yes
-                                    </button>
-                                    <button className={styles.buttonNo}
-                                        style={{fontSize:'16px'}} 
-                                        onClick={(e) => {setConfirmDelete(false); e.stopPropagation()}}>
-                                        No
-                                    </button>
+                                <div style={{width: '200px', margin:'0 auto'}}>
+                                    <div className={styles.deleteCardForm}>
+                                        Delete this comment?
+                                        <button className={styles.buttonYes} 
+                                            style={{fontSize:'16px'}}
+                                            onClick={deleteComment}>
+                                            Yes
+                                        </button>
+                                        <button className={styles.buttonNo}
+                                            style={{fontSize:'16px'}} 
+                                            onClick={(e) => {setConfirmDelete(false); e.stopPropagation()}}>
+                                            No
+                                        </button>
+                                    </div> 
                                 </div>
                             }
                         </>}
                 </div>
+                {showReplies && 
+                    <Replies card={card} comment={comment} replies={repliesForComment}/>
+                }
             </div>    
         </>
-         
     )
 }
 
