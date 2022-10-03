@@ -16,7 +16,7 @@ const CardComments = ({card}) => {
     useEffect(() => {
         
         const commentsCol = collection(db, 'cards', card.id, 'comments')
-        const qComments = query(commentsCol, orderBy('time', "desc"))
+        const qComments = query(commentsCol, orderBy('sortkey', "desc"))
         
         onSnapshot(qComments, (snapshot) => {
             const commentsSnap = snapshot.docs.map((doc) => {
@@ -29,7 +29,7 @@ const CardComments = ({card}) => {
     useEffect(() => {
         
         const repliesCol = collection(db, 'cards', card.id, 'replies')
-        const qReplies = query(repliesCol, orderBy('time'))
+        const qReplies = query(repliesCol, orderBy('sortkey'))
         
         onSnapshot(qReplies, (snapshot) => {
             const repliesSnap = snapshot.docs.map((doc) => {

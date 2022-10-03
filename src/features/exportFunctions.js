@@ -7,6 +7,7 @@ export async function addNotificationToDataBase(ob) {
     addDoc(colRef, {
         fromUser: ob.userID,
         time: new Date().toLocaleString('en-GB'),
+        sortkey: new Date().valueOf().toString(),
         read: false,
         text: ob.text,
         ...(ob.hasOwnProperty('cardID') && {cardID: ob.cardID}),

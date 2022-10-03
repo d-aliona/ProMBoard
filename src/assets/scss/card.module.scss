@@ -184,12 +184,14 @@
 
 @mixin button {
     background: transparent;
-    border-radius: 3px;
+    
     padding: 3px 10px;
+    cursor: pointer;
 }
 
 .buttonTrue {
     @include button;
+    border-radius: 3px 0 0 3px;
     border: 1px solid rgb(38, 70, 177);
 }
 .buttonTrue:hover {
@@ -198,6 +200,7 @@
 }
 .buttonCancel {
     @include button;
+    border-radius: 0 3px 3px 0;
     border: 1px solid rgb(129, 3, 3);
 }
 .buttonCancel:hover {

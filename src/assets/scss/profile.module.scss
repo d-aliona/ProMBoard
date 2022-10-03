@@ -1,0 +1,38 @@
+.head {
+    margin: 40px;
+    color: rgb(23, 43, 77);
+}
+
+.email {
+    color: #666;
+    font-size: 16px;
+    margin: 10px 56px;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.line {
+    width: 60%;
+    height: 1px;
+    margin: 40px 0 20px;
+    background: linear-gradient(270deg, rgba(23, 43, 77, 0) 0%, rgba(23, 43, 77, .4) 100%);
+}
+
+.item {
+    font-size: 18px;
+    padding: 6px 40px;
+    margin: 20px 0 0;
+    // width:fit-content;
+    background: linear-gradient(270deg, rgba(23, 43, 77, 0) 0%, rgba(23, 43, 77, .2) 100%);
+}
+
+.changePassForm {
+    width: 330px;
+    margin: 10px;
+}

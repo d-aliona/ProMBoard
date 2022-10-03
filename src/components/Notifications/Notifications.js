@@ -25,7 +25,7 @@ const Notifications = () => {
     
     useEffect(() => {
         const notificationsCol = collection(db, 'users', user.id, 'notifications')
-        const qNotifications = query(notificationsCol, orderBy('time', "desc"), limit(limitNumber))
+        const qNotifications = query(notificationsCol, orderBy('sortkey', "desc"), limit(limitNumber))
         
         onSnapshot(qNotifications, (snapshot) => {
             const notificationsSnap = snapshot.docs.map((doc) => {

@@ -117,6 +117,7 @@ const CopyCard = ({card, setClickCopyCard}) => {
                         userID: el.userID,
                         time: el.time,
                         edited: el.edited,
+                        sortkey: el.sortkey,
                     })
                     .then((comRef) => {
                         replies.forEach(re => {
@@ -128,6 +129,7 @@ const CopyCard = ({card, setClickCopyCard}) => {
                                     userID: re.userID,
                                     time: re.time,
                                     commentID: comRef.id,
+                                    sortkey: re.sortkey,
                                 })
                             }
                         })
