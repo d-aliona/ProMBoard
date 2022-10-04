@@ -1,2 +1,2 @@
-import BoardsList from './BoardsList'
-export default BoardsList
+import BoardsList from './BoardsList';
+export default BoardsList;

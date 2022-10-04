@@ -1,2 +1,2 @@
-import DeleteCardForm from './DeleteCardForm'
-export default DeleteCardForm
+import DeleteCardForm from './DeleteCardForm';
+export default DeleteCardForm;

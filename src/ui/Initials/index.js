@@ -1,2 +1,2 @@
-import Initials from './Initials'
-export default Initials
+import Initials from './Initials';
+export default Initials;

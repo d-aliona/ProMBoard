@@ -1,9 +1,9 @@
-import style from '../../assets/scss/ui.module.scss'
+import style from '../../assets/scss/ui.module.scss';
 
 const Input = ({ pad, type, placeholder, value, onChange, height }) => {
   return (
     <input
-      style={{paddingLeft:pad, height:height}}
+      style={{ paddingLeft: pad, height: height }}
       className={style.input}
       type={type}
       value={value}
@@ -11,7 +11,7 @@ const Input = ({ pad, type, placeholder, value, onChange, height }) => {
       onChange={onChange}
       required
     />
-  )
-}
+  );
+};
 
-export default Input
+export default Input;

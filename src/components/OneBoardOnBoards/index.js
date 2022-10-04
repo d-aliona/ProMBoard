@@ -1,2 +1,2 @@
-import OneBoardOnBoards from './OneBoardOnBoards'
-export default OneBoardOnBoards
+import OneBoardOnBoards from './OneBoardOnBoards';
+export default OneBoardOnBoards;

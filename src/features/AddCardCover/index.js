@@ -1,2 +1,2 @@
-import AddCardCover from './AddCardCover'
-export default AddCardCover
+import AddCardCover from './AddCardCover';
+export default AddCardCover;

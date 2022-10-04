@@ -1,2 +1,2 @@
-import DeleteMemberFromCardForm from './DeleteMemberFromCardForm'
-export default DeleteMemberFromCardForm
+import DeleteMemberFromCardForm from './DeleteMemberFromCardForm';
+export default DeleteMemberFromCardForm;

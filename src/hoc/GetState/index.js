@@ -1,2 +1,2 @@
-import GetState from './GetState'
-export default GetState
+import GetState from './GetState';
+export default GetState;

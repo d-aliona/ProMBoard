@@ -1,2 +1,2 @@
-import SignupGoogleForm from './SignupGoogleForm'
-export default SignupGoogleForm
+import SignupGoogleForm from './SignupGoogleForm';
+export default SignupGoogleForm;

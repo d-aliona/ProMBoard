@@ -1,2 +1,2 @@
-import ShortenTitle from './ShortenTitle'
-export default ShortenTitle
+import ShortenTitle from './ShortenTitle';
+export default ShortenTitle;

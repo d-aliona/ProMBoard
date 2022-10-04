@@ -1,2 +1,2 @@
-import InviteMembers from './InviteMembers'
-export default InviteMembers
+import InviteMembers from './InviteMembers';
+export default InviteMembers;

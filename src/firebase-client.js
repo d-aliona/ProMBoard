@@ -1,6 +1,6 @@
-import { initializeApp } from 'firebase/app'
-import { collection, getFirestore } from 'firebase/firestore'
-import { getAuth } from 'firebase/auth'
+import { initializeApp } from 'firebase/app';
+import { collection, getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 // import { getStorage } from 'firebase/storage'
 
 // const firebaseConfig = {
@@ -12,20 +12,20 @@ import { getAuth } from 'firebase/auth'
 //     appId: "1:1025462387752:web:15be370269950d2426a11d"
 // }
 const firebaseConfig = {
-    apiKey: "AIzaSyAXwIA8a6Sl-Wcaz4c8eYNtHt544VDqdg8",
-    authDomain: "prom2-cc1fb.firebaseapp.com",
-    projectId: "prom2-cc1fb",
-    storageBucket: "prom2-cc1fb.appspot.com",
-    messagingSenderId: "872618411134",
-    appId: "1:872618411134:web:fb9ab9508d6be7dc94c42f"
-  };
+  apiKey: 'AIzaSyAXwIA8a6Sl-Wcaz4c8eYNtHt544VDqdg8',
+  authDomain: 'prom2-cc1fb.firebaseapp.com',
+  projectId: 'prom2-cc1fb',
+  storageBucket: 'prom2-cc1fb.appspot.com',
+  messagingSenderId: '872618411134',
+  appId: '1:872618411134:web:fb9ab9508d6be7dc94c42f',
+};
 
-const app = initializeApp(firebaseConfig)
-export const auth = getAuth(app)
+const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
 
-export const db = getFirestore(app)
+export const db = getFirestore(app);
 
 // export const storage = getStorage()
 
 // export const eventsCollection = collection(db, 'events')
-export const usersCollection = collection(db, 'users')
+export const usersCollection = collection(db, 'users');

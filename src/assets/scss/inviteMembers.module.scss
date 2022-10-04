@@ -1,138 +1,138 @@
 .headMenu {
-    display: flex;
-    gap: 10px;
-    padding: 8px;
-    border-radius: 4px;
-    font-size: 16px;
-    background: rgba(23, 43, 77, .2);
+  display: flex;
+  gap: 10px;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 16px;
+  background: rgba(23, 43, 77, 0.2);
 }
 
 .inviteMembersWindow {
-    position: fixed;
-    z-index: 100;
-    top: 96px;
-    box-shadow: 0 0 0 100vh rgba(9, 30, 66,  .6);
-    min-width: 600px;
-    left: 50%;
-    transform: translate(-50%, 0);
-    padding: 10px;
-    color: rgb(23, 43, 77);
-    background-color: #fff;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: auto;
+  position: fixed;
+  z-index: 100;
+  top: 96px;
+  box-shadow: 0 0 0 100vh rgba(9, 30, 66, 0.6);
+  min-width: 600px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  padding: 10px;
+  color: rgb(23, 43, 77);
+  background-color: #fff;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: auto;
 }
 
 .dropmembersList {
-    width: 100%;
-    max-height: 200px;
-    border: 1px solid rgb(23, 43, 77);
-    border-radius: 3px;
-    overflow-y: auto;
-    box-shadow: 0 8px 16px -4px rgba(9, 30, 66, .25), 0 0 0 1px rgba(9, 30, 66,  .1);
+  width: 100%;
+  max-height: 200px;
+  border: 1px solid rgb(23, 43, 77);
+  border-radius: 3px;
+  overflow-y: auto;
+  box-shadow: 0 8px 16px -4px rgba(9, 30, 66, 0.25),
+    0 0 0 1px rgba(9, 30, 66, 0.1);
 }
 
 .dropmembersList::-webkit-scrollbar {
-    width: 10px;
+  width: 10px;
 }
 .dropmembersList::-webkit-scrollbar-thumb {
-background: rgba(23, 43, 77, .1);
-border-radius: 10px;
+  background: rgba(23, 43, 77, 0.1);
+  border-radius: 10px;
 }
 .dropmembersList::-webkit-scrollbar-thumb:hover {
-background: rgba(23, 43, 77, .3);
+  background: rgba(23, 43, 77, 0.3);
 }
 
 .dropMember {
-    padding: 4px 10px;
+  padding: 4px 10px;
 }
 .dropMember:hover {
-    cursor: pointer;
-    background-color: rgba(23, 43, 77, .1);
+  cursor: pointer;
+  background-color: rgba(23, 43, 77, 0.1);
 }
 
 .invitationForm {
-    @extend .dropmembersList;
-    display: flex;
-    width: 100%;
-    gap: 10px;
-    align-items: center;
-    padding: 10px;
+  @extend .dropmembersList;
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
 }
 
 .membersToInvite {
-    width: 75%;
+  width: 75%;
 }
 
 .memberToInvite {
-    margin: 5px;
-    padding: 5px;
-    background-color: rgba(38, 70, 177, .2);
-    display:inline-flex;
-    gap: 15px;
-    align-items: center;
-    border-radius: 4px;
+  margin: 5px;
+  padding: 5px;
+  background-color: rgba(38, 70, 177, 0.2);
+  display: inline-flex;
+  gap: 15px;
+  align-items: center;
+  border-radius: 4px;
 }
 
 .inviteButton {
-    width: 25%;
-    padding: 3px 10px;
-    color: white;
-    background: rgba(38, 70, 177, .9);
-    border-radius: 3px;
-    border: 1px solid rgb(38, 70, 177);
-    font-size: 18px;
+  width: 25%;
+  padding: 3px 10px;
+  color: white;
+  background: rgba(38, 70, 177, 0.9);
+  border-radius: 3px;
+  border: 1px solid rgb(38, 70, 177);
+  font-size: 18px;
 }
 .inviteButton:hover {
-    background-color: rgb(38, 70, 177);
-    
+  background-color: rgb(38, 70, 177);
 }
 
 .sendInvitationButton {
-    margin: 10px 0 0 0;
-    padding: 6px 12px;
-    font-size: 16px;
-    border-radius: 4px;
-    background-color: rgba(38, 70, 177, .1);
-    border: 1px solid rgba(38, 70, 177, .2);
+  margin: 10px 0 0 0;
+  padding: 6px 12px;
+  font-size: 16px;
+  border-radius: 4px;
+  background-color: rgba(38, 70, 177, 0.1);
+  border: 1px solid rgba(38, 70, 177, 0.2);
 }
 
 .sendInvitationButton:hover {
-    background-color: rgba(38, 70, 177, .4);
+  background-color: rgba(38, 70, 177, 0.4);
 }
 
 .disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .assignMembersWindow {
-    position:absolute;
-    z-index: 100;
-    top: 8px;
-    min-width: 480px;
-    max-height: 80vh;
-    overflow-y: auto;
-    padding: 10px;
-    color: rgb(23, 43, 77);
-    background-color: #fff;
-    border-radius: 4px;
-    border: 1px solid rgba(23, 43, 77, .6);
-    box-shadow: 0 8px 16px 4px rgba(9, 30, 66, .25), 0 0 0 1px rgba(9, 30, 66,  .1);
-    font-size: 16px;
+  position: absolute;
+  z-index: 100;
+  top: 8px;
+  min-width: 480px;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 10px;
+  color: rgb(23, 43, 77);
+  background-color: #fff;
+  border-radius: 4px;
+  border: 1px solid rgba(23, 43, 77, 0.6);
+  box-shadow: 0 8px 16px 4px rgba(9, 30, 66, 0.25),
+    0 0 0 1px rgba(9, 30, 66, 0.1);
+  font-size: 16px;
 }
 
 .memberToAssign {
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    gap: 10px;
-    margin-top: 5px;
-    padding: 4px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+  margin-top: 5px;
+  padding: 4px;
 }
 .memberToAssign:hover {
-    cursor: pointer;
-    background-color: #eee;
-    border-radius: 4px;
-} 
-
+  cursor: pointer;
+  background-color: #eee;
+  border-radius: 4px;
+}

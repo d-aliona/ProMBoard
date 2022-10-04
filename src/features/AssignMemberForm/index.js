@@ -1,2 +1,2 @@
-import AssignMemberForm from './AssignMemberForm'
-export default AssignMemberForm
+import AssignMemberForm from './AssignMemberForm';
+export default AssignMemberForm;

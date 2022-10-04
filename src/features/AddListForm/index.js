@@ -1,2 +1,2 @@
-import AddListForm from './AddListForm'
-export default AddListForm
+import AddListForm from './AddListForm';
+export default AddListForm;

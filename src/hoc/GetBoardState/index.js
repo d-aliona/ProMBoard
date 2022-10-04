@@ -1,2 +1,2 @@
-import GetBoardState from './GetBoardState'
-export default GetBoardState
+import GetBoardState from './GetBoardState';
+export default GetBoardState;

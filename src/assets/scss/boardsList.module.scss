@@ -1,86 +1,87 @@
 .head {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
 }
 
 .dropBoardsList {
-    position: fixed;
-    display: flex;
-    flex-direction: column;
-    top: 45px;
-    left: 230px;
-    z-index: 10;
-    min-width: 260px;
-    max-height: 80vh;
-    padding: 8px 0;
-    color: rgb(23, 43, 77);
-    background-color: #fff;
-    border: 1px solid #e3e6f0;
-    border-radius: 4px;
-    box-shadow: 0 8px 16px -4px rgba(9, 30, 66, .25), 0 0 0 1px rgba(9, 30, 66,  .1);
-    font-size: 16px;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  top: 45px;
+  left: 230px;
+  z-index: 10;
+  min-width: 260px;
+  max-height: 80vh;
+  padding: 8px 0;
+  color: rgb(23, 43, 77);
+  background-color: #fff;
+  border: 1px solid #e3e6f0;
+  border-radius: 4px;
+  box-shadow: 0 8px 16px -4px rgba(9, 30, 66, 0.25),
+    0 0 0 1px rgba(9, 30, 66, 0.1);
+  font-size: 16px;
 }
 
 .scrollbar {
-    overflow-y: auto;
+  overflow-y: auto;
 }
 .scrollbar::-webkit-scrollbar {
-    width: 10px;
+  width: 10px;
 }
 .scrollbar::-webkit-scrollbar-thumb {
-background: rgba(23, 43, 77, .1);
-border-radius: 10px;
+  background: rgba(23, 43, 77, 0.1);
+  border-radius: 10px;
 }
 .scrollbar::-webkit-scrollbar-thumb:hover {
-background: rgba(23, 43, 77, .3);
+  background: rgba(23, 43, 77, 0.3);
 }
 
 .title {
-    display: flex;
-    justify-content: end;
-    padding: 0 8px;
+  display: flex;
+  justify-content: end;
+  padding: 0 8px;
 }
 
 .titleName {
-    display: flex;
-    align-items: center;
-    margin: auto;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  margin: auto;
+  gap: 10px;
 }
 
 .boardsGroup {
-    text-align: center;
-    color:rgba(23, 43, 77, 0.6)
+  text-align: center;
+  color: rgba(23, 43, 77, 0.6);
 }
 
 .listItem {
-    display: flex;
-    align-items: center;
-    padding: 4px 16px;
-    font-size: 16px;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 4px 16px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .listItem:hover {
-    background-color: #eee;
+  background-color: #eee;
 }
 
 .dropViewMembers {
-    @extend .dropBoardsList;
-    top: 96px;
-    left: 50%;
-    transform: translate(-50%, 0);
-    box-shadow: 0 0 0 100vh rgba(9, 30, 66,  .4);
-    width: 500px;
-    cursor: auto;
+  @extend .dropBoardsList;
+  top: 96px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  box-shadow: 0 0 0 100vh rgba(9, 30, 66, 0.4);
+  width: 500px;
+  cursor: auto;
 }
 
 .colorBoard {
-    width: 25px;
-    min-width: 25px;
-    height: 20px;
-    border-radius: 2px;
-    margin: 5px;
+  width: 25px;
+  min-width: 25px;
+  height: 20px;
+  border-radius: 2px;
+  margin: 5px;
 }

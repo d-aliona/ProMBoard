@@ -1,105 +1,106 @@
 .circle {
-    width: 36px;
-    height: 36px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 16px;
-    border-radius: 50%;
-    color: rgb(255, 255, 255);
-    background-color: rgba(23, 43, 77, .8);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  border-radius: 50%;
+  color: rgb(255, 255, 255);
+  background-color: rgba(23, 43, 77, 0.8);
 }
 
 .input {
-    width: 100%;
-    padding: 8px 10px;
-    margin: 10px 0px;
-    border-radius: 2px;
-    outline: 2px solid rgb(227, 227, 230);
-    color: rgb(23, 43, 77);
-    background-color: rgb(250, 250, 250);
-    font-size: 16px;
+  width: 100%;
+  padding: 8px 10px;
+  margin: 10px 0px;
+  border-radius: 2px;
+  outline: 2px solid rgb(227, 227, 230);
+  color: rgb(23, 43, 77);
+  background-color: rgb(250, 250, 250);
+  font-size: 16px;
 }
 
 .input:focus {
-    outline: 2px solid rgba(35, 66, 119, 0.5);
-    background-color: rgb(255, 255, 255);
+  outline: 2px solid rgba(35, 66, 119, 0.5);
+  background-color: rgb(255, 255, 255);
 }
 
 .input::placeholder {
-    color: rgb(102, 102, 102);
+  color: rgb(102, 102, 102);
 }
 
 .logo {
-    display: flex;
-    align-items: center;
-    margin-left: 20px;
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
 }
 
 .logoicon {
-    width: 35px;
-    height: 35px;
-    margin-right: 10px;
-    background-image: url(../images/logo-icon.png);
+  width: 35px;
+  height: 35px;
+  margin-right: 10px;
+  background-image: url(../images/logo-icon.png);
 }
 
 .logotext {
-    vertical-align: middle;
-    line-height: 35px;
-    margin-top: 8px;
-    font-size: 26px;
-    font-weight: 800;
+  vertical-align: middle;
+  line-height: 35px;
+  margin-top: 8px;
+  font-size: 26px;
+  font-weight: 800;
 }
 
 .closeButton {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    font-size: 26px;
-    width: 26px;
-    box-sizing: content-box;
-    border: 1px solid white;
-    border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 26px;
+  width: 26px;
+  box-sizing: content-box;
+  border: 1px solid white;
+  border-radius: 4px;
 }
 .closeButton:hover {
-    background-color: rgba(73, 136, 245, 0.2);
-    border-radius: 4px;
-    border: 1px solid rgba(73, 136, 245, 0.4);
+  background-color: rgba(73, 136, 245, 0.2);
+  border-radius: 4px;
+  border: 1px solid rgba(73, 136, 245, 0.4);
 }
 
 .line {
-    display: block;
-    width: 100%;
-    align-self: center;    
-    height: 1px;
-    border-top: 1px solid #ccc;
-    margin: 8px 0;
-    padding: 0;
+  display: block;
+  width: 100%;
+  align-self: center;
+  height: 1px;
+  border-top: 1px solid #ccc;
+  margin: 8px 0;
+  padding: 0;
 }
 
 .hint {
-    position: fixed;
-    min-width: 190px;
-    max-width: 300px;
-    line-height: 150%;
-    left: 48px;
-    color:rgb(23, 43, 77);
-    border: 1px white solid;
-    border-radius: 3px;
-    background-color: #ffe;
-    padding: 0 5px;
-    font-size: 16px;
-    z-index: 5000;
-    word-break: break-all;
-    box-shadow: 0 8px 16px -4px rgba(9, 30, 66, .25), 0 0 0 1px rgba(9, 30, 66,  .1);
+  position: fixed;
+  min-width: 190px;
+  max-width: 300px;
+  line-height: 150%;
+  left: 48px;
+  color: rgb(23, 43, 77);
+  border: 1px white solid;
+  border-radius: 3px;
+  background-color: #ffe;
+  padding: 0 5px;
+  font-size: 16px;
+  z-index: 5000;
+  word-break: break-all;
+  box-shadow: 0 8px 16px -4px rgba(9, 30, 66, 0.25),
+    0 0 0 1px rgba(9, 30, 66, 0.1);
 }
 
 .button {
-    width: 80px;
-    height: 28px;
-    border-radius: 3px;
-    background-color: transparent;
-    color: rgba(23, 43, 77, 1);
-    font-size: 16px;
+  width: 80px;
+  height: 28px;
+  border-radius: 3px;
+  background-color: transparent;
+  color: rgba(23, 43, 77, 1);
+  font-size: 16px;
 }

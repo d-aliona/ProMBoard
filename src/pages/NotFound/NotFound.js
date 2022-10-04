@@ -1,14 +1,24 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
+import style from '../../assets/scss/signup.module.scss';
 
 function NotFound() {
-  const user = useSelector((state) => state.user.user)
+  const user = useSelector((state) => state.user.user);
   return (
-    <>
+    <div
+      className={style.container}
+      style={{
+        paddingTop: '200px',
+        fontSize: '20px',
+        lineHeight: '2',
+        textAlign: 'center',
+      }}
+    >
       {!user.email && (
-        <div className="w-100 text-center fs-3" style={{ marginTop: '160px' }}>
-          <p> Page Not Found. </p>
+        <div>
+          <p style={{ paddingBottom: '30px' }}> Page Not Found. </p>
           <p> Please, welcome to our </p>
           <p>
             <Link to="/" className="text-danger">
@@ -18,9 +28,9 @@ function NotFound() {
           </p>
         </div>
       )}
-       {!!user.email && (
-        <div className="w-100 text-center fs-3" style={{ marginTop: '160px' }}>
-          <p> Page Not Found. </p>
+      {!!user.email && (
+        <div>
+          <p style={{ paddingBottom: '30px' }}> Page Not Found. </p>
           <p> Please, welcome to your </p>
           <p className="text-reset">
             <Link to="/" className="text-danger">
@@ -30,8 +40,8 @@ function NotFound() {
           </p>
         </div>
       )}
-    </>
-  )
+    </div>
+  );
 }
 
-export default NotFound
+export default NotFound;

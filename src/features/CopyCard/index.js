@@ -1,2 +1,2 @@
-import CopyCard from './CopyCard'
-export default CopyCard
+import CopyCard from './CopyCard';
+export default CopyCard;

@@ -1,2 +1,2 @@
-import Start from './Start'
-export default Start
+import Start from './Start';
+export default Start;

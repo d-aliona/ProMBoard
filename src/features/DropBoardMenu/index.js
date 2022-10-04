@@ -1,2 +1,2 @@
-import DropBoardMenu from './DropBoardMenu'
-export default DropBoardMenu
+import DropBoardMenu from './DropBoardMenu';
+export default DropBoardMenu;

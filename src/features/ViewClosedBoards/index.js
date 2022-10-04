@@ -1,2 +1,2 @@
-import ViewClosedBoards from './ViewClosedBoards'
-export default ViewClosedBoards
+import ViewClosedBoards from './ViewClosedBoards';
+export default ViewClosedBoards;

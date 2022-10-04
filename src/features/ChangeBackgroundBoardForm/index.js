@@ -1,2 +1,2 @@
-import ChangeBackgroundBoardForm from './ChangeBackgroundBoardForm'
-export default ChangeBackgroundBoardForm
+import ChangeBackgroundBoardForm from './ChangeBackgroundBoardForm';
+export default ChangeBackgroundBoardForm;

@@ -1,2 +1,2 @@
-import MoveCard from './MoveCard'
-export default MoveCard
+import MoveCard from './MoveCard';
+export default MoveCard;

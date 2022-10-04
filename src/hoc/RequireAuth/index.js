@@ -1,2 +1,2 @@
-import RequireAuth from './RequireAuth'
-export default RequireAuth
+import RequireAuth from './RequireAuth';
+export default RequireAuth;

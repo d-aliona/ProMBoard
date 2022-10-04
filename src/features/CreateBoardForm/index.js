@@ -1,2 +1,2 @@
-import CreateBoardForm from './CreateBoardForm'
-export default CreateBoardForm
+import CreateBoardForm from './CreateBoardForm';
+export default CreateBoardForm;

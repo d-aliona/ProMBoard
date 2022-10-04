@@ -1,2 +1,2 @@
-import AddCardForm from './AddCardForm'
-export default AddCardForm
+import AddCardForm from './AddCardForm';
+export default AddCardForm;

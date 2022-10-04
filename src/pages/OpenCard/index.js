@@ -1,2 +1,2 @@
-import OpenCard from './OpenCard'
-export default OpenCard
+import OpenCard from './OpenCard';
+export default OpenCard;

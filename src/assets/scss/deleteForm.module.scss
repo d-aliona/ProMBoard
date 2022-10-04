@@ -1,112 +1,113 @@
 .window {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 20;
-    background-color: rgba(161, 177, 206, 0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 20;
+  background-color: rgba(161, 177, 206, 0.6);
 }
 
 .deleteCardForm {
-    background-image: linear-gradient(rgba(129, 3, 3, .2) 40%, transparent 50%);
-    // color: white;
-    width: auto;
-    margin-top: 10px;
-    text-align: center;
-    border: 1px solid rgba(129, 3, 3, .3);
-    border-radius: 4px;
-    padding: 10px 0 0 0;
-    font-size: 16px;
+  background-image: linear-gradient(rgba(129, 3, 3, 0.2) 40%, transparent 50%);
+  // color: white;
+  width: auto;
+  margin-top: 10px;
+  text-align: center;
+  border: 1px solid rgba(129, 3, 3, 0.3);
+  border-radius: 4px;
+  padding: 10px 0 0 0;
+  font-size: 16px;
 }
 
 @mixin button {
-    background: transparent;
-    
-    margin-top: 20px;
-    padding: 3px 10px;
-    font-size: 18px;
-    width: 50%;
+  background: transparent;
+
+  margin-top: 20px;
+  padding: 3px 10px;
+  font-size: 18px;
+  width: 50%;
 }
 
 .buttonYes {
-    @include button;
-    border-radius: 3px 0 0 3px;
-    border: 1px solid rgb(38, 70, 177);
+  @include button;
+  border-radius: 3px 0 0 3px;
+  border: 1px solid rgb(38, 70, 177);
 }
 .buttonYes:hover {
-    background-color: rgb(38, 70, 177);
-    color: white;
+  background-color: rgb(38, 70, 177);
+  color: white;
 }
 .buttonNo {
-    @include button;
-    border-radius: 0 3px 3px 0;
-    border: 1px solid rgb(129, 3, 3);
+  @include button;
+  border-radius: 0 3px 3px 0;
+  border: 1px solid rgb(129, 3, 3);
 }
 .buttonNo:hover {
-    background-color: rgb(129, 3, 3);
-    color: white;
+  background-color: rgb(129, 3, 3);
+  color: white;
 }
 
 .deleteMemberOnCardForm {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    top: 40px;
-    margin: auto;
-    z-index: 10;
-    min-width: 300px;
-    height: fit-content;
-    // padding: 10px;
-    color: rgb(23, 43, 77);
-    background-color: #fff;
-    border: 1px solid #e3e6f0;
-    border-radius: 4px;
-    box-shadow: 0 8px 16px -4px rgba(9, 30, 66, .25), 0 0 0 1px rgba(9, 30, 66,  .1);
-    font-size: 16px;
-    line-height: 1.2;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: 40px;
+  margin: auto;
+  z-index: 10;
+  min-width: 300px;
+  height: fit-content;
+  // padding: 10px;
+  color: rgb(23, 43, 77);
+  background-color: #fff;
+  border: 1px solid #e3e6f0;
+  border-radius: 4px;
+  box-shadow: 0 8px 16px -4px rgba(9, 30, 66, 0.25),
+    0 0 0 1px rgba(9, 30, 66, 0.1);
+  font-size: 16px;
+  line-height: 1.2;
 }
 
 .memberInfo {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 15px;
-    background-color: rgba(73, 136, 245, 0.1);
-    border-radius: 4px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px;
+  background-color: rgba(73, 136, 245, 0.1);
+  border-radius: 4px;
 }
 
 .line {
-    display: block;
-    width: 100%;
-    height: 1px;
-    border-top: 1px solid #ccc;
-    padding: 0;
+  display: block;
+  width: 100%;
+  height: 1px;
+  border-top: 1px solid #ccc;
+  padding: 0;
 }
 
 .closeMemberOnCardForm {
-    cursor:pointer;
-    position:absolute;
-    top: 0;
-    right: 0;
-    font-size: 26px;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 26px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .closeMemberOnCardForm:hover {
-    background-color: rgba(23, 43, 77, .1);
-    border-radius: 4px;
+  background-color: rgba(23, 43, 77, 0.1);
+  border-radius: 4px;
 }
 
 .removeMember {
-    cursor: pointer;
-    padding: 15px;
+  cursor: pointer;
+  padding: 15px;
 }
 .removeMember:hover {
-    font-weight: 800;
+  font-weight: 800;
 }

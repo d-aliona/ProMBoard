@@ -1,468 +1,469 @@
 .cardWrapper {
-    position: relative;
-    width: 100%;
-    margin: 8px 0;
-    padding: 6px;
-    background-color: white;
-    border-radius: 4px;
-    border-bottom: 1px solid rgba(23, 43, 77, .4);
-    box-shadow: 5px 6px 4px -4px rgba(9, 30, 66, .25), 0 0 0 1px rgba(9, 30, 66,  .1);
+  position: relative;
+  width: 100%;
+  margin: 8px 0;
+  padding: 6px;
+  background-color: white;
+  border-radius: 4px;
+  border-bottom: 1px solid rgba(23, 43, 77, 0.4);
+  box-shadow: 5px 6px 4px -4px rgba(9, 30, 66, 0.25),
+    0 0 0 1px rgba(9, 30, 66, 0.1);
 }
 
 .cardWrapper:hover {
-    background-color: rgba(255, 255, 255, .75);
-    cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
 }
 
 .cardTitle {
-    margin: 5px;
-    font-weight: 500;
-    font-size: 16px;
+  margin: 5px;
+  font-weight: 500;
+  font-size: 16px;
 }
 
 .cardBackground {
-    background-color: rgba(23, 43, 77, .1);
-    height: fit-content;
-    border-radius: 6px;
+  background-color: rgba(23, 43, 77, 0.1);
+  height: fit-content;
+  border-radius: 6px;
 }
 
 .cardForeground {
-    height: fit-content;
-    border-radius: 6px;
+  height: fit-content;
+  border-radius: 6px;
 }
 
 .cardBackgroundOpacity {
-    opacity: 0;
+  opacity: 0;
 }
 
 .window {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 50;
-    background-color: rgba(23, 43, 77, .7);
-    overflow-y: auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 50;
+  background-color: rgba(23, 43, 77, 0.7);
+  overflow-y: auto;
 }
 
 .openedCardModal {
-    position: absolute;
-    top: 20px;
-    left: 0;
-    right: 0;
-    margin: auto;
-    z-index: 100;
-    width: 750px;
-    color: rgb(23, 43, 77);
-    background-color: #f4f5f7;
-    border: 1px solid #e3e6f0;
-    border-radius: 4px;
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: 100;
+  width: 750px;
+  color: rgb(23, 43, 77);
+  background-color: #f4f5f7;
+  border: 1px solid #e3e6f0;
+  border-radius: 4px;
 }
 
 .openCardTitleWrapper {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  font-weight: 600;
 }
 
 .closeModal {
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 24px;
 }
 .closeModal:hover {
-    background-color: rgba(23, 43, 77, .3);
+  background-color: rgba(23, 43, 77, 0.3);
 }
 .titleicon {
-    width: 35px;
-    height: 35px;
-    background-image: url(../images/cardTitle.png);
+  width: 35px;
+  height: 35px;
+  background-image: url(../images/cardTitle.png);
 }
 
 .displayMembersicon {
-    width: 32px;
-    height: 32px;
-    background-image: url(../images/membersicon.png);
+  width: 32px;
+  height: 32px;
+  background-image: url(../images/membersicon.png);
 }
 
 .descriptionicon {
-    width: 35px;
-    height: 35px;
-    background-image: url(../images/cardDescription.png);
+  width: 35px;
+  height: 35px;
+  background-image: url(../images/cardDescription.png);
 }
 
 .descriptioniconMini {
-    margin-top: 10px;
-    width: 18px;
-    height: 18px;
-    background-size: 18px;
-    background-image: url(../images/cardDescription.png);
+  margin-top: 10px;
+  width: 18px;
+  height: 18px;
+  background-size: 18px;
+  background-image: url(../images/cardDescription.png);
 }
 
 .commenticon {
-    width: 35px;
-    height: 35px;
-    background-image: url(../images/commenticon.png);
+  width: 35px;
+  height: 35px;
+  background-image: url(../images/commenticon.png);
 }
 
 .commenticonMini {
-    margin-top: 10px;
-    width: 18px;
-    height: 18px;
-    background-size: 18px;
-    background-image: url(../images/commenticon.png);
+  margin-top: 10px;
+  width: 18px;
+  height: 18px;
+  background-size: 18px;
+  background-image: url(../images/commenticon.png);
 }
 
 .descriptionText {
-    width: auto;
-    margin-top: 10px;
-    margin-left: calc(35px + 10px);
-    background-color: rgba(73, 136, 245, 0.04);
-    border: 1px solid rgba(73, 136, 245, 0.1);
-    border-radius: 4px;
-    padding: 10px;
-    font-size: 16px;
+  width: auto;
+  margin-top: 10px;
+  margin-left: calc(35px + 10px);
+  background-color: rgba(73, 136, 245, 0.04);
+  border: 1px solid rgba(73, 136, 245, 0.1);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
 }
 .descriptionText:hover {
-    cursor: pointer;
-    background-color: rgba(73, 136, 245, 0.3);
+  cursor: pointer;
+  background-color: rgba(73, 136, 245, 0.3);
 }
 
 .inputDescription {
-    border: 2px solid rgba(23, 43, 77, .7);
-    border-radius: 3px;
-    padding: 3px;
-    width: 100%;
-    min-height: 100px;
-    font-size: 16px;
-    min-width: 100%;
-    max-width: 100%;
+  border: 2px solid rgba(23, 43, 77, 0.7);
+  border-radius: 3px;
+  padding: 3px;
+  width: 100%;
+  min-height: 100px;
+  font-size: 16px;
+  min-width: 100%;
+  max-width: 100%;
 }
 
 .commentForm {
-    width: 496px;
-    height: 36px;
-    background-color: white;
-    border-radius: 4px;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid rgba(23, 43, 77, .2);
+  width: 496px;
+  height: 36px;
+  background-color: white;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid rgba(23, 43, 77, 0.2);
 }
 
 .inputComment {
-    @extend .commentForm;
-    height: 70px;
-    resize: none;
+  @extend .commentForm;
+  height: 70px;
+  resize: none;
 }
 
 .editComment {
-    @extend .commentForm;
-    margin-left: calc(35px + 10px);
-    width: 496px;
-    height: 70px;
-    resize: none;
+  @extend .commentForm;
+  margin-left: calc(35px + 10px);
+  width: 496px;
+  height: 70px;
+  resize: none;
 }
 
 .commentText {
-    @extend .descriptionText; 
-    background-color: white;
-    border: none;
-    margin-top: 4px;
+  @extend .descriptionText;
+  background-color: white;
+  border: none;
+  margin-top: 4px;
 }
 
 .commentText:hover {
-    cursor: auto;
-    background-color: white;
+  cursor: auto;
+  background-color: white;
 }
 
 @mixin button {
-    background: transparent;
-    
-    padding: 3px 10px;
-    cursor: pointer;
+  background: transparent;
+
+  padding: 3px 10px;
+  cursor: pointer;
 }
 
 .buttonTrue {
-    @include button;
-    border-radius: 3px 0 0 3px;
-    border: 1px solid rgb(38, 70, 177);
+  @include button;
+  border-radius: 3px 0 0 3px;
+  border: 1px solid rgb(38, 70, 177);
 }
 .buttonTrue:hover {
-    background-color: rgb(38, 70, 177);
-    color: white;
+  background-color: rgb(38, 70, 177);
+  color: white;
 }
 .buttonCancel {
-    @include button;
-    border-radius: 0 3px 3px 0;
-    border: 1px solid rgb(129, 3, 3);
+  @include button;
+  border-radius: 0 3px 3px 0;
+  border: 1px solid rgb(129, 3, 3);
 }
 .buttonCancel:hover {
-    background-color: rgb(129, 3, 3);
-    color: white;
+  background-color: rgb(129, 3, 3);
+  color: white;
 }
 
 .circle {
-    width: 35px;
-    height: 35px;
-    text-align: center;
-    font-size: 18px;
-    line-height: 36px;
-    border-radius: 50%;
-    color: rgb(255, 255, 255);
-    background-color: rgb(23, 43, 77);
-  }
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  font-size: 18px;
+  line-height: 36px;
+  border-radius: 50%;
+  color: rgb(255, 255, 255);
+  background-color: rgb(23, 43, 77);
+}
 
 .updateComment {
-    margin: 10px 0 10px 10px;
-    text-decoration: underline;
-    cursor: pointer;
+  margin: 10px 0 10px 10px;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .confirmDelete {
-    margin: 10px auto 20px;
-    padding: 10px;
-    text-align: center;
-    font-size: 16px;
-    width: 80%;
-    height: 110px;
-    box-shadow: 0 8px 16px -4px rgba(9, 30, 66, .25), 0 0 0 1px rgba(9, 30, 66,  .1);
+  margin: 10px auto 20px;
+  padding: 10px;
+  text-align: center;
+  font-size: 16px;
+  width: 80%;
+  height: 110px;
+  box-shadow: 0 8px 16px -4px rgba(9, 30, 66, 0.25),
+    0 0 0 1px rgba(9, 30, 66, 0.1);
 }
 
 .sidebar {
-    font-weight: 600;
-    padding: 20px;
+  font-weight: 600;
+  padding: 20px;
 }
 
 .sidebarItem {
-    @extend .descriptionText;
-    margin-top: 14px;
-    background-color: rgba(73, 136, 245, 0.1);
-    margin-left: 0;
-    display: flex;
-    align-items: flex-end;
-    gap: 8px;
-    padding: 6px 10px;
+  @extend .descriptionText;
+  margin-top: 14px;
+  background-color: rgba(73, 136, 245, 0.1);
+  margin-left: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 6px 10px;
 }
 
 .sidebarItemBorder {
-    outline: 1px solid rgba(35, 66, 119, 0.5);
-    border-radius: 4px;
+  outline: 1px solid rgba(35, 66, 119, 0.5);
+  border-radius: 4px;
 }
 
 .addmembericon {
-    width: 20px;
-    height: 20px;
-    background-size: 20px;
-    background-image: url(../images/addmembericon.png);
+  width: 20px;
+  height: 20px;
+  background-size: 20px;
+  background-image: url(../images/addmembericon.png);
 }
 .covericon {
-    width: 20px;
-    height: 20px;
-    background-size: 20px;
-    background-image: url(../images/covericon.png);
+  width: 20px;
+  height: 20px;
+  background-size: 20px;
+  background-image: url(../images/covericon.png);
 }
 .renameicon {
-    width: 20px;
-    height: 20px;
-    background-size: 20px;
-    background-image: url(../images/renameicon.png);
+  width: 20px;
+  height: 20px;
+  background-size: 20px;
+  background-image: url(../images/renameicon.png);
 }
 .moveicon {
-    width: 20px;
-    height: 20px;
-    background-size: 20px;
-    background-image: url(../images/moveicon.png);
+  width: 20px;
+  height: 20px;
+  background-size: 20px;
+  background-image: url(../images/moveicon.png);
 }
 .copyicon {
-    width: 20px;
-    height: 20px;
-    background-size: 20px;
-    background-image: url(../images/copyicon.png);
+  width: 20px;
+  height: 20px;
+  background-size: 20px;
+  background-image: url(../images/copyicon.png);
 }
 .deleteicon {
-    width: 20px;
-    height: 20px;
-    background-size: 20px;
-    background-image: url(../images/trashbinicon.png);
+  width: 20px;
+  height: 20px;
+  background-size: 20px;
+  background-image: url(../images/trashbinicon.png);
 }
 
 .openCardTitle {
-    font-size: 18px;
-    padding: 10px 0 17px;
-    cursor: pointer;
-    padding-left:3px;
+  font-size: 18px;
+  padding: 10px 0 17px;
+  cursor: pointer;
+  padding-left: 3px;
 }
 
 .inputCardTitle {
-    border: 1px solid rgba(23, 43, 77, .7);
-    border-radius: 3px;
-    padding: 5px 3px 4px;
-    margin-bottom: 9px;
-    font-size: 20px;
-    font-weight: 600;
-    min-width: 100%;
-    max-width: 100%;
+  border: 1px solid rgba(23, 43, 77, 0.7);
+  border-radius: 3px;
+  padding: 5px 3px 4px;
+  margin-bottom: 9px;
+  font-size: 20px;
+  font-weight: 600;
+  min-width: 100%;
+  max-width: 100%;
 }
 
 .assignMember {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 26px;
-    background-color:#ddd;
-    border-radius: 50%;
-    width: 35px;
-    height:35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 26px;
+  background-color: #ddd;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
 }
 
 .assignMember:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .assignedMember {
-    position: relative;
+  position: relative;
 }
 
 .assignedMember:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .assignedMember[data-descr]:hover::after {
-    content: attr(data-descr);
-    position: absolute;
-    left: 0;
-    top: 40px;
-    min-width: 200px;
-    border: 1px white solid;
-    border-radius: 3px;
-    background-color: #ffe;
-    padding: 10px;
-    font-size: 16px;
-    z-index: 1;
+  content: attr(data-descr);
+  position: absolute;
+  left: 0;
+  top: 40px;
+  min-width: 200px;
+  border: 1px white solid;
+  border-radius: 3px;
+  background-color: #ffe;
+  padding: 10px;
+  font-size: 16px;
+  z-index: 1;
 }
 
 .cardCoverWrapper {
-    border: px solid rgba(73, 136, 245, 0.1);
-    padding: 4px 0px 8px;
-    background-color: white;
-    border-radius: 2px;
+  border: px solid rgba(73, 136, 245, 0.1);
+  padding: 4px 0px 8px;
+  background-color: white;
+  border-radius: 2px;
 }
 
 .colorList {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    gap: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 5px;
 }
 
 .colorItem {
-    width: 30px;
-    height: 26px;
-    border-radius: 2px;
-    cursor: pointer;
-    border: 1px solid rgba(73, 136, 245, 0.1);
+  width: 30px;
+  height: 26px;
+  border-radius: 2px;
+  cursor: pointer;
+  border: 1px solid rgba(73, 136, 245, 0.1);
 }
 
 .removeCover {
-    text-align: center;
-    width: 70%;
-    font-weight: 400;
-    margin-top: 2px;
-    padding: 4px;
-    border: 1px solid rgba(73, 136, 245, 0.1);
-    border-radius: 2px;
-    cursor: pointer;
-    border: 1px solid rgba(35, 66, 119, 0.5); 
-    background-color: rgba(73, 136, 245, 0.08);
+  text-align: center;
+  width: 70%;
+  font-weight: 400;
+  margin-top: 2px;
+  padding: 4px;
+  border: 1px solid rgba(73, 136, 245, 0.1);
+  border-radius: 2px;
+  cursor: pointer;
+  border: 1px solid rgba(35, 66, 119, 0.5);
+  background-color: rgba(73, 136, 245, 0.08);
 }
 .removeCover:hover {
-    background-color: rgba(73, 136, 245, 0.1);
-    font-weight: 600;
+  background-color: rgba(73, 136, 245, 0.1);
+  font-weight: 600;
 }
 .copyCardButton {
-    @extend .removeCover;
-    font-size: 16px;
-    margin: 0 auto;
+  @extend .removeCover;
+  font-size: 16px;
+  margin: 0 auto;
 }
 
 .inputField {
-    width: 100%;
-    margin: 4px 0px;
-    border-radius: 2px;
-    outline: 1px solid rgb(227, 227, 230);
-    color: rgb(23, 43, 77);
-    background-color: #ffe;
-    font-size: 16px;
+  width: 100%;
+  margin: 4px 0px;
+  border-radius: 2px;
+  outline: 1px solid rgb(227, 227, 230);
+  color: rgb(23, 43, 77);
+  background-color: #ffe;
+  font-size: 16px;
 }
 .inputField:focus {
-    outline: 1px solid rgba(35, 66, 119, 0.5);
-    background-color: rgb(255, 255, 255);
+  outline: 1px solid rgba(35, 66, 119, 0.5);
+  background-color: rgb(255, 255, 255);
 }
 
 .copyCardItem {
-    position:relative;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    // border-radius: 0 0 4px 4px;
-    border-top: 1px solid rgba(35, 66, 119, 0.5); 
-    border-bottom: 1px solid rgba(35, 66, 119, 0.5); 
-    padding: 5px 3px;
-    background-color: #ffe;
-    cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  // border-radius: 0 0 4px 4px;
+  border-top: 1px solid rgba(35, 66, 119, 0.5);
+  border-bottom: 1px solid rgba(35, 66, 119, 0.5);
+  padding: 5px 3px;
+  background-color: #ffe;
+  cursor: pointer;
 }
 
 .copyCardDropMenu {
-    position: absolute;
-    bottom: 22px;
-    left: -1px;
-    padding: 5px 2px 8px 4px;
-    line-height: 1.4;
-    z-index: 1000;
-    width: 149px;
-    border: 1px solid rgba(35, 66, 119, 0.5);
-    background-color: #ffe;
-    font-weight: 500;
-    overflow-y: auto;
-    overflow-x: hidden;
-    max-height: 350px;
+  position: absolute;
+  bottom: 22px;
+  left: -1px;
+  padding: 5px 2px 8px 4px;
+  line-height: 1.4;
+  z-index: 1000;
+  width: 149px;
+  border: 1px solid rgba(35, 66, 119, 0.5);
+  background-color: #ffe;
+  font-weight: 500;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 350px;
 }
 .copyCardDropMenu::-webkit-scrollbar {
-    width: 6px;
-    
+  width: 6px;
 }
 .copyCardDropMenu::-webkit-scrollbar-thumb {
-background: rgba(23, 43, 77, .2);
-border-radius: 10px;
+  background: rgba(23, 43, 77, 0.2);
+  border-radius: 10px;
 }
 .copyCardDropMenu::-webkit-scrollbar-thumb:hover {
-background: rgba(23, 43, 77, .3);
+  background: rgba(23, 43, 77, 0.3);
 }
 
 .copyCardDropItem:hover {
-    background-color: rgba(35, 66, 119, 0.1);
+  background-color: rgba(35, 66, 119, 0.1);
 }
 
 .disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .replyText {
-    border-bottom: 1px solid #ddd;
-    margin: 5px 0 1px 20px;
-    padding-bottom: 4px;
+  border-bottom: 1px solid #ddd;
+  margin: 5px 0 1px 20px;
+  padding-bottom: 4px;
 }
 .editReply {
-    margin: 5px 0 1px 20px;
-    width: calc(100% - 20px);
-    border-radius: 3px;
-    resize: none;
+  margin: 5px 0 1px 20px;
+  width: calc(100% - 20px);
+  border-radius: 3px;
+  resize: none;
 }

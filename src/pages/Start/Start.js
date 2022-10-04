@@ -1,37 +1,37 @@
-import React, {useEffect} from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, Navigate } from 'react-router-dom'
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, Navigate } from 'react-router-dom';
 
-import { onSnapshot } from 'firebase/firestore'
-import { usersCollection } from '../../firebase-client'
+import { onSnapshot } from 'firebase/firestore';
+import { usersCollection } from '../../firebase-client';
 
-import { setUsers } from '../../store/slices/usersSlice'
-import Logo from '../../ui/Logo'
-import style from '../../assets/scss/start.module.scss'
+import { setUsers } from '../../store/slices/usersSlice';
+import Logo from '../../ui/Logo';
+import style from '../../assets/scss/start.module.scss';
 
 function Start() {
-  const currentUser = useSelector((state) => state.user.user)
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const currentUser = useSelector((state) => state.user.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const logIn = (e) => {
-    e.preventDefault()
-    navigate('login')
-  }
+    e.preventDefault();
+    navigate('login');
+  };
 
   const signUp = (e) => {
-    e.preventDefault()
-    navigate('signup')
-  }
+    e.preventDefault();
+    navigate('signup');
+  };
 
   useEffect(() => {
     onSnapshot(usersCollection, (snapshot) => {
       const userSnap = snapshot.docs.map((doc) => {
-        return { ...doc.data(), id: doc.id }
-      })
-      dispatch(setUsers(userSnap))
-    })
-  }, [])
+        return { ...doc.data(), id: doc.id };
+      });
+      dispatch(setUsers(userSnap));
+    });
+  }, []);
 
   return (
     <div className={style.container}>
@@ -44,10 +44,10 @@ function Start() {
             </div>
           </header>
           <main className={style.main}>
-            <div style={{textAlign: 'center'}}>
+            <div style={{ textAlign: 'center' }}>
               <p className={style.motto}>Collaborate and manage projects </p>
               <p className={style.motto}>
-                with <span style={{fontWeight: '800'}}>ProMBoard</span>!
+                with <span style={{ fontWeight: '800' }}>ProMBoard</span>!
               </p>
               <button className={style.signup_button} onClick={signUp}>
                 Sign up
@@ -62,7 +62,7 @@ function Start() {
       )}
       {!!currentUser.email && <Navigate to="auth/home" />}
     </div>
-  )
+  );
 }
 
-export default Start
+export default Start;

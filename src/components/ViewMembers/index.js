@@ -1,2 +1,2 @@
-import ViewMembers from './ViewMembers'
-export default ViewMembers
+import ViewMembers from './ViewMembers';
+export default ViewMembers;

@@ -1,2 +1,2 @@
-import CloseButton from './CloseButton'
-export default CloseButton
+import CloseButton from './CloseButton';
+export default CloseButton;
