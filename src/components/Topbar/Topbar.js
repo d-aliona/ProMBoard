@@ -7,17 +7,20 @@ import { signOut } from 'firebase/auth';
 import { userState, removeUser } from '../../store/slices/userSlice';
 
 import Logo from '../../ui/Logo';
+import ShortenTitle from '../../ui/ShortenTitle';
 import Initials from '../../ui/Initials';
 import CreateBoardForm from '../../features/CreateBoardForm';
 import Notifications from '../Notifications';
 import BoardsList from '../../components/BoardsList';
 import useOutsideClick from '../../hooks/useOutsideClick';
-import style from '../../assets/scss/topbar.module.scss';
 import useBoardColor from '../../hooks/useBoardColor';
 import MenuContext from '../../context/MenuContext';
+import useWindowSize from '../../hooks/useWindowSize';
+import style from '../../assets/scss/topbar.module.scss';
 
 function Topbar() {
   const user = useSelector(userState);
+  const size = useWindowSize();
   const [show, setShow] = useState(false);
   const [showCreateBoardForm, setShowCreateBoardForm] = useState(false);
   const ref = useOutsideClick(() => {
@@ -68,7 +71,17 @@ function Topbar() {
           e.stopPropagation();
         }}
       >
-        Create a board
+        {size.width < 830 ? (
+          <div className={style.plusSignCreateBoard}>
+            <ShortenTitle
+              title={'+ Create a board'}
+              number={1}
+              showOnlyHint={true}
+            />
+          </div>
+        ) : (
+          'Create a board'
+        )}
       </div>
       {showCreateBoardForm && (
         <div>

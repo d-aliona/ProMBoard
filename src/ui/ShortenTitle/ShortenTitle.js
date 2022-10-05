@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import style from '../../assets/scss/ui.module.scss';
 
-const ShortenTitle = ({ title, number, position, left, top }) => {
+const ShortenTitle = ({ title, number, position, left, top, showOnlyHint }) => {
   const [showHint, setShowHint] = useState(false);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [hintHeight, setHintHeight] = useState(0);
@@ -38,20 +38,20 @@ const ShortenTitle = ({ title, number, position, left, top }) => {
           >
             {title?.substr(0, number - 1) + '...'}
           </div>
-          {showHint && (
-            <div
-              className={style.hint}
-              style={{
-                position: position,
-                left: left ? left : coords.x,
-                top: top ? top : coords.y,
-              }}
-              ref={ref}
-            >
-              {title}
-            </div>
-          )}
         </>
+      )}
+      {showHint && (
+        <div
+          className={style.hint}
+          style={{
+            position: position,
+            left: left ? left : coords.x,
+            top: top ? top : coords.y,
+          }}
+          ref={ref}
+        >
+          {title}
+        </div>
       )}
     </>
   );
