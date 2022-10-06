@@ -67,8 +67,10 @@
 
 .colourList {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   margin: 6px 0 10px;
+  gap: 6px;
 }
 
 .colourItem {
@@ -81,4 +83,13 @@
 .error {
   margin: 10px 0 20px;
   color: rgb(168, 5, 5);
+}
+
+.inputColor {
+  margin-left: 10px;
+  @media (max-width: 500px) {
+    display: block;
+    margin-top: 10px;
+    margin-left: 0;
+  }
 }

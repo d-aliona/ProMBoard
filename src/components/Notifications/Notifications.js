@@ -101,15 +101,7 @@ const Notifications = () => {
         </div>
       </div>
       {showDropWindow && (
-        <div
-          className={styles.dropListAuth}
-          style={{
-            padding: '10px 0',
-            minWidth: '340px',
-            backgroundColor: '#ffe',
-          }}
-          ref={ref}
-        >
+        <div className={styles.dropListNotifications} ref={ref}>
           <div className={styless.title}>
             <span className={styless.titleName}>Notifications</span>
             <CloseButton onClick={() => setShowDropWindow(false)} />

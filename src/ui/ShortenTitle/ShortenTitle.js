@@ -28,19 +28,42 @@ const ShortenTitle = ({ title, number, position, left, top, showOnlyHint }) => {
 
   return (
     <>
-      {title?.length < number ? (
-        title
-      ) : (
+      {showOnlyHint && (
         <>
           <div
             onMouseOver={(e) => handlerMouseOver(e)}
             onMouseOut={() => setShowHint(false)}
           >
-            {title?.substr(0, number - 1) + '...'}
+            {title?.substr(0, 1)}
           </div>
+          {showHint && (
+            <div
+              className={style.hint}
+              style={{
+                position: position,
+                left: left ? left : coords.x,
+                top: top ? top : coords.y,
+              }}
+              ref={ref}
+            >
+              {title?.substr(2)}
+            </div>
+          )}
         </>
       )}
-      {showHint && (
+      {!showOnlyHint && title?.length < number
+        ? title
+        : !showOnlyHint && (
+            <>
+              <div
+                onMouseOver={(e) => handlerMouseOver(e)}
+                onMouseOut={() => setShowHint(false)}
+              >
+                {title?.substr(0, number - 1) + '...'}
+              </div>
+            </>
+          )}
+      {showHint && !showOnlyHint && (
         <div
           className={style.hint}
           style={{

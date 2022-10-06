@@ -9,7 +9,7 @@ const Home = () => {
   return (
     <div className={style.wrapper}>
       <p className={style.motto}>Stay on track and up to date!</p>
-      <p style={{ fontSize: '20px' }}>Boards are where work gets done.</p>
+      <p style={{ fontSize: '20px' }}>Boards are where work gets done</p>
       <hr className={style.line} />
       <div
         className={style.createBoard}

@@ -2,9 +2,12 @@ import { Outlet } from 'react-router-dom';
 
 import Sidebar from '../Sidebar';
 import Topbar from '../Topbar';
+import useWindowSize from '../../hooks/useWindowSize';
 import { MenuProvider } from '../../context/MenuContext';
 
 const Layout = () => {
+  const size = useWindowSize();
+
   return (
     <main
       style={{
@@ -15,9 +18,18 @@ const Layout = () => {
     >
       <MenuProvider>
         <Topbar />
-        <div style={{ display: 'flex', width: '100vw' }}>
-          <Sidebar />
-          <div style={{ width: '100%', overflow: 'hidden' }}>
+        <div
+          style={{
+            display: 'flex',
+            width: '100vw',
+            height: 'calc(100vh - 44px)',
+            overflow: 'hidden',
+          }}
+        >
+          <div style={{ width: size.width < 799 ? '20px' : '' }}>
+            <Sidebar />
+          </div>
+          <div style={{ width: '100%' }}>
             <Outlet />
           </div>
         </div>

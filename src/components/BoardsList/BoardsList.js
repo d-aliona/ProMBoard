@@ -9,6 +9,7 @@ import useOutsideClick from '../../hooks/useOutsideClick';
 import CloseButton from '../../ui/CloseButton';
 import Line from '../../ui/Line';
 import ShortenTitle from '../../ui/ShortenTitle';
+import useWindowSize from '../../hooks/useWindowSize';
 import style from '../../assets/scss/boardsList.module.scss';
 
 const BoardsList = () => {
@@ -18,7 +19,7 @@ const BoardsList = () => {
   const [show, setShow] = useState(false);
   const ref = useOutsideClick(() => setShow(false));
   let navigate = useNavigate();
-
+  const size = useWindowSize();
   const guestBoards =
     notUserBoards && notUserBoards.length > 0
       ? notUserBoards.filter((board) => board.invitedMembers.includes(user.id))
@@ -60,7 +61,10 @@ const BoardsList = () => {
                       className={style.colorBoard}
                       style={{ backgroundColor: `${board.boardColor}` }}
                     ></div>
-                    <ShortenTitle title={board.boardTitle} number={40} />
+                    <ShortenTitle
+                      title={board.boardTitle}
+                      number={size.width > 500 ? 40 : 20}
+                    />
                   </div>
                 ))}
               {guestBoards.length > 0 && (
@@ -80,7 +84,10 @@ const BoardsList = () => {
                       className={style.colorBoard}
                       style={{ backgroundColor: `${board.boardColor}` }}
                     ></div>
-                    <ShortenTitle title={board.boardTitle} number={40} />
+                    <ShortenTitle
+                      title={board.boardTitle}
+                      number={size.width > 500 ? 40 : 20}
+                    />
                   </div>
                 ))}
             </div>

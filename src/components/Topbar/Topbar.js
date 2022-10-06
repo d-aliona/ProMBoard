@@ -61,7 +61,10 @@ function Topbar() {
         style={{ cursor: 'pointer', marginBottom: '5px' }}
         onClick={() => navigate('/auth/home')}
       >
-        <Logo />
+        <Logo
+          font={size.width < 900 ? '2.6vw' : ''}
+          hideText={size.width < 700 ? true : false}
+        />
       </div>
       <BoardsList />
       <div
@@ -71,7 +74,7 @@ function Topbar() {
           e.stopPropagation();
         }}
       >
-        {size.width < 830 ? (
+        {size.width < 880 ? (
           <div className={style.plusSignCreateBoard}>
             <ShortenTitle
               title={'+ Create a board'}
@@ -91,9 +94,11 @@ function Topbar() {
       <div className={style.authbox}>
         <Notifications />
         <div className={style.authbox} onClick={toggle}>
-          <div style={{ marginRight: '10px' }}>
-            {user.firstName + ' ' + user.lastName}
-          </div>
+          {size.width > 550 && (
+            <div style={{ marginRight: '10px' }}>
+              {user.firstName + ' ' + user.lastName}
+            </div>
+          )}
           <Initials user={user} />
         </div>
       </div>

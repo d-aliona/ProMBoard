@@ -5,11 +5,8 @@
 .eye {
   position: relative;
   bottom: 40px;
-  left: 296px;
+  left: 90%;
   height: 0;
-  @media (max-width: 425px) {
-    left: 90%;
-  }
 }
 
 .eye:hover {

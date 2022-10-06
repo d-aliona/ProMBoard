@@ -10,10 +10,12 @@ import useBoardColor from '../../hooks/useBoardColor';
 import { TickDown } from '../../assets/svg/svg-icons';
 import MenuContext from '../../context/MenuContext';
 import ShortenTitle from '../../ui/ShortenTitle';
+import useWindowSize from '../../hooks/useWindowSize';
 import style from '../../assets/scss/sidebar.module.scss';
 
 const Sidebar = () => {
   const user = useSelector((state) => state.user.user);
+  const size = useWindowSize();
   const [showYourBoards, setShowYourBoards] = useState(true);
   const [showGuestBoards, setShowGuestBoards] = useState(true);
   const [toggleClick, setToggleClick] = useState(true);
@@ -31,6 +33,10 @@ const Sidebar = () => {
       ? notUserBoards.filter((board) => board.invitedMembers.includes(user.id))
       : [];
   const ref = useRef(null);
+
+  useEffect(() => {
+    size.width < 799 ? setToggleClick(false) : setToggleClick(true);
+  }, [size.width]);
 
   useEffect(() => {
     setChangeTick(toggleClick ? style.tickLeft : style.tickRight);

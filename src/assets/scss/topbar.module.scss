@@ -9,6 +9,12 @@
   box-shadow: inset 0 0.15rem 1.8rem 0 rgba(23, 43, 77, 0.8);
   border-bottom: rgba(23, 43, 77, 0.3) 1px solid;
   box-sizing: border-box;
+  @media (max-width: 880px) {
+    gap: 30px;
+  }
+  @media (max-width: 700px) {
+    gap: 10px;
+  }
 }
 
 .authbox {
@@ -36,15 +42,28 @@
     0 0 0 1px rgba(9, 30, 66, 0.1);
   font-size: 16px;
   cursor: auto;
+  @media (max-width: 350px) {
+    padding: 20px 6px;
+  }
 }
-.dropListAuth::-webkit-scrollbar {
+
+.dropListNotifications {
+  @extend .dropListAuth;
+  padding: 10px 0;
+  min-width: 340px;
+  background-color: #ffe;
+  @media (max-width: 350px) {
+    min-width: 300px;
+  }
+}
+.dropListNotifications::-webkit-scrollbar {
   width: 10px;
 }
-.dropListAuth::-webkit-scrollbar-thumb {
+.dropListNotifications::-webkit-scrollbar-thumb {
   background: rgba(23, 43, 77, 0.1);
   border-radius: 10px;
 }
-.dropListAuth::-webkit-scrollbar-thumb:hover {
+.dropListNotifications::-webkit-scrollbar-thumb:hover {
   background: rgba(23, 43, 77, 0.3);
 }
 
@@ -77,6 +96,9 @@
   background-size: 28px;
   margin-right: 30px;
   background-image: url(../images/bellicon.png);
+  @media (max-width: 359px) {
+    margin-right: 5px;
+  }
 }
 
 @keyframes blink {

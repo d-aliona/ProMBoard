@@ -119,8 +119,8 @@ const CreateBoardForm = ({ setShowCreateBoardForm }) => {
               or choose your colour:
               <input
                 type="color"
-                defaultValue="#bba896"
-                style={{ marginLeft: '10px' }}
+                defaultValue="#eedfaa"
+                className={style.inputColor}
                 onChange={(e) => {
                   setColorBoard(e.target.value);
                 }}
