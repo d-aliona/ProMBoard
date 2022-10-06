@@ -68,18 +68,23 @@ const Profile = () => {
       </div>
       {showSaveButton && (
         <div className={style.changeNamesButtons}>
-          <div className={styles.buttonTrue} onClick={saveNameUser}>
-            Save
+          <div
+            className={styles.buttonTrue}
+            onClick={saveNameUser}
+            style={{ width: '50%', textAlign: 'center' }}
+          >
+            <div style={{ padding: '2px' }}>Save</div>
           </div>
           <div
             className={styles.buttonCancel}
+            style={{ width: '50%', textAlign: 'center' }}
             onClick={() => {
               setShowSaveButton(false);
               setFirstName(curUser.firstName);
               setLastName(curUser.lastName);
             }}
           >
-            Cancel
+            <div style={{ padding: '2px' }}>Cancel</div>
           </div>
         </div>
       )}

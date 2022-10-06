@@ -52,17 +52,21 @@
 
 .nameInput {
   height: 24px;
-  min-width: 160px;
+  min-width: 200px;
+  max-width: 200px;
   @media (max-width: 420px) {
-    padding-left: 50px;
+    margin-left: 50px;
+    min-width: 200px;
+    max-width: 200px;
   }
 }
 
 .changeNamesButtons {
   display: flex;
-  margin: 30px 0 10px 266px;
+  width: 200px;
+  margin: 30px 0 10px 165px;
   @media (max-width: 420px) {
-    margin-left: 152px;
+    margin-left: 50px;
   }
 }
 
