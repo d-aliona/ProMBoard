@@ -4,32 +4,20 @@ import Sidebar from '../Sidebar';
 import Topbar from '../Topbar';
 import useWindowSize from '../../hooks/useWindowSize';
 import { MenuProvider } from '../../context/MenuContext';
+import style from '../../assets/scss/layout.module.scss';
 
 const Layout = () => {
   const size = useWindowSize();
 
   return (
-    <main
-      style={{
-        width: '100%',
-        height: '100vh',
-        backgroundColor: '#f4f5f7',
-      }}
-    >
+    <main className={style.container}>
       <MenuProvider>
         <Topbar />
-        <div
-          style={{
-            display: 'flex',
-            width: '100vw',
-            height: 'calc(100vh - 44px)',
-            overflow: 'hidden',
-          }}
-        >
-          <div style={{ width: size.width < 799 ? '20px' : '' }}>
+        <div className={style.sidebarPlusOutlet}>
+          <div className={style.sidebar}>
             <Sidebar />
           </div>
-          <div style={{ width: '100%' }}>
+          <div className={style.outlet}>
             <Outlet />
           </div>
         </div>

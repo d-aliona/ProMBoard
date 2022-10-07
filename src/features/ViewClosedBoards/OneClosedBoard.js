@@ -9,6 +9,7 @@ import { allCardsState } from '../../store/slices/allCardsSlice';
 import { allListsState } from '../../store/slices/allListsSlice';
 import ShortenTitle from '../../ui/ShortenTitle';
 import Button from '../../ui/Button';
+import useWindowSize from '../../hooks/useWindowSize';
 import style from '../../assets/scss/boardsList.module.scss';
 import styles from '../../assets/scss/deleteForm.module.scss';
 
@@ -18,6 +19,7 @@ const OneClosedBoard = ({ currentBoard }) => {
   const cards = useSelector(allCardsState);
   const lists = useSelector(allListsState);
   const [clickRemove, setClickRemove] = useState(false);
+  const size = useWindowSize();
 
   const reopenBoard = async (e) => {
     e.preventDefault();
@@ -90,7 +92,7 @@ const OneClosedBoard = ({ currentBoard }) => {
           className={style.colorBoard}
           style={{ backgroundColor: `${currentBoard.boardColor}` }}
         ></div>
-        <ShortenTitle title={currentBoard.boardTitle} number={30} />
+        <ShortenTitle title={currentBoard.boardTitle} number={25} />
         {!clickRemove && (
           <div style={{ marginLeft: 'auto', display: 'flex', gap: '10px' }}>
             <Button
@@ -113,7 +115,10 @@ const OneClosedBoard = ({ currentBoard }) => {
         {clickRemove ? (
           <div
             className={styles.deleteCardForm}
-            style={{ width: '31%', marginLeft: 'auto' }}
+            style={{
+              width: size.width < 550 ? '60%' : '35%',
+              marginLeft: 'auto',
+            }}
           >
             <p style={{ padding: '2px' }}>
               All lists, cards will be deleted on this board. <br />

@@ -301,19 +301,12 @@ const Board = () => {
               </div>
             );
           })}
-        {!!lists.length && (
-          <div>
-            <AddListForm
-              title={'Add another list'}
-              curBoardId={currentBoard?.id}
-            />
-          </div>
-        )}
-        {!lists.length && (
-          <div>
-            <AddListForm title={'Add a list'} curBoardId={currentBoard?.id} />
-          </div>
-        )}
+        <div>
+          <AddListForm
+            title={lists.length ? 'Add another list' : 'Add a list'}
+            curBoardId={currentBoard?.id}
+          />
+        </div>
       </div>
     </div>
   );

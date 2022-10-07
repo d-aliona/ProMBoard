@@ -21,6 +21,9 @@
   border-radius: 4px;
   font-size: 16px;
   cursor: auto;
+  @media (max-width: 650px) {
+    min-width: 310px;
+  }
 }
 
 .dropmembersList {
@@ -76,13 +79,17 @@
 }
 
 .inviteButton {
-  width: 25%;
+  width: 22%;
   padding: 3px 10px;
   color: white;
   background: rgba(38, 70, 177, 0.9);
   border-radius: 3px;
   border: 1px solid rgb(38, 70, 177);
   font-size: 18px;
+  @media (max-width: 650px) {
+    width: 60px;
+    padding: 3px 2px;
+  }
 }
 .inviteButton:hover {
   background-color: rgb(38, 70, 177);

@@ -10,6 +10,7 @@ import Input from '../../ui/Input';
 import CloseButton from '../../ui/CloseButton';
 import useOutsideClick from '../../hooks/useOutsideClick';
 import Initials from '../../ui/Initials';
+import useWindowSize from '../../hooks/useWindowSize';
 import style from '../../assets/scss/inviteMembers.module.scss';
 import styles from '../../assets/scss/boardsList.module.scss';
 
@@ -26,6 +27,7 @@ const InviteMembersPopup = ({ currentBoard, setShowInviteMembers }) => {
   const disabled = searchTerm.match(regex) ? '' : style.disabled;
   const [usersNotPresentOnBoard, setUsersNotPresentOnBoard] = useState([]);
   const currentOwner = users.find((member) => member.id === currentBoard.owner);
+  const size = useWindowSize();
 
   useEffect(() => {
     const filteredUsers = users
@@ -217,6 +219,7 @@ const InviteMembersPopup = ({ currentBoard, setShowInviteMembers }) => {
                     <div
                       style={{
                         display: 'flex',
+                        flexWrap: 'wrap',
                         alignItems: 'center',
                         gap: '10px',
                       }}
@@ -271,13 +274,22 @@ const InviteMembersPopup = ({ currentBoard, setShowInviteMembers }) => {
           Members of this board
         </p>
         <div className={styles.scrollbar} style={{ maxHeight: '60vh' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              flexWrap: 'wrap',
+            }}
+          >
             <Initials user={user} />
             {currentOwner.firstName + ' ' + currentOwner.lastName}
-            <span style={{ marginLeft: '15px', color: '#666' }}>
-              {currentOwner.email}
-            </span>
-            <span style={{ marginLeft: '20px', color: '#333' }}>(owner)</span>
+            {size.width > 650 && (
+              <span style={{ marginLeft: '15px', color: '#666' }}>
+                {currentOwner.email}
+              </span>
+            )}
+            <span style={{ marginLeft: 'auto', color: '#333' }}>(owner)</span>
           </div>
           {currentBoard.invitedMembers.length
             ? currentBoard.invitedMembers.map((memberID) => {
@@ -296,9 +308,11 @@ const InviteMembersPopup = ({ currentBoard, setShowInviteMembers }) => {
                   >
                     <Initials user={currentMember} />
                     {currentMember.firstName + ' ' + currentMember.lastName}
-                    <span style={{ marginLeft: '15px', color: '#666' }}>
-                      {currentMember.email}
-                    </span>
+                    {size.width > 650 && (
+                      <span style={{ marginLeft: '15px', color: '#666' }}>
+                        {currentMember.email}
+                      </span>
+                    )}
                   </div>
                 );
               })

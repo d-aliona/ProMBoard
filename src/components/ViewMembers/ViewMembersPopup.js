@@ -60,6 +60,7 @@ const ViewMembersPopup = ({
         <div
           style={{
             display: 'flex',
+            flexWrap: 'wrap',
             alignItems: 'center',
             gap: '10px',
             padding: '0 10px',

@@ -36,7 +36,7 @@ const ViewClosedBoards = ({ setShowViewClosedBoards }) => {
       <div className={style.window}>
         <div
           className={style.boardForm}
-          style={{ maxWidth: '600px' }}
+          style={{ maxWidth: '560px' }}
           ref={ref}
         >
           <div className={style.title}>

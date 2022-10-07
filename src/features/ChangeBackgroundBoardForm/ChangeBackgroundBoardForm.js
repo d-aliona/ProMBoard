@@ -9,6 +9,7 @@ import CloseButton from '../../ui/CloseButton';
 import { Preview } from '../../assets/svg/svg-icons';
 import useOutsideClick from '../../hooks/useOutsideClick';
 import style from '../../assets/scss/boardsForm.module.scss';
+import styles from '../../assets/scss/boardsForm.module.scss';
 
 const ChangeBackgroundBoardForm = ({
   board,
@@ -96,7 +97,7 @@ const ChangeBackgroundBoardForm = ({
               <input
                 type="color"
                 defaultValue="#bba896"
-                style={{ marginLeft: '10px' }}
+                className={styles.inputColor}
                 onChange={(e) => {
                   setColorBoard(e.target.value);
                 }}

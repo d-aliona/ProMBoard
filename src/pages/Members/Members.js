@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice';
 import Input from '../../ui/Input';
+import useWindowSize from '../../hooks/useWindowSize';
+import ShortenTitle from '../../ui/ShortenTitle';
 import style from '../../assets/scss/home.module.scss';
 import styles from '../../assets/scss/sidebar.module.scss';
 
@@ -12,6 +14,7 @@ const Members = () => {
   const users = useSelector((state) => state.users.users);
   const [searchMem, setSearchMem] = useState('');
   const boards = useSelector(personalBoardsState);
+  const size = useWindowSize();
   let navigate = useNavigate();
   let countMembers = 0;
   let setMembers = new Set();
@@ -25,7 +28,7 @@ const Members = () => {
 
   return (
     <>
-      <div className={style.head}>
+      <div className={style.header}>
         <p className={style.title}>Members</p>
         {membersIDs.length !== 0 && (
           <div className={style.searchField}>
@@ -74,7 +77,7 @@ const Members = () => {
             return (
               memberToDisplay && (
                 <div className={style.boardsGroup} key={id}>
-                  <div style={{ display: 'flex' }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                     <h2 className={style.boardgroupTitle}>
                       {member.firstName} {member.lastName}
                       <span
@@ -92,7 +95,11 @@ const Members = () => {
                       is invited to <b>{memberBoards.length}</b> boards
                     </div>
                   </div>
-                  <div style={{ margin: '10px 40px 18px' }}>
+                  <div
+                    style={{
+                      margin: size.width < 500 ? '10px' : '10px 40px 18px',
+                    }}
+                  >
                     {memberBoards &&
                       memberBoards.map((boardID) => {
                         const curBoard = boards.find((el) => el.id === boardID);
@@ -108,7 +115,11 @@ const Members = () => {
                                   backgroundColor: `${curBoard.boardColor}`,
                                 }}
                               ></div>
-                              <span>{curBoard.boardTitle}</span>
+                              <ShortenTitle
+                                title={curBoard.boardTitle}
+                                number={size.width < 550 ? 25 : 50}
+                              />
+                              {/* <span>{curBoard.boardTitle}</span> */}
                             </div>
                           </div>
                         );

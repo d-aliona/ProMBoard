@@ -10,6 +10,7 @@ import { currentListsState } from '../../store/slices/currentListsSlice';
 import Initials from '../../ui/Initials';
 import CloseButton from '../../ui/CloseButton';
 import ShortenTitle from '../../ui/ShortenTitle';
+import useWindowSize from '../../hooks/useWindowSize';
 import style from '../../assets/scss/board.module.scss';
 import styles from '../../assets/scss/deleteForm.module.scss';
 
@@ -20,6 +21,7 @@ const ViewOneMember = ({ currentBoard, currentMember }) => {
   const [clickRemove, setClickRemove] = useState(false);
   const [attachedToCards, setAttachedToCards] = useState([]);
   const isPersonalBoard = user.id === currentBoard.owner;
+  const size = useWindowSize();
 
   useEffect(() => {
     const data = [];
@@ -80,9 +82,11 @@ const ViewOneMember = ({ currentBoard, currentMember }) => {
       <div className={style.viewMember}>
         <Initials user={currentMember} />
         <span>{currentMember.firstName + ' ' + currentMember.lastName}</span>
-        <span style={{ marginLeft: '15px', color: '#666' }}>
-          {currentMember.email}
-        </span>
+        {size.width > 550 && (
+          <span style={{ marginLeft: '15px', color: '#666' }}>
+            {currentMember.email}
+          </span>
+        )}
         {isPersonalBoard ? (
           <div
             style={{

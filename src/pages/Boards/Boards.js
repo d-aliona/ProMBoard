@@ -55,8 +55,8 @@ const Boards = () => {
   }, [searchBoard, boards]);
 
   return (
-    <>
-      <div className={style.head}>
+    <div>
+      <div className={style.headerOnBoards}>
         <p className={style.title}>Boards</p>
         <div
           className={style.createBoard}
@@ -100,7 +100,7 @@ const Boards = () => {
       )}
       <div className={style.line1}></div>
       <div className={style.boardsGroup}>
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
           <h2 className={style.boardgroupTitle}>Personal boards</h2>
           <div className={style.statistics}>
             Showing <b>{personalBoardsList.length}</b> of <b>{boards.length}</b>{' '}
@@ -127,7 +127,7 @@ const Boards = () => {
         </div>
       </div>
       <div className={style.boardsGroup}>
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
           <h2 className={style.boardgroupTitle}>Guest boards</h2>
           <div className={style.statistics}>
             Showing <b>{guestBoardsList.length}</b> of{' '}
@@ -135,7 +135,7 @@ const Boards = () => {
           </div>
         </div>
 
-        <div className={style.boards} style={{ maxHeight: '20vh' }}>
+        <div className={style.boards} style={{ maxHeight: '30vh' }}>
           {guestBoardsList &&
             guestBoardsList.map((board) => (
               <OneBoardOnBoards
@@ -154,7 +154,7 @@ const Boards = () => {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
