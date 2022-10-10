@@ -59,6 +59,15 @@
   background-color: #f4f5f7;
   border: 1px solid #e3e6f0;
   border-radius: 4px;
+  @media (max-width: 770px) {
+    width: 565px;
+  }
+  @media (max-width: 590px) {
+    width: 450px;
+  }
+  @media (max-width: 480px) {
+    width: 300px;
+  }
 }
 
 .openCardTitleWrapper {
@@ -66,6 +75,9 @@
   justify-content: space-between;
   padding: 20px;
   font-weight: 600;
+  @media (max-width: 770px) {
+    padding: 5px;
+  }
 }
 
 .closeModal {
@@ -85,6 +97,45 @@
   width: 35px;
   height: 35px;
   background-image: url(../images/cardTitle.png);
+}
+
+.boundaries {
+  padding: 20px 0 20px 20px;
+  @media (max-width: 770px) {
+    padding: 5px;
+  }
+}
+
+.openCardTitle {
+  font-size: 18px;
+  padding: 10px 0 17px;
+  cursor: pointer;
+  padding-left: 3px;
+}
+
+.openCardHeader {
+  width: 80%;
+  word-break: break-all;
+  // @media (max-width: 770px) {
+  //   width: 400px;
+  // }
+  // @media (max-width: 590px) {
+  //   width: 350px;
+  // }
+  // @media (max-width: 480px) {
+  //   width: 200px;
+  // }
+}
+
+.inputCardTitle {
+  border: 1px solid rgba(23, 43, 77, 0.7);
+  border-radius: 3px;
+  padding: 5px 3px 4px;
+  margin-bottom: 9px;
+  font-size: 20px;
+  font-weight: 600;
+  min-width: 100%;
+  max-width: 100%;
 }
 
 .displayMembersicon {
@@ -130,6 +181,9 @@
   border-radius: 4px;
   padding: 10px;
   font-size: 16px;
+  @media (max-width: 770px) {
+    margin-left: 10px;
+  }
 }
 .descriptionText:hover {
   cursor: pointer;
@@ -155,12 +209,21 @@
   padding: 10px;
   font-size: 16px;
   border: 1px solid rgba(23, 43, 77, 0.2);
+  @media (max-width: 590px) {
+    width: 86%;
+  }
 }
 
 .inputComment {
   @extend .commentForm;
   height: 70px;
   resize: none;
+  @media (max-width: 590px) {
+    width: 380px;
+  }
+  @media (max-width: 480px) {
+    width: 230px;
+  }
 }
 
 .editComment {
@@ -169,6 +232,15 @@
   width: 496px;
   height: 70px;
   resize: none;
+  @media (max-width: 770px) {
+    margin-left: 10px;
+  }
+  @media (max-width: 590px) {
+    width: 410px;
+  }
+  @media (max-width: 480px) {
+    width: 260px;
+  }
 }
 
 .commentText {
@@ -209,7 +281,8 @@
 }
 
 .circle {
-  width: 35px;
+  min-width: 35px;
+  max-width: 35px;
   height: 35px;
   text-align: center;
   font-size: 18px;
@@ -292,24 +365,6 @@
   height: 20px;
   background-size: 20px;
   background-image: url(../images/trashbinicon.png);
-}
-
-.openCardTitle {
-  font-size: 18px;
-  padding: 10px 0 17px;
-  cursor: pointer;
-  padding-left: 3px;
-}
-
-.inputCardTitle {
-  border: 1px solid rgba(23, 43, 77, 0.7);
-  border-radius: 3px;
-  padding: 5px 3px 4px;
-  margin-bottom: 9px;
-  font-size: 20px;
-  font-weight: 600;
-  min-width: 100%;
-  max-width: 100%;
 }
 
 .assignMember {
@@ -412,7 +467,6 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  // border-radius: 0 0 4px 4px;
   border-top: 1px solid rgba(35, 66, 119, 0.5);
   border-bottom: 1px solid rgba(35, 66, 119, 0.5);
   padding: 5px 3px;
@@ -459,10 +513,22 @@
   border-bottom: 1px solid #ddd;
   margin: 5px 0 1px 20px;
   padding-bottom: 4px;
+  @media (max-width: 770px) {
+    margin: 5px 0 1px 10px;
+  }
 }
 .editReply {
   margin: 5px 0 1px 20px;
   width: calc(100% - 20px);
   border-radius: 3px;
   resize: none;
+  @media (max-width: 770px) {
+    margin: 5px 0 1px 10px;
+  }
+  @media (max-width: 590px) {
+    width: 370px;
+  }
+  @media (max-width: 480px) {
+    width: 220px;
+  }
 }

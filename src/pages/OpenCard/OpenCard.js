@@ -14,6 +14,7 @@ import CardSidebar from '../../components/Card/CardSidebar';
 import { allCardsState } from '../../store/slices/allCardsSlice';
 import { allListsState } from '../../store/slices/allListsSlice';
 import style from '../../assets/scss/card.module.scss';
+import useWindowSize from '../../hooks/useWindowSize';
 
 const OpenCard = () => {
   let navigate = useNavigate();
@@ -24,6 +25,7 @@ const OpenCard = () => {
   const card = allCards.find((ob) => ob.id === title?.idcard);
   const list = allLists.find((el) => el.id === card?.listID);
   const ref = useOutsideClick(() => navigate(-1));
+  const size = useWindowSize();
 
   return (
     <>
@@ -45,19 +47,31 @@ const OpenCard = () => {
                   setClickTitle={setClickTitle}
                 />
               </div>
-              <div style={{ display: 'flex' }}>
-                <div style={{ width: '75%' }}>
+              {size.width > 770 ? (
+                <div style={{ display: 'flex' }}>
+                  <div style={{ width: '75%' }}>
+                    {card?.assignedUsers.length > 0 ? (
+                      <CardMembers card={card} />
+                    ) : null}
+                    <CardDescription card={card} />
+                    <CardCommentForm card={card} />
+                    <CardComments card={card} />
+                  </div>
+                  <div style={{ width: '25%' }}>
+                    <CardSidebar card={card} setClickTitle={setClickTitle} />
+                  </div>
+                </div>
+              ) : (
+                <div>
                   {card?.assignedUsers.length > 0 ? (
                     <CardMembers card={card} />
                   ) : null}
                   <CardDescription card={card} />
+                  <CardSidebar card={card} setClickTitle={setClickTitle} />
                   <CardCommentForm card={card} />
                   <CardComments card={card} />
                 </div>
-                <div style={{ width: '25%' }}>
-                  <CardSidebar card={card} setClickTitle={setClickTitle} />
-                </div>
-              </div>
+              )}
             </div>
           </div>
         </>

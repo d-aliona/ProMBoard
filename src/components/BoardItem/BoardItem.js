@@ -10,6 +10,7 @@ import useOutsideClick from '../../hooks/useOutsideClick';
 import ShortenTitle from '../../ui/ShortenTitle';
 import DropBoardMenu from '../../features/DropBoardMenu';
 import style from '../../assets/scss/sidebar.module.scss';
+import useWindowSize from '../../hooks/useWindowSize';
 
 const BoardItem = ({ board, refSidebar }) => {
   const [showMenu, setShowMenu] = useState(false);
@@ -21,13 +22,14 @@ const BoardItem = ({ board, refSidebar }) => {
   const boards = useSelector(personalBoardsState);
   const title = useParams();
   let navigate = useNavigate();
+  const size = useWindowSize();
 
   const ref = useOutsideClick(() => {
     setShowDropMenu(false);
   });
 
-  const handleClickBoard = (id) => {
-    navigate('/auth/board/' + id);
+  const handleClickBoard = () => {
+    navigate('/auth/board/' + board.id);
   };
 
   useEffect(() => {
@@ -84,7 +86,7 @@ const BoardItem = ({ board, refSidebar }) => {
         }`,
         height: `${clickBoardTitle ? 'auto' : '32px'}`,
       }}
-      onClick={() => handleClickBoard(board.id)}
+      onClick={handleClickBoard}
       onMouseOver={() => setShowMenu(true)}
       onMouseOut={() => setShowMenu(false)}
     >
@@ -140,9 +142,10 @@ const BoardItem = ({ board, refSidebar }) => {
         <div
           className={style.boardDropMenuBackGround}
           style={{
+            width: size.width < 800 ? '200px' : '',
             backgroundColor: board.boardColor,
-            left: refSidebar.current.offsetWidth,
-            top: coordY,
+            left: size.width < 800 ? 0 : refSidebar.current.offsetWidth,
+            top: size.width < 800 ? coordY + 30 : coordY,
           }}
           ref={ref}
         >

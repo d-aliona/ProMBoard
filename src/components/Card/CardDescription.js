@@ -5,10 +5,12 @@ import { db } from '../../firebase-client';
 
 import useOutsideClick from '../../hooks/useOutsideClick';
 import style from '../../assets/scss/card.module.scss';
+import useWindowSize from '../../hooks/useWindowSize';
 
 const CardDescription = ({ card }) => {
   const [clickDescription, setClickDescription] = useState(false);
   const [description, setDescription] = useState(card.description);
+  const size = useWindowSize();
 
   const updateCardDescription = async (e) => {
     const docRef = doc(db, 'cards', card.id);
@@ -36,7 +38,7 @@ const CardDescription = ({ card }) => {
 
   return (
     <>
-      <div style={{ padding: '20px 0 20px 20px' }}>
+      <div className={style.boundaries}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div className={style.descriptionicon}></div>
           <div style={{ fontSize: '18px' }}>Description</div>

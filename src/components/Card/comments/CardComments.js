@@ -13,6 +13,7 @@ import {
   setCurrentReplies,
   currentRepliesState,
 } from '../../../store/slices/currentRepliesSlice';
+import style from '../../../assets/scss/card.module.scss';
 
 const CardComments = ({ card }) => {
   const dispatch = useDispatch();
@@ -45,7 +46,7 @@ const CardComments = ({ card }) => {
 
   return (
     <>
-      <div style={{ padding: '20px 0 20px 20px' }}>
+      <div className={style.boundaries}>
         {comments &&
           comments.map((comment) => {
             const repliesForComment = replies.filter(

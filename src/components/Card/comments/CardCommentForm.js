@@ -8,9 +8,8 @@ import { db } from '../../../firebase-client';
 import { allBoardsState } from '../../../store/slices/allBoardsSlice';
 import Initials from '../../../ui/Initials';
 import { addNotificationToDataBase } from '../../../features/exportFunctions';
-import useOutsideClick from '../../../hooks/useOutsideClick';
 import style from '../../../assets/scss/card.module.scss';
-// import { Navigate, useNavigate } from 'react-router-dom'
+import useWindowSize from '../../../hooks/useWindowSize';
 
 const CardCommentForm = ({ card }) => {
   const user = useSelector((state) => state.user.user);
@@ -18,6 +17,7 @@ const CardCommentForm = ({ card }) => {
   const navigate = useNavigate();
   const [clickComment, setClickComment] = useState(false);
   const [comment, setComment] = useState('');
+  const size = useWindowSize();
 
   const addCardComment = async () => {
     const colRef = collection(db, 'cards', card.id, 'comments');
@@ -78,7 +78,7 @@ const CardCommentForm = ({ card }) => {
 
   return (
     <>
-      <div style={{ padding: '20px 0 20px 20px' }}>
+      <div className={style.boundaries}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div className={style.commenticon}></div>
           <div style={{ fontSize: '18px' }}>Comments</div>

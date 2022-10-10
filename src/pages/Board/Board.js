@@ -21,6 +21,8 @@ import {
   currentDragStartCardState,
 } from '../../store/slices/currentDragStartCardSlice';
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice';
+import useWindowSize from '../../hooks/useWindowSize';
+import DropBoardMenu from '../../features/DropBoardMenu';
 import style from '../../assets/scss/board.module.scss';
 
 const Board = () => {
@@ -41,9 +43,16 @@ const Board = () => {
   const [boardtitle, setBoardtitle] = useState(currentBoard?.boardTitle);
   const [clickBoardTitle, setClickBoardTitle] = useState(false);
   const [needToRename, setNeedToRename] = useState(false);
+  const [showDropMenu, setShowDropMenu] = useState(false);
+  const [coordX, setCoordX] = useState(0);
   const dragItemList = useRef();
   const dragItemListNode = useRef();
   const isPersonalBoard = user.id === currentBoard?.owner;
+  const size = useWindowSize();
+
+  const ref = useOutsideClick(() => {
+    setShowDropMenu(false);
+  });
 
   let allListsCards = [];
   let i = 0;
@@ -208,6 +217,12 @@ const Board = () => {
     }
   };
 
+  const clickHeadMenu = (e) => {
+    e.stopPropagation();
+    setShowDropMenu((prev) => !prev);
+    setCoordX(e.clientX - 170);
+  };
+
   return (
     <div
       style={{
@@ -231,23 +246,50 @@ const Board = () => {
               <div style={{ width: '400px', visibility: 'hidden' }}></div>
             </>
           ) : (
-            <ShortenTitle title={currentBoard?.boardTitle} number={30} />
+            <ShortenTitle
+              title={currentBoard?.boardTitle}
+              number={size.width > 360 ? 30 : 26}
+            />
           )}
         </div>
-        <div style={{ display: 'flex', gap: '20px', marginRight: 'auto' }}>
-          <ViewMembers currentBoard={currentBoard} />
-          {isPersonalBoard ? (
-            <InviteMembers currentBoard={currentBoard} />
-          ) : null}
+        <div
+          className={style.headMenu}
+          style={{
+            fontSize: '12px',
+            height: '32px',
+            marginLeft: 'auto',
+          }}
+          onClick={(e) => clickHeadMenu(e)}
+        >
+          •••
         </div>
+        {showDropMenu && (
+          <div
+            className={style.dropHeadMenu}
+            style={{
+              backgroundColor: currentBoard.boardColor,
+              left: coordX,
+            }}
+            ref={ref}
+          >
+            <DropBoardMenu
+              board={currentBoard}
+              setShowDropMenu={setShowDropMenu}
+              setClickBoardTitle={setClickBoardTitle}
+              isOnBoards={false}
+            />
+          </div>
+        )}
         <div className={style.headMenu}>
-          Choose text color:
-          <div className={style.changeColor_light} onClick={chooseLight}>
-            light
-          </div>
-          <div className={style.changeColor_dark} onClick={chooseDark}>
-            dark
-          </div>
+          {textColor === '#ffe' ? (
+            <div className={style.changeColor_dark} onClick={chooseDark}>
+              Text color
+            </div>
+          ) : (
+            <div className={style.changeColor_light} onClick={chooseLight}>
+              Text color
+            </div>
+          )}
         </div>
       </div>
       <div className={style.lists}>

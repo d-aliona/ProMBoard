@@ -47,7 +47,7 @@ const CardTitle = ({ card, list, clickTitle, setClickTitle }) => {
       <div className={style.openCardTitleWrapper}>
         <div style={{ display: 'flex', gap: '10px' }}>
           <div className={style.titleicon}></div>
-          <div style={{ width: '494px', wordBreak: 'break-all' }}>
+          <div className={style.openCardHeader}>
             <div onClick={handleCardTitle}>
               {clickTitle ? (
                 <textarea

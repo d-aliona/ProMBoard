@@ -1,23 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
 
-import { updateDoc, doc } from 'firebase/firestore';
-import { db } from '../../firebase-client';
 import MemberOnCard from './MemberOnCard';
-import DeleteMemberFromCardForm from '../../features/DeleteMemberFromCardForm';
 import AssignMemberForm from '../../features/AssignMemberForm';
-import Initials from '../../ui/Initials';
-import useOutsideClick from '../../hooks/useOutsideClick';
 import style from '../../assets/scss/card.module.scss';
+import useWindowSize from '../../hooks/useWindowSize';
 
 const CardMembers = ({ card }) => {
-  const users = useSelector((state) => state.users.users);
+  const size = useWindowSize();
   const [clickAddMembers, setClickAddMembers] = useState(false);
-  // const [showDeleteMemberForm, setShowDeleteMemberForm] = useState(false)
 
   return (
     <>
-      <div style={{ padding: '20px 0 20px 20px' }}>
+      <div className={style.boundaries}>
         <div style={{ display: 'flex', alignItems: 'flex-end', gap: '10px' }}>
           <div className={style.displayMembersicon}></div>
           <div style={{ fontSize: '18px' }}>Members</div>
@@ -27,12 +21,11 @@ const CardMembers = ({ card }) => {
             display: 'flex',
             gap: '10px',
             flexWrap: 'wrap',
-            margin: '10px 0 0 45px',
+            margin: size.width > 770 ? '10px 0 0 45px' : '10px 0 0 10px',
           }}
         >
           {card.assignedUsers &&
             card.assignedUsers.map((memberID) => {
-              // const currentMember = users.find(user => user.id === memberID)
               return (
                 <MemberOnCard key={memberID} card={card} memberID={memberID} />
               );

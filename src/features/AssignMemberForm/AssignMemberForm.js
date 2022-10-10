@@ -12,12 +12,14 @@ import CloseButton from '../../ui/CloseButton';
 import Line from '../../ui/Line';
 import style from '../../assets/scss/inviteMembers.module.scss';
 import styles from '../../assets/scss/boardsList.module.scss';
+import useWindowSize from '../../hooks/useWindowSize';
 
 const AssignMemberForm = ({ card, setClickAddMembers }) => {
   const user = useSelector((state) => state.user.user);
   const users = useSelector((state) => state.users.users);
   const boards = useSelector(allBoardsState);
   const [searchMember, setSearchMember] = useState('');
+  const size = useWindowSize();
   const currentBoard = boards.find((ob) => ob.id === card.boardID);
   const membersToBeAssigned = [
     ...currentBoard?.invitedMembers,
@@ -120,26 +122,28 @@ const AssignMemberForm = ({ card, setClickAddMembers }) => {
           <p className={styles.boardsGroup} style={{ marginBottom: '10px' }}>
             Board members
           </p>
-          {dropMemberList &&
-            dropMemberList.map((memberID) => {
-              const currentMember = users.find((ob) => ob.id === memberID);
-              return (
-                <div
-                  key={memberID}
-                  className={style.memberToAssign}
-                  onClick={(e) => toggleAssignMember(e, memberID)}
-                >
-                  <Initials user={currentMember} />
-                  {currentMember.firstName + ' ' + currentMember.lastName}
-                  <span style={{ marginLeft: '15px', color: '#666' }}>
-                    {currentMember.email}
-                  </span>
-                  {card.assignedUsers.includes(memberID) ? (
-                    <span style={{ marginLeft: 'auto' }}>✓</span>
-                  ) : null}
-                </div>
-              );
-            })}
+          <div className={style.dropAsignMembersList}>
+            {dropMemberList &&
+              dropMemberList.map((memberID) => {
+                const currentMember = users.find((ob) => ob.id === memberID);
+                return (
+                  <div
+                    key={memberID}
+                    className={style.memberToAssign}
+                    onClick={(e) => toggleAssignMember(e, memberID)}
+                  >
+                    <Initials user={currentMember} />
+                    {currentMember.firstName + ' ' + currentMember.lastName}
+                    <span style={{ marginLeft: '15px', color: '#666' }}>
+                      {size.width > 590 ? currentMember.email : null}
+                    </span>
+                    {card.assignedUsers.includes(memberID) ? (
+                      <span style={{ marginLeft: 'auto' }}>✓</span>
+                    ) : null}
+                  </div>
+                );
+              })}
+          </div>
         </div>
       </div>
     </>

@@ -10,7 +10,6 @@
 
 .deleteCardForm {
   background-image: linear-gradient(rgba(129, 3, 3, 0.2) 40%, transparent 50%);
-  // color: white;
   width: auto;
   margin-top: 10px;
   text-align: center;
@@ -18,6 +17,10 @@
   border-radius: 4px;
   padding: 10px 0 0 0;
   font-size: 16px;
+  @media (max-width: 770px) {
+    width: 200px;
+    margin: 10px auto 0;
+  }
 }
 
 @mixin button {

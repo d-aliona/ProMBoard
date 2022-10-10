@@ -55,7 +55,7 @@ const GetBoardState = ({ children }) => {
         dispatch(setCurrentLists(listSnap));
       });
     }
-  }, [title, currentBoard, user]);
+  }, [title, currentBoard, user, existBoard]);
 
   useEffect(() => {
     if (existBoard) {
@@ -69,9 +69,9 @@ const GetBoardState = ({ children }) => {
         dispatch(setCurrentCards(cardSnap));
       });
     }
-  }, [title, currentBoard, cards.assignedUsers]);
+  }, [title, currentBoard, cards.assignedUsers, existBoard]);
 
-  if (!!lists && !!cards) {
+  if (lists && cards) {
     return children;
   }
 };

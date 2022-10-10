@@ -4,7 +4,10 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 30px;
-  padding: 10px 10px 10px 40px;
+  padding: 10px;
+  @media (max-width: 500px) {
+    gap: 10px;
+  }
 }
 
 .title {
@@ -14,6 +17,9 @@
   font-weight: 600;
   font-size: 20px;
   max-width: 600px;
+  @media (max-width: 600px) {
+    font-size: 16px;
+  }
 }
 
 .inputTitle {
@@ -31,26 +37,34 @@
 
 .headMenu {
   display: flex;
+  align-items: center;
   gap: 10px;
   padding: 8px;
   border-radius: 4px;
   font-size: 16px;
   background: rgba(23, 43, 77, 0.2);
+  cursor: pointer;
+}
+.headMenu:hover {
+  font-weight: bold;
+  background: rgba(23, 43, 77, 0.3);
+}
+
+.dropHeadMenu {
+  position: fixed;
+  z-index: 100;
+  border-radius: 3px;
+  top: 54px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .changeColor_light {
   color: white;
-  cursor: pointer;
 }
 
 .changeColor_dark {
   color: rgb(23, 43, 77);
-  cursor: pointer;
-}
-
-.changeColor_dark:hover,
-.changeColor_light:hover {
-  font-weight: bold;
 }
 
 .lists {
@@ -58,7 +72,7 @@
   flex-wrap: nowrap;
   gap: 8px;
   overflow-x: auto;
-  height: calc(99vh - 44px - 54px);
+  height: calc(100vh - 44px - 54px);
   margin: 0 10px;
 }
 .lists::-webkit-scrollbar {

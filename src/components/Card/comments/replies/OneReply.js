@@ -43,6 +43,7 @@ const OneReply = ({ card, reply }) => {
           display: 'flex',
           alignItems: 'center',
           gap: '10px',
+          flexWrap: 'wrap',
           marginTop: '10px',
         }}
       >

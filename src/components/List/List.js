@@ -10,7 +10,7 @@ import DropListMenu from '../../features/DropListMenu';
 import { currentListsState } from '../../store/slices/currentListsSlice';
 import useOutsideClick from '../../hooks/useOutsideClick';
 import style from '../../assets/scss/list.module.scss';
-import styles from '../../assets/scss/sidebar.module.scss';
+// import styles from '../../assets/scss/sidebar.module.scss';
 
 const List = ({
   list,
