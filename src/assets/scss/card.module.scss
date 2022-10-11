@@ -116,15 +116,6 @@
 .openCardHeader {
   width: 80%;
   word-break: break-all;
-  // @media (max-width: 770px) {
-  //   width: 400px;
-  // }
-  // @media (max-width: 590px) {
-  //   width: 350px;
-  // }
-  // @media (max-width: 480px) {
-  //   width: 200px;
-  // }
 }
 
 .inputCardTitle {
@@ -390,18 +381,17 @@
   cursor: pointer;
 }
 
-.assignedMember[data-descr]:hover::after {
-  content: attr(data-descr);
-  position: absolute;
-  left: 0;
-  top: 40px;
-  min-width: 200px;
+.hint {
+  position: fixed;
+  min-width: 100px;
   border: 1px white solid;
   border-radius: 3px;
   background-color: #ffe;
-  padding: 10px;
+  padding: 5px;
   font-size: 16px;
-  z-index: 1;
+  z-index: 100;
+  box-shadow: 0 8px 16px -4px rgba(9, 30, 66, 0.25),
+    0 0 0 1px rgba(9, 30, 66, 0.1);
 }
 
 .cardCoverWrapper {

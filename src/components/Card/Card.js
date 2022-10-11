@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import Initials from '../../ui/Initials';
+import AssignedMemberOnCardCover from './AssignedMemberOnCardCover';
 import style from '../../assets/scss/card.module.scss';
 
 const Card = ({ card }) => {
@@ -73,25 +73,7 @@ const Card = ({ card }) => {
                     const currentMember = users.find(
                       (user) => user.id === memberID
                     );
-                    return (
-                      <div
-                        key={memberID}
-                        className={style.assignedMember}
-                        data-descr={
-                          currentMember.firstName +
-                          ' ' +
-                          currentMember.lastName +
-                          ' ' +
-                          currentMember.email
-                        }
-                      >
-                        <Initials
-                          user={currentMember}
-                          size={'28px'}
-                          font={'14px'}
-                        />
-                      </div>
-                    );
+                    return <AssignedMemberOnCardCover key={memberID} currentMember={currentMember}/>     
                   })}
               </div>
             ) : null}
