@@ -1,6 +1,17 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = {
+type CurrentDrag = {
+  cardID: string | null;
+  cardIndex: number | null;
+  listID: string | null;
+  listIndex: number | null;
+}
+
+type DragStartCardState = {
+  currentDragStartCard: CurrentDrag;
+}
+
+const initialState: DragStartCardState = {
   currentDragStartCard: {
     listIndex: null,
     cardIndex: null,
@@ -13,7 +24,7 @@ const currentDragStartCardSlice = createSlice({
   name: 'currentDragStartCard',
   initialState,
   reducers: {
-    setCurrentDragStartCard(state, action) {
+    setCurrentDragStartCard(state, action: PayloadAction<CurrentDrag>) {
       state.currentDragStartCard = action.payload;
     },
   },
@@ -21,7 +32,7 @@ const currentDragStartCardSlice = createSlice({
 
 export const { setCurrentDragStartCard } = currentDragStartCardSlice.actions;
 
-export const currentDragStartCardState = (state) =>
+export const currentDragStartCardState = (state: {currentDragStartCard: DragStartCardState}) =>
   state.currentDragStartCard.currentDragStartCard;
 
 export default currentDragStartCardSlice.reducer;

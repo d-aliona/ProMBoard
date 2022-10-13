@@ -16,7 +16,7 @@ const notPersonalBoardsSlice = createSlice({
 
 export const { setNotPersonalBoards } = notPersonalBoardsSlice.actions;
 
-export const notPersonalBoardsState = (state) =>
+export const notPersonalBoardsState = (state: {notPersonalBoards: {notPersonalBoards: Boards | null}}) =>
   state.notPersonalBoards.notPersonalBoards;
 
 export default notPersonalBoardsSlice.reducer;

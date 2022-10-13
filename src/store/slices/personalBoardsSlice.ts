@@ -16,7 +16,7 @@ const personalBoardsSlice = createSlice({
 
 export const { setPersonalBoards } = personalBoardsSlice.actions;
 
-export const personalBoardsState = (state) =>
+export const personalBoardsState = (state: {personalBoards: {personalBoards: Boards | null}}) =>
   state.personalBoards.personalBoards;
 
 export default personalBoardsSlice.reducer;

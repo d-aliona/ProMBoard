@@ -16,6 +16,6 @@ const notificationsSlice = createSlice({
 
 export const { setNotifications } = notificationsSlice.actions;
 
-export const notificationsState = (state) => state.notifications.notifications;
+export const notificationsState = (state: {notifications: {notifications: Notifications | null}}) => state.notifications.notifications;
 
 export default notificationsSlice.reducer;

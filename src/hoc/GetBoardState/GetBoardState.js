@@ -69,7 +69,7 @@ const GetBoardState = ({ children }) => {
         dispatch(setCurrentCards(cardSnap));
       });
     }
-  }, [title, currentBoard, cards.assignedUsers, existBoard]);
+  }, [title, currentBoard, cards?.assignedUsers, existBoard]);
 
   if (lists && cards) {
     return children;

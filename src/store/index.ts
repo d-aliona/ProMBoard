@@ -12,7 +12,7 @@ import allCardsReducer from './slices/allCardsSlice';
 import allListsReducer from './slices/allListsSlice';
 import personalBoardsReducer from './slices/personalBoardsSlice';
 import notPersonalBoardsReducer from './slices/notPersonalBoardsSlice';
-import boardReducer from './slices/boardSlice';
+// import boardReducer from './slices/boardSlice';
 import currentListsReducer from './slices/currentListsSlice';
 import currentCardsReducer from './slices/currentCardsSlice';
 import currentCommentsReducer from './slices/currentCommentsSlice';
@@ -33,7 +33,7 @@ const reducers = combineReducers({
   allLists: allListsReducer,
   personalBoards: personalBoardsReducer,
   notPersonalBoards: notPersonalBoardsReducer,
-  board: boardReducer,
+  // board: boardReducer,
   currentLists: currentListsReducer,
   currentCards: currentCardsReducer,
   currentComments: currentCommentsReducer,
@@ -44,11 +44,16 @@ const reducers = combineReducers({
 
 const persistedReducer = persistReducer(persistConfig, reducers);
 
-export const store = configureStore({
+const store = configureStore({
   reducer: persistedReducer,
-  composeWithDevTools,
+  // composeWithDevTools,
   devTools: process.env.NODE_ENV !== 'production',
   middleware: [thunk],
 });
 
+export default store;
+
 export const persistor = persistStore(store);
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

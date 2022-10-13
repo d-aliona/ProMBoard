@@ -21,6 +21,6 @@ const currentListsSlice = createSlice({
 
 export const { setCurrentLists } = currentListsSlice?.actions;
 
-export const currentListsState = (state) => state?.currentLists?.currentLists;
+export const currentListsState = (state: {currentLists: {currentLists: Lists | null}}) => state?.currentLists?.currentLists;
 
 export default currentListsSlice.reducer;

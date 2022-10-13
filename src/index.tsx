@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 
-import { persistor, store } from './store';
+import store, { persistor } from './store';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import './assets/scss/index.scss';
 import App from './App';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
     <BrowserRouter>

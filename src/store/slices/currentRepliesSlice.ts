@@ -16,7 +16,7 @@ const currentRepliesSlice = createSlice({
 
 export const { setCurrentReplies } = currentRepliesSlice.actions;
 
-export const currentRepliesState = (state) =>
+export const currentRepliesState = (state: {currentReplies: {currentReplies: Replies | null}}) =>
   state.currentReplies.currentReplies;
 
 export default currentRepliesSlice.reducer;
