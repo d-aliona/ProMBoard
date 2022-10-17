@@ -1,14 +1,18 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = {
-  currentReplies: null,
+type CurrentRepliesState = {
+  currentReplies: Replies;
+}
+
+const initialState: CurrentRepliesState = {
+  currentReplies: [],
 };
 
 const currentRepliesSlice = createSlice({
   name: 'currentReplies',
   initialState,
   reducers: {
-    setCurrentReplies(state, action) {
+    setCurrentReplies(state, action: PayloadAction<Replies>) {
       state.currentReplies = action.payload;
     },
   },
@@ -16,7 +20,7 @@ const currentRepliesSlice = createSlice({
 
 export const { setCurrentReplies } = currentRepliesSlice.actions;
 
-export const currentRepliesState = (state: {currentReplies: {currentReplies: Replies | null}}) =>
+export const currentRepliesState = (state: {currentReplies: CurrentRepliesState}) =>
   state.currentReplies.currentReplies;
 
 export default currentRepliesSlice.reducer;

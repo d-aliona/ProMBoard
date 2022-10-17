@@ -8,7 +8,7 @@ import Input from '../../ui/Input';
 import style from '../../assets/scss/signupForm.module.scss';
 import { ShowPassword, HidePassword } from '../../assets/svg/svg-icons';
 
-const LoginForm = () => {
+const LoginForm: React.FC = () => {
   const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/gi;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,11 +16,11 @@ const LoginForm = () => {
   const [showErrorEmail, setShowErrorEmail] = useState(false);
   const [showErrorPass, setShowErrorPass] = useState(false);
   const [isIncorrectData, setIsIncorrectData] = useState(false);
-  const disabled = email && password ? '' : style.disabled;
+  const disabled: string | NodeModule = email && password ? '' : style.disabled;
 
   let navigate = useNavigate();
 
-  const loginUser = (e) => {
+  const loginUser = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (email.match(regex)) {

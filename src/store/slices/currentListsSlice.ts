@@ -1,6 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = {
+type CurrentListsState = {
+  currentLists: Lists;
+}
+
+const initialState: CurrentListsState = {
   currentLists: [],
 };
 
@@ -8,7 +12,7 @@ const currentListsSlice = createSlice({
   name: 'currentLists',
   initialState,
   reducers: {
-    setCurrentLists(state, action) {
+    setCurrentLists(state, action: PayloadAction<Lists>) {
       if (state) {
         state.currentLists = action?.payload;
       } else {
@@ -21,6 +25,6 @@ const currentListsSlice = createSlice({
 
 export const { setCurrentLists } = currentListsSlice?.actions;
 
-export const currentListsState = (state: {currentLists: {currentLists: Lists | null}}) => state?.currentLists?.currentLists;
+export const currentListsState = (state: {currentLists: CurrentListsState}) => state?.currentLists?.currentLists;
 
 export default currentListsSlice.reducer;

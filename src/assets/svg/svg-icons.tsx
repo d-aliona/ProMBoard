@@ -1,4 +1,6 @@
-export const GoogleSvg = () => (
+import React from "react";
+
+export const GoogleSvg: React.FC = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="48"
@@ -24,7 +26,7 @@ export const GoogleSvg = () => (
   </svg>
 );
 
-export const ShowPassword = () => (
+export const ShowPassword: React.FC = () => (
   <svg
     enableBackground="new 0 0 32 32"
     height="22"
@@ -57,7 +59,7 @@ export const ShowPassword = () => (
   </svg>
 );
 
-export const HidePassword = () => (
+export const HidePassword: React.FC = () => (
   <svg
     enableBackground="new 0 0 32 32"
     height="22"
@@ -103,7 +105,7 @@ export const HidePassword = () => (
   </svg>
 );
 
-export const TickDown = () => (
+export const TickDown: React.FC = () => (
   <svg
     width="24"
     height="24"
@@ -119,7 +121,7 @@ export const TickDown = () => (
   </svg>
 );
 
-export const Preview = () => (
+export const Preview: React.FC = () => (
   <svg
     width="186"
     height="103"

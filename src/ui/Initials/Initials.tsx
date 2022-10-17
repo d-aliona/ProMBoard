@@ -1,6 +1,13 @@
+import React from 'react';
 import style from '../../assets/scss/ui.module.scss';
 
-const Initials = ({ user, size, font }) => {
+interface Initialsprops {
+  user: User;
+  size?: string;
+  font?: string;
+}
+
+const Initials: React.FC<Initialsprops> = ({ user, size, font }) => {
   return (
     <div
       className={style.circle}

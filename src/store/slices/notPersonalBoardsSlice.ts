@@ -1,14 +1,18 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = {
-  notPersonalBoards: null,
+type NotPersonalBoardsState = {
+  notPersonalBoards: Boards;
+}
+
+const initialState: NotPersonalBoardsState = {
+  notPersonalBoards: [],
 };
 
 const notPersonalBoardsSlice = createSlice({
   name: 'notPersonalBoards',
   initialState,
   reducers: {
-    setNotPersonalBoards(state, action) {
+    setNotPersonalBoards(state, action: PayloadAction<Boards>) {
       state.notPersonalBoards = action.payload;
     },
   },
@@ -16,7 +20,7 @@ const notPersonalBoardsSlice = createSlice({
 
 export const { setNotPersonalBoards } = notPersonalBoardsSlice.actions;
 
-export const notPersonalBoardsState = (state: {notPersonalBoards: {notPersonalBoards: Boards | null}}) =>
+export const notPersonalBoardsState = (state: {notPersonalBoards: NotPersonalBoardsState}) =>
   state.notPersonalBoards.notPersonalBoards;
 
 export default notPersonalBoardsSlice.reducer;

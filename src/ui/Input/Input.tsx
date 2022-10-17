@@ -1,6 +1,16 @@
+import React from 'react';
 import style from '../../assets/scss/ui.module.scss';
 
-const Input = ({ pad, type, placeholder, value, onChange, height }) => {
+interface InputProps {
+  pad?: string;
+  type: string;
+  placeholder: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  height?: string; 
+}
+
+const Input: React.FC<InputProps> = ({ pad, type, placeholder, value, onChange, height }) => {
   return (
     <input
       style={{ paddingLeft: pad, height: height }}

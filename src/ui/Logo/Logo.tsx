@@ -1,6 +1,12 @@
+import React from 'react';
 import style from '../../assets/scss/ui.module.scss';
 
-const Logo = ({ font, hideText }) => {
+interface LogoProps {
+  font?: string;
+  hideText?: boolean;
+}
+
+const Logo: React.FC<LogoProps> = ({ font, hideText }) => {
   return (
     <div className={style.logo}>
       <div className={style.logoicon}></div>

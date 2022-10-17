@@ -1,14 +1,18 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = {
-  notifications: null,
+type NotificationsState = {
+  notifications: Notifications;
+} 
+
+const initialState: NotificationsState = {
+  notifications: [],
 };
 
 const notificationsSlice = createSlice({
   name: 'notifications',
   initialState,
   reducers: {
-    setNotifications(state, action) {
+    setNotifications(state, action: PayloadAction<Notifications>) {
       state.notifications = action.payload;
     },
   },
@@ -16,6 +20,6 @@ const notificationsSlice = createSlice({
 
 export const { setNotifications } = notificationsSlice.actions;
 
-export const notificationsState = (state: {notifications: {notifications: Notifications | null}}) => state.notifications.notifications;
+export const notificationsState = (state: {notifications: NotificationsState}) => state.notifications.notifications;
 
 export default notificationsSlice.reducer;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/hooks';
 
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { collection, addDoc, doc, updateDoc } from 'firebase/firestore';
@@ -11,7 +11,7 @@ import { usersState } from '../../store/slices/usersSlice';
 import style from '../../assets/scss/signupForm.module.scss';
 import { ShowPassword, HidePassword } from '../../assets/svg/svg-icons';
 
-const SignupForm = () => {
+const SignupForm: React.FC = () => {
   const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/gi;
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -22,15 +22,15 @@ const SignupForm = () => {
   const [isRevealPwd2, setIsRevealPwd2] = useState(false);
   const [showErrorEmail, setShowErrorEmail] = useState(false);
   const [showErrorPass, setShowErrorPass] = useState(false);
-  const disabled =
+  const disabled: string =
     firstName && lastName && email && password && passConfirmed
       ? ''
       : style.disabled;
-  const users = useSelector(usersState);
+  const users = useAppSelector(usersState);
 
   let navigate = useNavigate();
 
-  const createUser = async (e) => {
+  const createUser = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (email.match(regex)) {
@@ -58,12 +58,14 @@ const SignupForm = () => {
             });
         } else {
           const userFound = users.find((el) => el.email === email);
-          if (userFound.firstName === '?' && userFound.lastName === '?') {
-            const docRef = doc(db, 'users', userFound.id);
-            await updateDoc(docRef, {
-              firstName: firstName,
-              lastName: lastName,
-            });
+          if (userFound) {
+            if (userFound.firstName === '?' && userFound.lastName === '?') {
+              const docRef = doc(db, 'users', userFound.id);
+              await updateDoc(docRef, {
+                firstName: firstName,
+                lastName: lastName,
+              });
+            }
           }
           navigate('../auth/home');
         }

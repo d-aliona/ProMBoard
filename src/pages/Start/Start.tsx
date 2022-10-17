@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Navigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 
 import { onSnapshot } from 'firebase/firestore';
 import { usersCollection } from '../../firebase-client';
@@ -9,25 +9,25 @@ import { setUsers } from '../../store/slices/usersSlice';
 import Logo from '../../ui/Logo';
 import style from '../../assets/scss/start.module.scss';
 
-function Start() {
-  const currentUser = useSelector((state) => state.user.user);
+const Start: React.FC = () => {
+  const currentUser = useAppSelector((state) => state.user.user);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const logIn = (e) => {
+  const logIn = (e:React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault();
     navigate('login');
   };
 
-  const signUp = (e) => {
+  const signUp = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     navigate('signup');
   };
-
+  
   useEffect(() => {
     onSnapshot(usersCollection, (snapshot) => {
       const userSnap = snapshot.docs.map((doc) => {
-        return { ...doc.data(), id: doc.id };
+        return { ...doc.data(), id: doc.id } as User;
       });
       dispatch(setUsers(userSnap));
     });
@@ -60,7 +60,7 @@ function Start() {
           </footer>
         </>
       )}
-      {!!currentUser.email && <Navigate to="auth/home" />}
+      {currentUser.email && <Navigate to="auth/home" />}
     </div>
   );
 }

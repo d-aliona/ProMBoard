@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/hooks';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { collection, addDoc, doc, updateDoc } from 'firebase/firestore';
@@ -9,12 +9,16 @@ import { usersState } from '../../store/slices/usersSlice';
 import style from '../../assets/scss/signup.module.scss';
 import { GoogleSvg } from '../../assets/svg/svg-icons';
 
-const SignupGoogleForm = (props) => {
+interface SignupGoogleFormProps {
+  title: string;
+}
+
+const SignupGoogleForm: React.FC<SignupGoogleFormProps> = (props) => {
   const title = props.title;
   let navigate = useNavigate();
-  const users = useSelector(usersState);
+  const users = useAppSelector(usersState);
 
-  const signupGoogle = (e) => {
+  const signupGoogle = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     const provider = new GoogleAuthProvider();
     const auth = getAuth();
@@ -24,21 +28,26 @@ const SignupGoogleForm = (props) => {
         const user = result.user;
 
         if (!users.some((el) => el.email === user.email)) {
-          addDoc(collection(db, 'users'), {
-            email: user.email,
-            firstName: user.displayName.split(' ')[0],
-            lastName: user.displayName.split(' ')[1],
-            guestBoards: [],
-          });
-        } else {
-          const userFound = users.find((el) => el.email === user.email);
-
-          if (userFound.firstName === '?' && userFound.lastName === '?') {
-            const docRef = doc(db, 'users', userFound.id);
-            await updateDoc(docRef, {
+          if (user.displayName) {
+            addDoc(collection(db, 'users'), {
+              email: user.email,
               firstName: user.displayName.split(' ')[0],
               lastName: user.displayName.split(' ')[1],
+              guestBoards: [],
             });
+          }
+        } else {
+          const userFound = users.find((el) => el.email === user.email);
+          if (userFound) {
+            if (userFound.firstName === '?' && userFound.lastName === '?') {
+              if (user.displayName) {
+                const docRef = doc(db, 'users', userFound.id);
+                await updateDoc(docRef, {
+                  firstName: user.displayName.split(' ')[0],
+                  lastName: user.displayName.split(' ')[1],
+                });
+              }
+            }
           }
         }
       })

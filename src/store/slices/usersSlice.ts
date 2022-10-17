@@ -1,14 +1,18 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = {
-  users: null,
+type UsersState = {
+  users: Users;
+}
+
+const initialState: UsersState = {
+  users: [],
 };
 
 const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    setUsers: (state, action) => {
+    setUsers: (state, action: PayloadAction<Users>) => {
       state.users = action.payload;
     },
   },
@@ -16,6 +20,6 @@ const usersSlice = createSlice({
 
 export const { setUsers } = usersSlice.actions;
 
-export const usersState = (state: {users: {users : Users | null} }) => state.users.users;
+export const usersState = (state: {users: UsersState}) => state.users.users;
 
 export default usersSlice.reducer;
