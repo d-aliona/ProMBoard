@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import CreateBoardForm from '../../features/CreateBoardForm';
 import style from '../../assets/scss/home.module.scss';
 
-const Home = () => {
+const Home: React.FC = () => {
   const [showCreateBoardForm, setShowCreateBoardForm] = useState(false);
 
   return (
