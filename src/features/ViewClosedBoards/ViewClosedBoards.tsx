@@ -1,24 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-
-import { addDoc, collection } from 'firebase/firestore';
-import { db } from '../../firebase-client';
+import { useAppSelector } from '../../hooks/hooks';
 
 import { allBoardsState } from '../../store/slices/allBoardsSlice';
 import Line from '../../ui/Line';
 import CloseButton from '../../ui/CloseButton';
-import ShortenTitle from '../../ui/ShortenTitle';
 import useOutsideClick from '../../hooks/useOutsideClick';
 import OneClosedBoard from './OneClosedBoard';
 import style from '../../assets/scss/boardsForm.module.scss';
 import styles from '../../assets/scss/boardsList.module.scss';
 
-const ViewClosedBoards = ({ setShowViewClosedBoards }) => {
-  let navigate = useNavigate();
-  const user = useSelector((state) => state.user.user);
-  const boards = useSelector(allBoardsState);
-  const [closedBoards, setClosedBoards] = useState([]);
+const ViewClosedBoards: React.FC<SetStateProps> = ({ setShowViewClosedBoards }) => {
+  const user = useAppSelector((state) => state.user.user);
+  const boards = useAppSelector(allBoardsState);
+  const [closedBoards, setClosedBoards] = useState<Boards>([]);
   const ref = useOutsideClick(() => {
     setShowViewClosedBoards(false);
   });

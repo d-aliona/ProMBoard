@@ -1,26 +1,39 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 import style from '../../assets/scss/ui.module.scss';
+import useWindowSize from '../../hooks/useWindowSize';
 
-const ShortenTitle = ({ title, number, position, left, top, showOnlyHint }) => {
+interface ShortenTitleProps {
+  title: string;
+  number: number;
+  pos?: string;
+  left?: string;
+  top?: string;
+  showOnlyHint?: boolean; 
+}
+
+const ShortenTitle: React.FC<ShortenTitleProps> = ({ title, number, pos, left, top, showOnlyHint }) => {
   const [showHint, setShowHint] = useState(false);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [hintHeight, setHintHeight] = useState(0);
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
+  const size = useWindowSize();
 
   useEffect(() => {
-    setHintHeight(ref?.current?.clientHeight);
+    if (ref.current) {
+      setHintHeight(ref?.current?.clientHeight);
+    }
   }, [coords]);
 
-  const handlerMouseOver = (e) => {
+  const handlerMouseOver = (e: React.MouseEvent<HTMLDivElement, MouseEvent> ) => {
     setShowHint(true);
     setCoords({
       x:
-        e.clientX + 300 < e.view.innerWidth
+        e.clientX + 300 < size.width
           ? e.clientX
-          : e.view.innerWidth - 300,
+          : size.width - 300,
       y:
-        e.clientY + 20 + hintHeight < e.view.innerHeight
+        e.clientY + 20 + hintHeight < size.height
           ? e.clientY + 20
           : e.clientY - 20 - hintHeight,
     });
@@ -31,7 +44,7 @@ const ShortenTitle = ({ title, number, position, left, top, showOnlyHint }) => {
       {showOnlyHint && (
         <>
           <div
-            onMouseOver={(e) => handlerMouseOver(e)}
+            onMouseOver={(e) =>handlerMouseOver(e)}
             onMouseOut={() => setShowHint(false)}
           >
             {title?.substr(0, 1)}
@@ -40,7 +53,7 @@ const ShortenTitle = ({ title, number, position, left, top, showOnlyHint }) => {
             <div
               className={style.hint}
               style={{
-                position: position,
+                position: pos ? pos : `static`,
                 left: left ? left : coords.x,
                 top: top ? top : coords.y,
               }}
@@ -67,7 +80,7 @@ const ShortenTitle = ({ title, number, position, left, top, showOnlyHint }) => {
         <div
           className={style.hint}
           style={{
-            position: position,
+            position: pos,
             left: left ? left : coords.x,
             top: top ? top : coords.y,
           }}

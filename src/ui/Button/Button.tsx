@@ -1,8 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import style from '../../assets/scss/ui.module.scss';
 
-const Button = ({ title, width, height, back, hover, onClick }) => {
+interface ButtonProps {
+  title: string;
+  width?: string;
+  height?: string;
+  back?: string;
+  hover?: string;
+  onClick: (e: React.MouseEvent<HTMLElement>) => void; 
+}
+
+const Button: React.FC<ButtonProps> = ({ title, width, height, back, hover, onClick }) => {
   const [backColor, setBackColor] = useState(back);
   const basicColor = hover ? hover : 'rgba(23, 43, 77, 1)';
   const [colorTitle, setColorTitle] = useState(basicColor);

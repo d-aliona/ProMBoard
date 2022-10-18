@@ -1,5 +1,4 @@
-import React, { useState, Dispatch, SetStateAction } from 'react';
-// import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/hooks';
 
@@ -14,20 +13,16 @@ import { Preview } from '../../assets/svg/svg-icons';
 import useOutsideClick from '../../hooks/useOutsideClick';
 import style from '../../assets/scss/boardsForm.module.scss';
 
-interface CreateBoardFormProps {
-  setShowCreateBoardForm: Dispatch<SetStateAction<boolean>>;
-}
-
-const CreateBoardForm: React.FC<CreateBoardFormProps> = ({ setShowCreateBoardForm }) => {
+const CreateBoardForm: React.FC<SetStateProps> = ({ setShowCreateBoardForm }) => {
   let navigate = useNavigate();
   const [title, setTitle] = useState<string>('');
   const [colorBoard, setColorBoard] = useState('#e6a3a3');
   const [showError, setShowError] = useState(false);
-  const disabled = title ? '' : style.disabled;
+  const disabled: string = title ? '' : style.disabled;
   const user = useAppSelector((state) => state.user.user);
   const boards = useAppSelector(personalBoardsState);
 
-  const ref = useOutsideClick(() => {
+  const ref: React.RefObject<HTMLDivElement> = useOutsideClick(() => {
     setShowCreateBoardForm(false);
   });
   const createBoard = (e: React.FormEvent<HTMLFormElement>) => {

@@ -1,6 +1,14 @@
+import React from 'react';
 import style from '../../assets/scss/ui.module.scss';
 
-const CloseButton = ({ width, height, border, onClick }) => {
+interface CloseButtonProps {
+  width?: string;
+  height?: string;
+  border?: string;
+  onClick: () => void;
+}
+
+const CloseButton: React.FC<CloseButtonProps> = ({ width, height, border, onClick }) => {
   return (
     <span
       className={style.closeButton}

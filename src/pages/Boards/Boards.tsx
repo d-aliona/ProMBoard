@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../../hooks/hooks';
 
 import OneBoardOnBoards from '../../components/OneBoardOnBoards';
 import CreateBoardForm from '../../features/CreateBoardForm';
@@ -10,20 +9,20 @@ import ViewClosedBoards from '../../features/ViewClosedBoards';
 import Input from '../../ui/Input';
 import style from '../../assets/scss/home.module.scss';
 
-const Boards = () => {
-  const user = useSelector((state) => state.user.user);
+const Boards: React.FC = () => {
+  const user = useAppSelector((state) => state.user.user);
   const [showCreateBoardForm, setShowCreateBoardForm] = useState(false);
   const [showViewClosedBoards, setShowViewClosedBoards] = useState(false);
   const [searchBoard, setSearchBoard] = useState('');
-  const [personalBoardsList, setPersonalBoardsList] = useState([]);
-  const [guestBoardsList, setGuestBoardsList] = useState([]);
-  const boards = useSelector(personalBoardsState);
-  const notUserBoards = useSelector(notPersonalBoardsState);
+  const [personalBoardsList, setPersonalBoardsList] = useState<Board[]>([]);
+  const [guestBoardsList, setGuestBoardsList] = useState<Board[]>([]);
+  const boards = useAppSelector(personalBoardsState);
+  const notUserBoards = useAppSelector(notPersonalBoardsState);
   const guestBoards =
     notUserBoards && notUserBoards.length > 0
       ? notUserBoards.filter((board) => board.invitedMembers.includes(user.id))
       : [];
-  let navigate = useNavigate();
+  
   const tempArr = [...boards];
 
   useEffect(() => {

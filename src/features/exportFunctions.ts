@@ -1,7 +1,18 @@
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../firebase-client';
 
-export async function addNotificationToDataBase(ob) {
+interface ObProps {
+  memberID: string;
+  userID: string;
+  text: string;
+  cardID?: string;
+  boardID?: string;
+  boardTitle: string;
+  boardColor: string;
+  cardTitle?: string;
+}
+
+export async function addNotificationToDataBase(ob: ObProps) {
   const colRef = collection(db, 'users', ob.memberID, 'notifications');
 
   addDoc(colRef, {

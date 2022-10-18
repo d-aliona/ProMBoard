@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/hooks';
 
 import { doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../../firebase-client';
 
-import { addNotificationToDataBase } from '../../features/exportFunctions';
+import { addNotificationToDataBase } from '../exportFunctions';
 import { allCardsState } from '../../store/slices/allCardsSlice';
 import { allListsState } from '../../store/slices/allListsSlice';
 import ShortenTitle from '../../ui/ShortenTitle';
@@ -13,15 +13,19 @@ import useWindowSize from '../../hooks/useWindowSize';
 import style from '../../assets/scss/boardsList.module.scss';
 import styles from '../../assets/scss/deleteForm.module.scss';
 
-const OneClosedBoard = ({ currentBoard }) => {
-  const user = useSelector((state) => state.user.user);
-  const users = useSelector((state) => state.users.users);
-  const cards = useSelector(allCardsState);
-  const lists = useSelector(allListsState);
+interface OneClosedBoardProps {
+  currentBoard: Board;
+}
+
+const OneClosedBoard: React.FC<OneClosedBoardProps> = ({ currentBoard }) => {
+  const user = useAppSelector((state) => state.user.user);
+  const users = useAppSelector((state) => state.users.users);
+  const cards = useAppSelector(allCardsState);
+  const lists = useAppSelector(allListsState);
   const [clickRemove, setClickRemove] = useState(false);
   const size = useWindowSize();
 
-  const reopenBoard = async (e) => {
+  const reopenBoard = async (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.preventDefault();
     const docRef = doc(db, 'boards', currentBoard.id);
     await updateDoc(docRef, {
@@ -42,7 +46,7 @@ const OneClosedBoard = ({ currentBoard }) => {
     }
   };
 
-  const confirmDeleteBoard = async (e) => {
+  const confirmDeleteBoard = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
     cards.forEach(async (card) => {
@@ -99,7 +103,7 @@ const OneClosedBoard = ({ currentBoard }) => {
               title={'Reopen'}
               back={'rgba(23, 43, 34, .1)'}
               hover={'rgba(23, 43, 34, 1)'}
-              onClick={(e) => reopenBoard(e)}
+              onClick={reopenBoard}
             />
             <Button
               title={'Delete'}
@@ -129,7 +133,7 @@ const OneClosedBoard = ({ currentBoard }) => {
               <button
                 className={styles.buttonYes}
                 style={{ fontSize: '16px' }}
-                onClick={(e) => confirmDeleteBoard(e)}
+                onClick={confirmDeleteBoard}
               >
                 Yes
               </button>

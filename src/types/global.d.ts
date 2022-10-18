@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from 'react';
 export {};
 
 declare global {
@@ -85,4 +86,8 @@ declare global {
 
   type Notifications = Notification[];
 
+  interface SetStateProps {
+    [key: string]: Dispatch<SetStateAction<boolean>>;
+  }
+  
 }
