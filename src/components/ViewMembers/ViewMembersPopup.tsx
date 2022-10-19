@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/hooks';
 
 import ViewOneMember from './ViewOneMember';
 import useOutsideClick from '../../hooks/useOutsideClick';
@@ -9,29 +9,41 @@ import ShortenTitle from '../../ui/ShortenTitle';
 import CloseButton from '../../ui/CloseButton';
 import styles from '../../assets/scss/boardsList.module.scss';
 
-const ViewMembersPopup = ({
+interface ViewMembersPopupProps {
+  currentBoard: Board;
+  setShowMembers?: Dispatcher;
+  setShowDropMenuGuest?: Dispatcher;
+  isGuestBoard?: boolean;
+}
+
+const ViewMembersPopup: React.FC<ViewMembersPopupProps> = ({
   currentBoard,
   setShowMembers,
   setShowDropMenuGuest,
   isGuestBoard,
 }) => {
-  const users = useSelector((state) => state.users.users);
+  const users = useAppSelector((state) => state.users.users);
   const ref = useOutsideClick(() => {
-    if (isGuestBoard) {
+    if (isGuestBoard && setShowDropMenuGuest) {
       setShowDropMenuGuest(false);
     } else {
-      setShowMembers(false);
+      if (setShowMembers) {
+        setShowMembers(false);
+      }
     }
   });
-  const currentOwner = users.find((member) => member.id === currentBoard.owner);
 
-  const handlerClosePopupWindow = (e) => {
+  const currentOwner = users.find((member) => member.id === currentBoard.owner)!;
+
+  const handlerClosePopupWindow = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
     e.preventDefault();
-    if (isGuestBoard) {
+    if (isGuestBoard && setShowDropMenuGuest) {
       setShowDropMenuGuest(false);
     } else {
-      setShowMembers(false);
+      if (setShowMembers) {
+        setShowMembers(false);
+      }
     }
   };
 
@@ -45,13 +57,13 @@ const ViewMembersPopup = ({
               <ShortenTitle
                 title={currentBoard.boardTitle}
                 number={13}
-                position={'absolute'}
+                pos={'absolute'}
                 left={'10px'}
                 top={'20px'}
               />
             </b>
           </div>
-          <CloseButton onClick={(e) => handlerClosePopupWindow(e)} />
+          <CloseButton onClick={handlerClosePopupWindow} />
         </div>
         <Line width={'99%'} />
         <p className={styles.boardsGroup} style={{ marginBottom: '10px' }}>
@@ -79,7 +91,7 @@ const ViewMembersPopup = ({
         <div className={styles.scrollbar}>
           {currentBoard.invitedMembers.length > 0 ? (
             currentBoard.invitedMembers.map((memberID) => {
-              const currentMember = users.find((user) => user.id === memberID);
+              const currentMember = users.find((user) => user.id === memberID)!;
               return (
                 <ViewOneMember
                   key={memberID}

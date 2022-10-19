@@ -22,7 +22,7 @@ const CreateBoardForm: React.FC<SetStateProps> = ({ setShowCreateBoardForm }) =>
   const user = useAppSelector((state) => state.user.user);
   const boards = useAppSelector(personalBoardsState);
 
-  const ref: React.RefObject<HTMLDivElement> = useOutsideClick(() => {
+  const ref = useOutsideClick(() => {
     setShowCreateBoardForm(false);
   });
   const createBoard = (e: React.FormEvent<HTMLFormElement>) => {

@@ -1,23 +1,30 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/hooks';
 
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase-client';
 
-import { addNotificationToDataBase } from '../../features/exportFunctions';
+import { addNotificationToDataBase } from '../exportFunctions';
 import ViewMembersPopup from '../../components/ViewMembers/ViewMembersPopup';
-import InviteMembersPopup from '../../features/InviteMembers/InviteMembersPopup';
+import InviteMembersPopup from '../InviteMembers/InviteMembersPopup';
 import style from '../../assets/scss/sidebar.module.scss';
-import ChangeBackgroundBoardForm from '../../features/ChangeBackgroundBoardForm/ChangeBackgroundBoardForm';
+import ChangeBackgroundBoardForm from '../ChangeBackgroundBoardForm';
 
-const DropBoardMenu = ({
+interface DropBoardMenuProps {
+  board: Board;
+  setShowDropMenu: Dispatcher;
+  setClickBoardTitle: Dispatcher;
+  isOnBoards?: boolean;
+}
+
+const DropBoardMenu: React.FC<DropBoardMenuProps> = ({
   board,
   setShowDropMenu,
   setClickBoardTitle,
   isOnBoards,
 }) => {
-  const user = useSelector((state) => state.user.user);
+  const user = useAppSelector((state) => state.user.user);
   const [showMembers, setShowMembers] = useState(false);
   const [showInviteMembers, setShowInviteMembers] = useState(false);
   const [showChangeBackgroundForm, setShowChangeBackgroundForm] =

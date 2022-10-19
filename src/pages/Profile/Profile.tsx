@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/hooks';
 
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase-client';
@@ -10,8 +10,8 @@ import ChangePasswordForm from '../../features/ChangePasswordForm';
 import style from '../../assets/scss/profile.module.scss';
 import styles from '../../assets/scss/card.module.scss';
 
-const Profile = () => {
-  const curUser = useSelector((state) => state.user.user);
+const Profile: React.FC = () => {
+  const curUser = useAppSelector((state) => state.user.user);
   const [firstName, setFirstName] = useState(curUser.firstName);
   const [lastName, setLastName] = useState(curUser.lastName);
   const [showSaveButton, setShowSaveButton] = useState(false);

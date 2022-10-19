@@ -1,12 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-type CurrentDrag = {
-  cardID: string | null;
-  cardIndex: number | null;
-  listID: string | null;
-  listIndex: number | null;
-}
-
 type DragStartCardState = {
   currentDragStartCard: CurrentDrag;
 }

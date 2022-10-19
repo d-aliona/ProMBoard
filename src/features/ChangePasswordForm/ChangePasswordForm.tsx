@@ -12,8 +12,8 @@ import { ShowPassword, HidePassword } from '../../assets/svg/svg-icons';
 import style from '../../assets/scss/profile.module.scss';
 import styless from '../../assets/scss/signupForm.module.scss';
 
-const ChangePasswordForm = ({ setShowChangePassForm }) => {
-  const user = auth.currentUser;
+const ChangePasswordForm: React.FC<SetStateProps> = ({ setShowChangePassForm }) => {
+  const user = auth.currentUser!;
   const [showError1, setShowError1] = useState(false);
   const [showError2, setShowError2] = useState(false);
   const [isRevealPwd, setIsRevealPwd] = useState(false);
@@ -24,12 +24,12 @@ const ChangePasswordForm = ({ setShowChangePassForm }) => {
   const [newPassConfirmed, setNewPassConfirmed] = useState('');
   const [message, setMessage] = useState(false);
 
-  const disabled =
+  const disabled: string =
     currentPass && newPass && newPassConfirmed ? '' : styless.disabled;
 
-  const handlerChangePassword = (e) => {
+  const handlerChangePassword = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const credential = EmailAuthProvider.credential(user.email, currentPass);
+    const credential = EmailAuthProvider.credential(user.email as string, currentPass);
 
     reauthenticateWithCredential(user, credential)
       .then(() => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/hooks';
 import emailjs from '@emailjs/browser';
 import { doc, updateDoc, addDoc, collection } from 'firebase/firestore';
 import { db } from '../../firebase-client';
@@ -14,19 +14,24 @@ import useWindowSize from '../../hooks/useWindowSize';
 import style from '../../assets/scss/inviteMembers.module.scss';
 import styles from '../../assets/scss/boardsList.module.scss';
 
-const InviteMembersPopup = ({ currentBoard, setShowInviteMembers }) => {
+interface InviteMembersPopupProps {
+  currentBoard: Board;
+  setShowInviteMembers: Dispatcher;
+}
+
+const InviteMembersPopup: React.FC<InviteMembersPopupProps> = ({ currentBoard, setShowInviteMembers }) => {
   const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/gi;
-  const user = useSelector((state) => state.user.user);
-  const users = useSelector((state) => state.users.users);
+  const user = useAppSelector((state) => state.user.user);
+  const users = useAppSelector((state) => state.users.users);
   // const [show, setShow] = useState(false)
   const [showDropList, setShowDropList] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [dropMemberList, setDropMemberList] = useState([]);
-  const [selectedToBeInvited, setSelectedToBeInvited] = useState([]);
+  const [dropMemberList, setDropMemberList] = useState<Users>([]);
+  const [selectedToBeInvited, setSelectedToBeInvited] = useState<Users>([]);
   const [isSuccessfulSend, setIsSuccessfulSend] = useState(false);
-  const disabled = searchTerm.match(regex) ? '' : style.disabled;
-  const [usersNotPresentOnBoard, setUsersNotPresentOnBoard] = useState([]);
-  const currentOwner = users.find((member) => member.id === currentBoard.owner);
+  const disabled: string = searchTerm.match(regex) ? '' : style.disabled;
+  const [usersNotPresentOnBoard, setUsersNotPresentOnBoard] = useState<Users>([]);
+  const currentOwner = users.find((member) => member.id === currentBoard.owner)!;
   const size = useWindowSize();
 
   useEffect(() => {
@@ -61,7 +66,7 @@ const InviteMembersPopup = ({ currentBoard, setShowInviteMembers }) => {
     setDropMemberList(list);
   }, [searchTerm]);
 
-  const selectMember = (e, member) => {
+  const selectMember = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, member: User) => {
     e.stopPropagation();
     setUsersNotPresentOnBoard((prevArr) => {
       let newArr = prevArr.filter((mem) => mem.id !== member.id);
@@ -76,7 +81,7 @@ const InviteMembersPopup = ({ currentBoard, setShowInviteMembers }) => {
     setShowInviteMembers(true);
   };
 
-  const cancelToInvite = (e, member) => {
+  const cancelToInvite = (e: React.MouseEvent<HTMLElement, MouseEvent>, member: User) => {
     e.stopPropagation();
     setSelectedToBeInvited((prevArr) => {
       let newArr = prevArr.filter((mem) => mem.id !== member.id);
@@ -87,7 +92,7 @@ const InviteMembersPopup = ({ currentBoard, setShowInviteMembers }) => {
     });
   };
 
-  const inviteMembers = async (e) => {
+  const inviteMembers = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
     const data = [...selectedToBeInvited.map((member) => member.id)];
     const docRef = doc(db, 'boards', currentBoard.id);
@@ -114,11 +119,12 @@ const InviteMembersPopup = ({ currentBoard, setShowInviteMembers }) => {
     setSelectedToBeInvited([]);
   };
 
-  const sendEmail = (e) => {
+  const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const ev = e.target as HTMLFormElement;
 
     emailjs
-      .sendForm('gmail', 'template_5wbqx98', e.target, 'WNtAQiomd_4bK-q2C')
+      .sendForm('gmail', 'template_5wbqx98', ev, 'WNtAQiomd_4bK-q2C')
       .then(
         () => {
           addDoc(collection(db, 'users'), {
@@ -167,7 +173,7 @@ const InviteMembersPopup = ({ currentBoard, setShowInviteMembers }) => {
               <ShortenTitle
                 title={currentBoard.boardTitle}
                 number={25}
-                position={'absolute'}
+                pos={'absolute'}
                 left={'10px'}
                 top={'20px'}
               />
@@ -191,7 +197,7 @@ const InviteMembersPopup = ({ currentBoard, setShowInviteMembers }) => {
             </div>
             <button
               className={style.inviteButton}
-              onClick={(e) => inviteMembers(e)}
+              onClick={inviteMembers}
             >
               Invite
             </button>
@@ -295,7 +301,7 @@ const InviteMembersPopup = ({ currentBoard, setShowInviteMembers }) => {
             ? currentBoard.invitedMembers.map((memberID) => {
                 const currentMember = users.find(
                   (user) => user.id === memberID
-                );
+                )!;
                 return (
                   <div
                     key={memberID}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/hooks';
 import { useNavigate } from 'react-router-dom';
 
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice';
@@ -9,15 +9,15 @@ import ShortenTitle from '../../ui/ShortenTitle';
 import style from '../../assets/scss/home.module.scss';
 import styles from '../../assets/scss/sidebar.module.scss';
 
-const Members = () => {
-  const user = useSelector((state) => state.user.user);
-  const users = useSelector((state) => state.users.users);
+const Members: React.FC = () => {
+  const user = useAppSelector((state) => state.user.user);
+  const users = useAppSelector((state) => state.users.users);
   const [searchMem, setSearchMem] = useState('');
-  const boards = useSelector(personalBoardsState);
+  const boards = useAppSelector(personalBoardsState);
   const size = useWindowSize();
   let navigate = useNavigate();
   let countMembers = 0;
-  let setMembers = new Set();
+  let setMembers = new Set<string>();
 
   boards.forEach((board) => {
     if (board.invitedMembers.length > 0) {
@@ -51,7 +51,7 @@ const Members = () => {
       >
         {membersIDs &&
           membersIDs.map((id) => {
-            const member = users.find((el) => el.id === id);
+            const member = users.find((el) => el.id === id)!;
             let memberToDisplay = false;
             if (searchMem !== '') {
               if (
@@ -92,7 +92,7 @@ const Members = () => {
                       </span>
                     </h2>
                     <div className={style.statistics}>
-                      is invited to <b>{memberBoards.length}</b> boards
+                      is invited to <b>{memberBoards && memberBoards.length}</b> boards
                     </div>
                   </div>
                   <div
@@ -102,7 +102,7 @@ const Members = () => {
                   >
                     {memberBoards &&
                       memberBoards.map((boardID) => {
-                        const curBoard = boards.find((el) => el.id === boardID);
+                        const curBoard = boards.find((el) => el.id === boardID)!;
                         return (
                           <div key={boardID}>
                             <div
@@ -119,7 +119,6 @@ const Members = () => {
                                 title={curBoard.boardTitle}
                                 number={size.width < 550 ? 25 : 50}
                               />
-                              {/* <span>{curBoard.boardTitle}</span> */}
                             </div>
                           </div>
                         );

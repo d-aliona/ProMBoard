@@ -14,7 +14,7 @@ interface ShortenTitleProps {
 
 const ShortenTitle: React.FC<ShortenTitleProps> = ({ title, number, pos, left, top, showOnlyHint }) => {
   const [showHint, setShowHint] = useState(false);
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
+  const [coords, setCoords] = useState<{x: number | undefined; y: number | undefined}>({ x: undefined, y: undefined });
   const [hintHeight, setHintHeight] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const size = useWindowSize();
@@ -39,6 +39,12 @@ const ShortenTitle: React.FC<ShortenTitleProps> = ({ title, number, pos, left, t
     });
   };
 
+  const styles: React.CSSProperties = {
+    position: pos,
+    left: left ? left : coords.x,
+    top: top ? top : coords.y,
+  } as object;
+
   return (
     <>
       {showOnlyHint && (
@@ -47,19 +53,15 @@ const ShortenTitle: React.FC<ShortenTitleProps> = ({ title, number, pos, left, t
             onMouseOver={(e) =>handlerMouseOver(e)}
             onMouseOut={() => setShowHint(false)}
           >
-            {title?.substr(0, 1)}
+            {title?.substring(0, 1)}
           </div>
           {showHint && (
             <div
               className={style.hint}
-              style={{
-                position: pos ? pos : `static`,
-                left: left ? left : coords.x,
-                top: top ? top : coords.y,
-              }}
+              style={styles}
               ref={ref}
             >
-              {title?.substr(2)}
+              {title?.substring(2)}
             </div>
           )}
         </>
@@ -72,18 +74,14 @@ const ShortenTitle: React.FC<ShortenTitleProps> = ({ title, number, pos, left, t
                 onMouseOver={(e) => handlerMouseOver(e)}
                 onMouseOut={() => setShowHint(false)}
               >
-                {title?.substr(0, number - 1) + '...'}
+                {title?.substring(0, number - 1) + '...'}
               </div>
             </>
           )}
       {showHint && !showOnlyHint && (
         <div
           className={style.hint}
-          style={{
-            position: pos,
-            left: left ? left : coords.x,
-            top: top ? top : coords.y,
-          }}
+          style={styles}
           ref={ref}
         >
           {title}

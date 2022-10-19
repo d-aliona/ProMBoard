@@ -5,7 +5,7 @@ interface CloseButtonProps {
   width?: string;
   height?: string;
   border?: string;
-  onClick: () => void;
+  onClick: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
 const CloseButton: React.FC<CloseButtonProps> = ({ width, height, border, onClick }) => {

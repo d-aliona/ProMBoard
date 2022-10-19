@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase-client';
 
 import List from '../../components/List';
-import ViewMembers from '../../components/ViewMembers';
-import InviteMembers from '../../features/InviteMembers';
 import AddListForm from '../../features/AddListForm';
 import { allBoardsState } from '../../store/slices/allBoardsSlice';
 import useBoardColor from '../../hooks/useBoardColor';
@@ -25,19 +23,21 @@ import useWindowSize from '../../hooks/useWindowSize';
 import DropBoardMenu from '../../features/DropBoardMenu';
 import style from '../../assets/scss/board.module.scss';
 
-const Board = () => {
-  const dispatch = useDispatch();
+const Board: React.FC = () => {
+  const dispatch = useAppDispatch();
   const title = useParams();
-  const user = useSelector((state) => state.user.user);
-  const allBoards = useSelector(allBoardsState);
-  const persBoards = useSelector(personalBoardsState);
-  const lists = useSelector(currentListsState);
-  const cards = useSelector(currentCardsState);
-  const currentDragStartCard = useSelector(currentDragStartCardState);
-  const currentBoard = allBoards.find((ob) => ob.id === title.id);
+  const user = useAppSelector((state) => state.user.user);
+  const allBoards = useAppSelector(allBoardsState);
+  const persBoards = useAppSelector(personalBoardsState);
+  const lists = useAppSelector(currentListsState);
+  const cards = useAppSelector(currentCardsState);
+  const currentDragStartCard = useAppSelector(currentDragStartCardState);
+  const currentBoard = allBoards.find((ob) => ob.id === title.id)!;
   let navigate = useNavigate();
-  const boardColor = useBoardColor(title);
-  const { textColor, setTextColor } = useContext(MenuContext);
+  const boardColor = useBoardColor(title.id);
+  const context = useContext(MenuContext);
+  const textColor = context?.textColor;
+  const setTextColor = context?.setTextColor;
   const [draggingList, setDraggingList] = useState(false);
   const [draggingCard, setDraggingCard] = useState(false);
   const [boardtitle, setBoardtitle] = useState(currentBoard?.boardTitle);
@@ -47,7 +47,7 @@ const Board = () => {
   const [coordX, setCoordX] = useState(0);
   const dragItemList = useRef();
   const dragItemListNode = useRef();
-  const isPersonalBoard = user.id === currentBoard?.owner;
+  // const isPersonalBoard = user.id === currentBoard?.owner;
   const size = useWindowSize();
 
   const ref = useOutsideClick(() => {

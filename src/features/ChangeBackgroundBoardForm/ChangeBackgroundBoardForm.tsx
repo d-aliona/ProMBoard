@@ -11,7 +11,14 @@ import useOutsideClick from '../../hooks/useOutsideClick';
 import style from '../../assets/scss/boardsForm.module.scss';
 import styles from '../../assets/scss/boardsForm.module.scss';
 
-const ChangeBackgroundBoardForm = ({
+interface ChangeBackBoardProps {
+  board: Board;
+  setShowChangeBackgroundForm: Dispatcher;
+  setShowDropMenu: Dispatcher;
+  isOnBoards?: boolean;
+}
+
+const ChangeBackgroundBoardForm: React.FC<ChangeBackBoardProps> = ({
   board,
   setShowChangeBackgroundForm,
   setShowDropMenu,
@@ -23,7 +30,7 @@ const ChangeBackgroundBoardForm = ({
     setShowChangeBackgroundForm(false);
   });
 
-  const changeBackground = (e) => {
+  const changeBackground = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
     const docRef = doc(db, 'boards', board.id);

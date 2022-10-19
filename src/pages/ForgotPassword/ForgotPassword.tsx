@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useAppSelector } from '../../hooks/hooks';
 import { Link } from 'react-router-dom';
 
 import { sendPasswordResetEmail } from 'firebase/auth';
@@ -10,21 +10,21 @@ import Input from '../../ui/Input';
 import style from '../../assets/scss/signup.module.scss';
 import styles from '../../assets/scss/signupForm.module.scss';
 
-const ForgotPassword = () => {
+const ForgotPassword: React.FC = () => {
   const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/gi;
   const [message, setMessage] = useState('');
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [showErrorEmail, setShowErrorEmail] = useState(false);
-  const disabled = email ? '' : styles.disabled;
+  const disabled: string = email ? '' : styles.disabled;
 
-  const user = useSelector((state) => state.user.user);
+  const user = useAppSelector((state) => state.user.user);
 
-  const resetPassword = (email) => {
+  const resetPassword = (email: string) => {
     return sendPasswordResetEmail(auth, email);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (email.match(regex)) {
       setShowErrorEmail(false);

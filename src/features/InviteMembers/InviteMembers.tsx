@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import InviteMembersPopup from './InviteMembersPopup';
 import style from '../../assets/scss/inviteMembers.module.scss';
 
-const InviteMembers = ({ currentBoard }) => {
+interface InviteMembersProps {
+  currentBoard: Board;
+}
+
+const InviteMembers: React.FC<InviteMembersProps> = ({ currentBoard }) => {
   const [showInviteMembers, setShowInviteMembers] = useState(false);
 
   return (

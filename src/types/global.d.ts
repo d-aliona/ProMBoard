@@ -86,8 +86,17 @@ declare global {
 
   type Notifications = Notification[];
 
+  type CurrentDrag = {
+    cardID: string | null;
+    cardIndex: number | null;
+    listID: string | null;
+    listIndex: number | null;
+  }
+
+  type Dispatcher = Dispatch<SetStateAction<boolean>>;
+
   interface SetStateProps {
-    [key: string]: Dispatch<SetStateAction<boolean>>;
+    [key: string]: Dispatcher;
   }
   
 }

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/hooks';
 
 import style from '../../assets/scss/signup.module.scss';
 
-function NotFound() {
-  const user = useSelector((state) => state.user.user);
+const NotFound: React.FC = () => {
+  const user = useAppSelector((state) => state.user.user);
   return (
     <div
       className={style.container}
@@ -28,7 +28,7 @@ function NotFound() {
           </p>
         </div>
       )}
-      {!!user.email && (
+      {user.email && (
         <div>
           <p style={{ paddingBottom: '30px' }}> Page Not Found. </p>
           <p> Please, welcome to your </p>

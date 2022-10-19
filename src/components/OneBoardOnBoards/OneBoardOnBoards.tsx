@@ -1,31 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/hooks';
 
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase-client';
 
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice';
 import useOutsideClick from '../../hooks/useOutsideClick';
-import ViewMembersPopup from '../../components/ViewMembers/ViewMembersPopup';
+import ViewMembersPopup from '../ViewMembers/ViewMembersPopup';
 import DropBoardMenu from '../../features/DropBoardMenu';
 import styles from '../../assets/scss/home.module.scss';
 
-const OneBoardOnBoards = ({ board, isGuestBoard }) => {
+interface OneBoardOnBoardsProps {
+  board: Board;
+  isGuestBoard: boolean;
+}
+
+const OneBoardOnBoards: React.FC<OneBoardOnBoardsProps> = ({ board, isGuestBoard }) => {
   const [showDropMenu, setShowDropMenu] = useState(false);
   const [showDropMenuGuest, setShowDropMenuGuest] = useState(false);
   const [boardtitle, setBoardtitle] = useState(board.boardTitle);
   const [clickBoardTitle, setClickBoardTitle] = useState(false);
   const [needToRename, setNeedToRename] = useState(false);
   const [coordY, setCoordY] = useState(0);
-  const boards = useSelector(personalBoardsState);
+  const boards = useAppSelector(personalBoardsState);
   let navigate = useNavigate();
-
+  const refInput = useRef<HTMLTextAreaElement | null>(null);
   const ref = useOutsideClick(() => {
     setShowDropMenu(false);
   });
 
-  const handleClickBoard = (e, id) => {
+  const handleClickBoard = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, id: string) => {
     e.stopPropagation();
     e.preventDefault();
     navigate('/auth/board/' + id);
@@ -37,38 +42,40 @@ const OneBoardOnBoards = ({ board, isGuestBoard }) => {
     }
   }, [needToRename]);
 
-  const refInput = useOutsideClick(() => setNeedToRename(true));
+  const refDiv = useOutsideClick(() => setNeedToRename(true));
 
-  const updateBoardTitle = async (boardID) => {
-    refInput.current.placeholder = '';
+  const updateBoardTitle = async (boardID: string) => {
+    if (refInput.current) {
+      refInput.current.placeholder = '';
 
-    if (refInput.current.value === '') {
-      refInput.current.style.border = '2px solid red';
-      refInput.current.placeholder = 'There should be a title';
-      setNeedToRename(false);
-    } else if (
-      boards.some((el) => el.boardTitle === refInput.current.value) &&
-      board.boardTitle !== refInput.current.value
-    ) {
-      refInput.current.style.border = '2px solid red';
-      refInput.current.value = '';
-      setBoardtitle('');
-      refInput.current.placeholder = 'Such board already exists';
-      setNeedToRename(false);
-    } else {
-      const docRef = doc(db, 'boards', boardID);
-      await updateDoc(docRef, {
-        boardTitle: refInput.current.value,
-      });
+      if (refInput.current.value === '') {
+        refInput.current.style.border = '2px solid red';
+        refInput.current.placeholder = 'There should be a title';
+        setNeedToRename(false);
+      } else if (
+        boards.some((el) => el.boardTitle === refInput?.current?.value) &&
+        board.boardTitle !== refInput.current.value
+      ) {
+        refInput.current.style.border = '2px solid red';
+        refInput.current.value = '';
+        setBoardtitle('');
+        refInput.current.placeholder = 'Such board already exists';
+        setNeedToRename(false);
+      } else {
+        const docRef = doc(db, 'boards', boardID);
+        await updateDoc(docRef, {
+          boardTitle: refInput.current.value,
+        });
 
-      setClickBoardTitle(false);
-      setNeedToRename(false);
-      refInput.current = null;
-      setTimeout(navigate('/auth/boards'), 0);
+        setClickBoardTitle(false);
+        setNeedToRename(false);
+        refInput.current = null;
+        setTimeout(() => navigate('/auth/boards'), 0);
+      }
     }
   };
 
-  const handleEnterKey = (e) => {
+  const handleEnterKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.code === 'Enter') {
       e.preventDefault();
       setNeedToRename(true);
@@ -87,15 +94,16 @@ const OneBoardOnBoards = ({ board, isGuestBoard }) => {
     >
       <div style={{ padding: '0 10px' }}>
         {clickBoardTitle ? (
-          <textarea
-            ref={refInput}
-            type="text"
-            className={styles.titleInput}
-            value={boardtitle}
-            autoFocus
-            onChange={(e) => setBoardtitle(e.target.value)}
-            onKeyDown={(e) => handleEnterKey(e)}
-          ></textarea>
+          <div ref={refDiv}>
+            <textarea
+              ref={refInput}
+              className={styles.titleInput}
+              value={boardtitle}
+              autoFocus
+              onChange={(e) => setBoardtitle(e.target.value)}
+              onKeyDown={handleEnterKey}
+            ></textarea>
+          </div>
         ) : (
           <span className={styles.hoverTitle}> {board.boardTitle} </span>
         )}
@@ -105,9 +113,9 @@ const OneBoardOnBoards = ({ board, isGuestBoard }) => {
           className={styles.dropupMenu}
           ref={ref}
           style={{
-            boxShadow: showDropMenu
+           boxShadow: showDropMenu
               ? '0px 0px 10px 4px rgba(9, 30, 66, .6)'
-              : null,
+              : '',
           }}
         >
           <div

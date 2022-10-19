@@ -4,7 +4,7 @@ import style from '../../assets/scss/ui.module.scss';
 interface InputProps {
   pad?: string;
   type: string;
-  placeholder: string;
+  placeholder?: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   height?: string; 

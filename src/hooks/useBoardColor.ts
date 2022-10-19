@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from './hooks';
 import { allBoardsState } from '../store/slices/allBoardsSlice';
 
-const useBoardColor = (title) => {
+const useBoardColor = (titleID: string | undefined) => {
   const [boardColor, setBoardColor] = useState('');
-  const allBoards = useSelector(allBoardsState);
+  const allBoards = useAppSelector(allBoardsState);
 
   useEffect(() => {
-    if (title.id) {
-      const currentBoard = allBoards.find((ob) => ob.id === title.id);
+    if (titleID) {
+      const currentBoard = allBoards.find((ob) => ob.id === titleID)!;
       setBoardColor(currentBoard?.boardColor);
     }
-  }, [title]);
+  }, [titleID]);
 
   return boardColor;
 };

@@ -3,7 +3,11 @@ import React, { useState } from 'react';
 import ViewMembersPopup from './ViewMembersPopup';
 import style from '../../assets/scss/board.module.scss';
 
-const ViewMembers = ({ currentBoard }) => {
+interface ViewMembersProps {
+  currentBoard: Board;
+}
+
+const ViewMembers: React.FC<ViewMembersProps> = ({ currentBoard }) => {
   const [showMembers, setShowMembers] = useState(false);
 
   return (

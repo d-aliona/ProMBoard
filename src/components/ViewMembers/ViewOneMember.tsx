@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/hooks';
 
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase-client';
@@ -14,17 +14,24 @@ import useWindowSize from '../../hooks/useWindowSize';
 import style from '../../assets/scss/board.module.scss';
 import styles from '../../assets/scss/deleteForm.module.scss';
 
-const ViewOneMember = ({ currentBoard, currentMember }) => {
-  const user = useSelector((state) => state.user.user);
-  const cards = useSelector(currentCardsState);
-  const lists = useSelector(currentListsState);
+interface ViewOneMemberProps {
+  currentBoard: Board;
+  currentMember: User;
+}
+
+type StrArr = [string, string, string][]
+
+const ViewOneMember: React.FC<ViewOneMemberProps> = ({ currentBoard, currentMember }) => {
+  const user = useAppSelector((state) => state.user.user);
+  const cards = useAppSelector(currentCardsState);
+  const lists = useAppSelector(currentListsState);
   const [clickRemove, setClickRemove] = useState(false);
-  const [attachedToCards, setAttachedToCards] = useState([]);
+  const [attachedToCards, setAttachedToCards] = useState<StrArr>([]);
   const isPersonalBoard = user.id === currentBoard.owner;
   const size = useWindowSize();
 
   useEffect(() => {
-    const data = [];
+    const data: StrArr = [];
     cards &&
       cards.map((card) => {
         const tempArray = [...card.assignedUsers];
@@ -36,7 +43,7 @@ const ViewOneMember = ({ currentBoard, currentMember }) => {
     setAttachedToCards(data);
   }, [cards]);
 
-  const removeMemberFromBoard = async (e) => {
+  const removeMemberFromBoard = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
 
     const dataBoard = [...currentBoard.invitedMembers];
@@ -62,11 +69,11 @@ const ViewOneMember = ({ currentBoard, currentMember }) => {
     addNotificationToDataBase(ob);
   };
 
-  const confirmRemoveMemberFromBoard = (e) => {
+  const confirmRemoveMemberFromBoard = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
     attachedToCards &&
       attachedToCards.map(async (item) => {
-        const curCard = cards.find((ob) => ob.id === item[2]);
+        const curCard = cards.find((ob) => ob.id === item[2])!;
         const data = [...curCard.assignedUsers];
         const changedData = data.filter((id) => id !== currentMember.id);
         const docRef = doc(db, 'cards', curCard.id);
@@ -97,9 +104,9 @@ const ViewOneMember = ({ currentBoard, currentMember }) => {
             }}
           >
             <CloseButton
-              onClick={(e) =>
+              onClick={() =>
                 attachedToCards.length === 0
-                  ? removeMemberFromBoard(e)
+                  ? removeMemberFromBoard
                   : setClickRemove(true)
               }
             />
@@ -118,7 +125,7 @@ const ViewOneMember = ({ currentBoard, currentMember }) => {
           <div>
             {attachedToCards &&
               attachedToCards.map((item) => {
-                const curList = lists.find((ob) => ob.id === item[0]);
+                const curList = lists.find((ob) => ob.id === item[0])!;
                 return (
                   <p
                     key={item[2]}
