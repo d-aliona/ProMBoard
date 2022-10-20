@@ -6,7 +6,16 @@ import CloseButton from '../../ui/CloseButton';
 import useOutsideClick from '../../hooks/useOutsideClick';
 import style from '../../assets/scss/list.module.scss';
 
-const DropListMenu = ({
+interface DropListProps {
+  list: List;
+  lists: Lists;
+  listsCardsToRender: AllListsCardsType;
+  cardsOnCurList: Cards;
+  setShowMenu: Dispatcher;
+  setClickTitle: Dispatcher;
+}
+
+const DropListMenu: React.FC<DropListProps> = ({
   list,
   lists,
   listsCardsToRender,
@@ -20,17 +29,17 @@ const DropListMenu = ({
   const noCards = cardsOnCurList.length === 0;
   const ref = useOutsideClick(() => setMessageMoveAllCards(false));
 
-  const handleDeleteList = (e) => {
+  const handleDeleteList = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault();
     setMessageDeleteList((prev) => !prev);
     e.stopPropagation();
   };
-  const handleDeleteAllCards = (e) => {
+  const handleDeleteAllCards = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault();
     setMessageDeleteAllCards((prev) => !prev);
     e.stopPropagation();
   };
-  const handleMoveAllCards = (e) => {
+  const handleMoveAllCards = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault();
     setMessageMoveAllCards((prev) => !prev);
     e.stopPropagation();
@@ -60,7 +69,7 @@ const DropListMenu = ({
             color: noCards || lists.length === 1 ? '#ccc' : '',
             cursor: noCards || lists.length === 1 ? 'auto' : 'pointer',
           }}
-          onClick={noCards || lists.length === 1 ? null : handleMoveAllCards}
+          onClick={noCards || lists.length === 1 ? undefined : handleMoveAllCards}
         >
           Move all cards from this list to...
         </div>
@@ -92,7 +101,7 @@ const DropListMenu = ({
           color: noCards ? '#ccc' : '',
           cursor: noCards ? 'auto' : 'pointer',
         }}
-        onClick={noCards ? null : handleDeleteAllCards}
+        onClick={noCards ? undefined : handleDeleteAllCards}
       >
         Delete all cards on this list
       </div>

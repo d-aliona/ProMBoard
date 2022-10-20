@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/hooks';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import Board from '../Board';
@@ -16,12 +16,12 @@ import { allListsState } from '../../store/slices/allListsSlice';
 import style from '../../assets/scss/card.module.scss';
 import useWindowSize from '../../hooks/useWindowSize';
 
-const OpenCard = () => {
+const OpenCard: React.FC = () => {
   let navigate = useNavigate();
   const [clickTitle, setClickTitle] = useState(false);
   const title = useParams();
-  const allCards = useSelector(allCardsState);
-  const allLists = useSelector(allListsState);
+  const allCards = useAppSelector(allCardsState);
+  const allLists = useAppSelector(allListsState);
   const card = allCards.find((ob) => ob.id === title?.idcard);
   const list = allLists.find((el) => el.id === card?.listID);
   const ref = useOutsideClick(() => navigate(-1));
@@ -29,7 +29,7 @@ const OpenCard = () => {
 
   return (
     <>
-      {card ? (
+      {card && list && (
         <>
           <Board />
           <div className={style.window}>
@@ -75,7 +75,8 @@ const OpenCard = () => {
             </div>
           </div>
         </>
-      ) : (
+      )}
+      {!card && (
         <NotFound />
       )}
     </>

@@ -6,7 +6,16 @@ import { db } from '../../firebase-client';
 import ShortenTitle from '../../ui/ShortenTitle';
 import style from '../../assets/scss/list.module.scss';
 
-const DropCardsList = ({
+interface DropCardProps {
+  list: List;
+  lists: Lists;
+  cardsOnCurList: Cards;
+  listsCardsToRender: AllListsCardsType;
+  setMessageMoveAllCards: Dispatcher;
+  setShowMenu: Dispatcher;
+}
+
+const DropCardsList: React.FC<DropCardProps> = ({
   list,
   lists,
   cardsOnCurList,
@@ -14,14 +23,14 @@ const DropCardsList = ({
   setMessageMoveAllCards,
   setShowMenu,
 }) => {
-  const moveAllCards = (selListID) => {
+  const moveAllCards = (selListID: string) => {
     cardsOnCurList.forEach(async (el, index) => {
       const docRef = doc(db, 'cards', el.id);
 
       await updateDoc(docRef, {
         listID: selListID,
         position:
-          listsCardsToRender.find((it) => it.list.id === selListID).cards
+          listsCardsToRender.find((it) => it.list.id === selListID)!.cards
             .length +
           1 +
           index,
@@ -43,7 +52,7 @@ const DropCardsList = ({
                   color: el.id === list.id ? '#ccc' : '',
                   cursor: el.id === list.id ? 'auto' : 'pointer',
                 }}
-                onClick={el.id === list.id ? null : () => moveAllCards(el.id)}
+                onClick={el.id === list.id ? undefined : () => moveAllCards(el.id)}
               >
                 <ShortenTitle title={el.listTitle} number={30} />
               </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/hooks';
 
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../firebase-client';
@@ -8,16 +8,19 @@ import { currentListsState } from '../../store/slices/currentListsSlice';
 import CloseButton from '../../ui/CloseButton';
 import style from '../../assets/scss/addListForm.module.scss';
 
-const AddListForm = (props) => {
-  const title = props.title;
-  const curBoardId = props.curBoardId;
-  const lists = useSelector(currentListsState);
+interface AddListProps {
+  title: string;
+  curBoardId: string;
+}
+
+const AddListForm: React.FC<AddListProps> = ({title, curBoardId}) => {
+  const lists = useAppSelector(currentListsState);
   const [clickAddList, setClickAddList] = useState(false);
   const [listTitle, setListTitle] = useState('');
   const [showError, setShowError] = useState(false);
   const disabled = listTitle ? '' : style.disabled;
 
-  const addList = (e) => {
+  const addList = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!lists) {

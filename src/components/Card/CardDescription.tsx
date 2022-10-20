@@ -1,36 +1,39 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 
 import { updateDoc, doc } from 'firebase/firestore';
 import { db } from '../../firebase-client';
 
 import useOutsideClick from '../../hooks/useOutsideClick';
 import style from '../../assets/scss/card.module.scss';
-import useWindowSize from '../../hooks/useWindowSize';
 
-const CardDescription = ({ card }) => {
+const CardDescription: React.FC<CardProps> = ({ card }) => {
   const [clickDescription, setClickDescription] = useState(false);
   const [description, setDescription] = useState(card.description);
-  const size = useWindowSize();
+  const refInput = useRef<HTMLTextAreaElement | null>(null);
+  
+  const updateCardDescription = async () => {
+    if (refInput.current) {
+      const docRef = doc(db, 'cards', card.id);
 
-  const updateCardDescription = async (e) => {
-    const docRef = doc(db, 'cards', card.id);
-
-    await updateDoc(docRef, {
-      description: refInput.current.value,
-    });
+      await updateDoc(docRef, {
+        description: refInput.current.value,
+      });
+    }
     setClickDescription(false);
     refInput.current = null;
   };
 
-  const refInput = useOutsideClick(updateCardDescription);
+  const refDiv = useOutsideClick(updateCardDescription);
 
-  const handleInputDescription = (e) => {
+  const handleInputDescription = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
     setClickDescription(true);
-    refInput.current.style.border = '2px solid rgba(23, 43, 77, .7)';
+    if (refInput.current) {
+      refInput.current.style.border = '2px solid rgba(23, 43, 77, .7)';
+    }
   };
 
-  const cancel = (e) => {
+  const cancel = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
     setClickDescription(false);
     setDescription(card.description);
@@ -46,13 +49,15 @@ const CardDescription = ({ card }) => {
         <div className={style.descriptionText} onClick={handleInputDescription}>
           {clickDescription ? (
             <>
-              <textarea
-                ref={refInput}
-                className={style.inputDescription}
-                value={description}
-                autoFocus
-                onChange={(e) => setDescription(e.target.value)}
-              ></textarea>
+              <div ref={refDiv}>
+                <textarea
+                  ref={refInput}
+                  className={style.inputDescription}
+                  value={description}
+                  autoFocus
+                  onChange={(e) => setDescription(e.target.value)}
+                ></textarea>
+              </div>
               <div>
                 <button
                   className={style.buttonTrue}

@@ -5,7 +5,7 @@ import AssignMemberForm from '../../features/AssignMemberForm';
 import style from '../../assets/scss/card.module.scss';
 import useWindowSize from '../../hooks/useWindowSize';
 
-const CardMembers = ({ card }) => {
+const CardMembers: React.FC<CardProps> = ({ card }) => {
   const size = useWindowSize();
   const [clickAddMembers, setClickAddMembers] = useState(false);
 

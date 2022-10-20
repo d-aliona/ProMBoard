@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useAppSelector } from '../../../hooks/hooks';
 import { useNavigate } from 'react-router-dom';
 
 import { updateDoc, doc, collection, addDoc } from 'firebase/firestore';
@@ -9,16 +9,14 @@ import { allBoardsState } from '../../../store/slices/allBoardsSlice';
 import Initials from '../../../ui/Initials';
 import { addNotificationToDataBase } from '../../../features/exportFunctions';
 import style from '../../../assets/scss/card.module.scss';
-import useWindowSize from '../../../hooks/useWindowSize';
 
-const CardCommentForm = ({ card }) => {
-  const user = useSelector((state) => state.user.user);
-  const allBoards = useSelector(allBoardsState);
+const CardCommentForm: React.FC<CardProps> = ({ card }) => {
+  const user = useAppSelector((state) => state.user.user);
+  const allBoards = useAppSelector(allBoardsState);
   const navigate = useNavigate();
   const [clickComment, setClickComment] = useState(false);
   const [comment, setComment] = useState('');
-  const size = useWindowSize();
-
+ 
   const addCardComment = async () => {
     const colRef = collection(db, 'cards', card.id, 'comments');
 
@@ -44,7 +42,7 @@ const CardCommentForm = ({ card }) => {
       commentsNumber: card.commentsNumber + 1,
     });
 
-    const curBoard = allBoards.find((el) => el.id === card.boardID);
+    const curBoard = allBoards.find((el) => el.id === card.boardID)!;
 
     card.assignedUsers.forEach((memID) => {
       if (user.id !== memID) {
@@ -65,12 +63,12 @@ const CardCommentForm = ({ card }) => {
     navigate('/auth/board/' + card.boardID + '/' + card.id);
   };
 
-  const handleInputComment = (e) => {
+  const handleInputComment = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
     setClickComment(true);
   };
 
-  const cancel = (e) => {
+  const cancel = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
     setClickComment(false);
     setComment('');
@@ -94,12 +92,11 @@ const CardCommentForm = ({ card }) => {
           <Initials user={user} />
           <div
             className={!clickComment ? style.commentForm : null}
-            onClick={handleInputComment}
+            onClick={(e)=>handleInputComment}
           >
             {clickComment ? (
               <>
                 <textarea
-                  type="text"
                   className={style.inputComment}
                   placeholder="Write a comment..."
                   autoFocus

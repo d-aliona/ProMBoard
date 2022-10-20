@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/hooks';
 
 import { doc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase-client';
@@ -9,7 +9,16 @@ import { currentListsState } from '../../store/slices/currentListsSlice';
 import { addNotificationToDataBase } from '../exportFunctions';
 import style from '../../assets/scss/deleteForm.module.scss';
 
-const DeleteListForm = ({
+interface DeleteListProps {
+  list: List;
+  cardsOnCurList: Cards;
+  listWillbeDeleted: boolean;
+  setMessageDeleteList?: Dispatcher; 
+  setMessageDeleteAllCards?: Dispatcher;
+  setShowMenu: Dispatcher;
+}
+
+const DeleteListForm: React.FC<DeleteListProps> = ({
   list,
   cardsOnCurList,
   listWillbeDeleted,
@@ -17,11 +26,11 @@ const DeleteListForm = ({
   setMessageDeleteAllCards,
   setShowMenu,
 }) => {
-  const user = useSelector((state) => state.user.user);
-  const persBoards = useSelector(personalBoardsState);
+  const user = useAppSelector((state) => state.user.user);
+  const persBoards = useAppSelector(personalBoardsState);
   const noCards = cardsOnCurList.length === 0;
-  const lists = useSelector(currentListsState);
-  const currentBoard = persBoards.find((ob) => ob.id === list.boardID);
+  const lists = useAppSelector(currentListsState);
+  const currentBoard = persBoards.find((ob) => ob.id === list.boardID)!;
 
   const deleteList = async () => {
     if (!noCards) {
@@ -56,16 +65,16 @@ const DeleteListForm = ({
       await deleteDoc(doc(db, 'lists', list.id));
     }
     listWillbeDeleted
-      ? setMessageDeleteList(false)
-      : setMessageDeleteAllCards(false);
+      ? setMessageDeleteList && setMessageDeleteList(false)
+      : setMessageDeleteAllCards && setMessageDeleteAllCards(false);
     setShowMenu(false);
   };
 
-  const clickButtonNo = (e) => {
+  const clickButtonNo = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
     listWillbeDeleted
-      ? setMessageDeleteList(false)
-      : setMessageDeleteAllCards(false);
+      ? setMessageDeleteList && setMessageDeleteList(false)
+      : setMessageDeleteAllCards && setMessageDeleteAllCards(false);
   };
 
   return (
@@ -100,7 +109,7 @@ const DeleteListForm = ({
           <button
             className={style.buttonNo}
             style={{ fontSize: '16px' }}
-            onClick={(e) => clickButtonNo(e)}
+            onClick={clickButtonNo}
           >
             No
           </button>

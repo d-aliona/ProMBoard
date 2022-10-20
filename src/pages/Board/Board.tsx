@@ -23,10 +23,14 @@ import useWindowSize from '../../hooks/useWindowSize';
 import DropBoardMenu from '../../features/DropBoardMenu';
 import style from '../../assets/scss/board.module.scss';
 
+type DragStartType = {
+  index: number;
+  el: ListCardsType;
+}
+
 const Board: React.FC = () => {
   const dispatch = useAppDispatch();
   const title = useParams();
-  const user = useAppSelector((state) => state.user.user);
   const allBoards = useAppSelector(allBoardsState);
   const persBoards = useAppSelector(personalBoardsState);
   const lists = useAppSelector(currentListsState);
@@ -45,16 +49,16 @@ const Board: React.FC = () => {
   const [needToRename, setNeedToRename] = useState(false);
   const [showDropMenu, setShowDropMenu] = useState(false);
   const [coordX, setCoordX] = useState(0);
-  const dragItemList = useRef();
-  const dragItemListNode = useRef();
-  // const isPersonalBoard = user.id === currentBoard?.owner;
+  const dragItemList = useRef<DragStartType | null>(null);
+  const dragItemListNode = useRef<HTMLDivElement | null>(null);
+  const refInput = useRef<HTMLTextAreaElement | null>(null);
   const size = useWindowSize();
 
-  const ref = useOutsideClick(() => {
+  const refDropMenu = useOutsideClick(() => {
     setShowDropMenu(false);
   });
 
-  let allListsCards = [];
+  let allListsCards: AllListsCardsType = [];
   let i = 0;
 
   for (const list of lists) {
@@ -82,9 +86,9 @@ const Board: React.FC = () => {
     setListsCardsToRender(allListsCards);
   }, [lists, cards]);
 
-  const handleDragStartList = (e, item) => {
+  const handleDragStartList = (e: React.DragEvent<HTMLDivElement>, item: DragStartType) => {
     dragItemList.current = item;
-    dragItemListNode.current = e.target;
+    dragItemListNode.current = e.target as HTMLDivElement;
     dragItemListNode.current.addEventListener('dragend', handleDragEndList);
 
     setTimeout(function () {
@@ -92,79 +96,89 @@ const Board: React.FC = () => {
     }, 0);
   };
 
-  const handleDragEnterList = (e, targetItem) => {
+  const handleDragEnterList = (e: React.DragEvent<HTMLDivElement>, targetItem: DragStartType) => {
     const copyListItems = [...listsCardsToRender];
 
-    if (draggingList) {
+    if (draggingList && dragItemList.current) {
       const dragItemContent = copyListItems[dragItemList.current.index];
       copyListItems.splice(dragItemList.current.index, 1);
       copyListItems.splice(targetItem.index, 0, dragItemContent);
       dragItemList.current.index = targetItem.index;
     } else {
-      const dragItemContent =
+      if (currentDragStartCard.listIndex && currentDragStartCard.cardIndex) {
+        const dragItemContent =
         copyListItems[currentDragStartCard.listIndex].cards[
           currentDragStartCard.cardIndex
         ];
-      copyListItems[currentDragStartCard.listIndex].cards.splice(
-        currentDragStartCard.cardIndex,
-        1
-      );
-      copyListItems[targetItem.index].cards.splice(0, 0, dragItemContent);
-
-      dispatch(
-        setCurrentDragStartCard({
-          listIndex: targetItem.index,
-          cardIndex: 0,
-          listID: targetItem.el.list.id,
-          cardID: currentDragStartCard.cardID,
-        })
-      );
+        copyListItems[currentDragStartCard.listIndex].cards.splice(
+          currentDragStartCard.cardIndex,
+          1
+        );
+        copyListItems[targetItem.index].cards.splice(0, 0, dragItemContent);
+  
+        dispatch(
+          setCurrentDragStartCard({
+            listIndex: targetItem.index,
+            cardIndex: 0,
+            listID: targetItem.el.list.id,
+            cardID: currentDragStartCard.cardID,
+          })
+        );
+      }
     }
     setListsCardsToRender(copyListItems);
   };
 
-  const handleDragLeaveList = (e) => {
+  const handleDragLeaveList = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
   };
 
-  const allowDrop = (e) => {
+  const allowDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
   };
 
-  const drop = (e) => {
+  const drop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     listsCardsToRender &&
       listsCardsToRender.map(async (el, index) => {
         const docRef = doc(db, 'lists', el.list.id);
 
         await updateDoc(docRef, {
-          position: parseInt(index) + 1,
+          position: index + 1,
         });
       });
   };
 
-  const handleDragEndList = (e) => {
+  const handleDragEndList = () => {
     setDraggingList(false);
     dragItemList.current = null;
-    dragItemListNode.current.removeEventListener('dragend', handleDragEndList);
-    dragItemListNode.current = null;
+    if (dragItemListNode.current) {
+      dragItemListNode.current.removeEventListener('dragend', handleDragEndList);
+      dragItemListNode.current = null;
+    }
   };
 
-  const getStyles = (position) => {
-    if (dragItemList.current.index === position) {
-      return style.listBackgroundOpacity;
+  const getStyles = (position: number): string => {
+    if (dragItemList.current) {
+      if (dragItemList.current.index === position) {
+        return style.listBackgroundOpacity;
+      }
     }
     return style.listForeground;
   };
 
-  const chooseLight = (e) => {
+  const chooseLight = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault();
-    setTextColor('#ffe');
+    if (setTextColor) {
+      setTextColor('#ffe');
+    }
   };
 
-  const chooseDark = (e) => {
+  const chooseDark = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault();
-    setTextColor('rgb(23, 43, 77)');
+    if (setTextColor) {
+      setTextColor('rgb(23, 43, 77)');
+    }
   };
 
   useEffect(() => {
@@ -173,51 +187,55 @@ const Board: React.FC = () => {
     }
   }, [needToRename]);
 
-  const refInput = useOutsideClick(() => setNeedToRename(true));
+  const refDiv = useOutsideClick(() => setNeedToRename(true));
 
-  const handleBoardTitle = (e) => {
+  const handleBoardTitle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
     setClickBoardTitle(true);
-    refInput.current.style.border = '2px solid rgba(23, 43, 77, .7)';
-  };
-
-  const updateBoardTitle = async (boardID) => {
-    refInput.current.placeholder = '';
-    if (refInput.current.value === '') {
-      refInput.current.style.border = '2px solid red';
-      refInput.current.placeholder = 'There should be a title';
-      setNeedToRename(false);
-    } else if (
-      persBoards.some((el) => el.boardTitle === refInput.current.value) &&
-      currentBoard.boardTitle !== refInput.current.value
-    ) {
-      refInput.current.style.border = '2px solid red';
-      refInput.current.value = '';
-      setBoardtitle('');
-      refInput.current.placeholder =
-        'The board with such a title already exists';
-      setNeedToRename(false);
-    } else {
-      const docRef = doc(db, 'boards', boardID);
-      await updateDoc(docRef, {
-        boardTitle: refInput.current.value,
-      });
-
-      setClickBoardTitle(false);
-      setNeedToRename(false);
-      refInput.current = null;
-      navigate('/auth/board/' + currentBoard.id);
+    if (refInput.current) {
+      refInput.current.style.border = '2px solid rgba(23, 43, 77, .7)';
     }
   };
 
-  const handleEnterKey = (e) => {
+  const updateBoardTitle = async (boardID: string) => {
+    if (refInput.current) {
+      refInput.current.placeholder = '';
+      if (refInput.current.value === '') {
+        refInput.current.style.border = '2px solid red';
+        refInput.current.placeholder = 'There should be a title';
+        setNeedToRename(false);
+      } else if (
+        persBoards.some((el) => el.boardTitle === refInput?.current?.value) &&
+        currentBoard.boardTitle !== refInput.current.value
+      ) {
+        refInput.current.style.border = '2px solid red';
+        refInput.current.value = '';
+        setBoardtitle('');
+        refInput.current.placeholder =
+          'The board with such a title already exists';
+        setNeedToRename(false);
+      } else {
+        const docRef = doc(db, 'boards', boardID);
+        await updateDoc(docRef, {
+          boardTitle: refInput.current.value,
+        });
+
+        setClickBoardTitle(false);
+        setNeedToRename(false);
+        refInput.current = null;
+        navigate('/auth/board/' + currentBoard.id);
+      }
+    }
+  };
+
+  const handleEnterKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.code === 'Enter') {
       e.preventDefault();
       setNeedToRename(true);
     }
   };
 
-  const clickHeadMenu = (e) => {
+  const clickHeadMenu = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
     setShowDropMenu((prev) => !prev);
     setCoordX(e.clientX - 170);
@@ -234,16 +252,16 @@ const Board: React.FC = () => {
         <div className={style.title} onClick={handleBoardTitle}>
           {clickBoardTitle ? (
             <>
-              <textarea
-                ref={refInput}
-                type="text"
-                className={style.inputTitle}
-                value={boardtitle}
-                autoFocus
-                onChange={(e) => setBoardtitle(e.target.value)}
-                onKeyDown={(e) => handleEnterKey(e)}
-              ></textarea>
-              <div style={{ width: '400px', visibility: 'hidden' }}></div>
+              <div ref={refDiv}>
+                <textarea
+                  ref={refInput}
+                  className={style.inputTitle}
+                  value={boardtitle}
+                  autoFocus
+                  onChange={(e) => setBoardtitle(e.target.value)}
+                  onKeyDown={handleEnterKey}
+                ></textarea>
+              </div>
             </>
           ) : (
             <ShortenTitle
@@ -259,7 +277,7 @@ const Board: React.FC = () => {
             height: '32px',
             marginLeft: 'auto',
           }}
-          onClick={(e) => clickHeadMenu(e)}
+          onClick={clickHeadMenu}
         >
           •••
         </div>
@@ -270,7 +288,7 @@ const Board: React.FC = () => {
               backgroundColor: currentBoard.boardColor,
               left: coordX,
             }}
-            ref={ref}
+            ref={refDropMenu}
           >
             <DropBoardMenu
               board={currentBoard}
@@ -305,25 +323,23 @@ const Board: React.FC = () => {
                         ? (e) => {
                             handleDragEnterList(e, { index, el });
                           }
-                        : null
+                        : undefined
                     }
                     onDragOver={
                       draggingList
                         ? (e) => {
                             allowDrop(e);
                           }
-                        : null
+                        : undefined
                     }
                     onDragLeave={
                       draggingList
                         ? (e) => {
                             handleDragLeaveList(e);
                           }
-                        : null
+                        : undefined
                     }
-                    onDrop={(e) => {
-                      drop(e);
-                    }}
+                    onDrop={drop}
                     className={
                       draggingList ? getStyles(index) : style.listForeground
                     }

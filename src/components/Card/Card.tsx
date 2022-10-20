@@ -1,16 +1,20 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/hooks';
 
 import AssignedMemberOnCardCover from './AssignedMemberOnCardCover';
 import style from '../../assets/scss/card.module.scss';
 
-const Card = ({ card }) => {
+interface CardProps {
+  card: Card;
+}
+
+const Card: React.FC<CardProps> = ({ card }) => {
   let navigate = useNavigate();
   const title = useParams();
-  const users = useSelector((state) => state.users.users);
+  const users = useAppSelector((state) => state.users.users);
 
-  const handleClickToOpenCard = (e) => {
+  const handleClickToOpenCard = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
     navigate('/auth/board/' + title.id + '/' + card.id);
   };
@@ -72,7 +76,7 @@ const Card = ({ card }) => {
                   card.assignedUsers.map((memberID) => {
                     const currentMember = users.find(
                       (user) => user.id === memberID
-                    );
+                    )!;
                     return <AssignedMemberOnCardCover key={memberID} currentMember={currentMember}/>     
                   })}
               </div>

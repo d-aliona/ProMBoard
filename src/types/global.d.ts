@@ -39,6 +39,10 @@ declare global {
 
   type Cards = Card[];
 
+  interface CardProps {
+    card: Card;
+  }
+
   interface List {
     id: string;
     boardID: string;
@@ -98,5 +102,12 @@ declare global {
   interface SetStateProps {
     [key: string]: Dispatcher;
   }
+
+  type ListCardsType = {
+    list: List;
+    cards: Cards;
+  }
+  
+  type AllListsCardsType = ListCardsType[]
   
 }

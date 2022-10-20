@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/hooks';
 
 import DeleteMemberFromCardForm from '../../features/DeleteMemberFromCardForm';
 import Initials from '../../ui/Initials';
 import style from '../../assets/scss/card.module.scss';
 
-const MemberOnCard = ({ card, memberID }) => {
-  const users = useSelector((state) => state.users.users);
+interface MemberOnCardProps {
+  card: Card;
+  memberID: string;
+}
+
+const MemberOnCard: React.FC<MemberOnCardProps> = ({ card, memberID }) => {
+  const users = useAppSelector((state) => state.users.users);
   const [showDeleteMemberForm, setShowDeleteMemberForm] = useState(false);
-  const currentMember = users.find((user) => user.id === memberID);
+  const currentMember = users.find((user) => user.id === memberID)!;
 
   return (
     <>

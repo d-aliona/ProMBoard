@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/hooks';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase-client';
 
@@ -14,13 +14,18 @@ import style from '../../assets/scss/inviteMembers.module.scss';
 import styles from '../../assets/scss/boardsList.module.scss';
 import useWindowSize from '../../hooks/useWindowSize';
 
-const AssignMemberForm = ({ card, setClickAddMembers }) => {
-  const user = useSelector((state) => state.user.user);
-  const users = useSelector((state) => state.users.users);
-  const boards = useSelector(allBoardsState);
+interface AssignMemProps {
+  card: Card;
+  setClickAddMembers: Dispatcher;
+}
+
+const AssignMemberForm: React.FC<AssignMemProps> = ({ card, setClickAddMembers }) => {
+  const user = useAppSelector((state) => state.user.user);
+  const users = useAppSelector((state) => state.users.users);
+  const boards = useAppSelector(allBoardsState);
   const [searchMember, setSearchMember] = useState('');
   const size = useWindowSize();
-  const currentBoard = boards.find((ob) => ob.id === card.boardID);
+  const currentBoard = boards.find((ob) => ob.id === card.boardID)!;
   const membersToBeAssigned = [
     ...currentBoard?.invitedMembers,
     currentBoard.owner,
@@ -34,7 +39,7 @@ const AssignMemberForm = ({ card, setClickAddMembers }) => {
   useEffect(() => {
     const list = membersToBeAssigned.filter((memberID) => {
       if (searchMember !== '') {
-        const member = users.find((ob) => ob.id === memberID);
+        const member = users.find((ob) => ob.id === memberID)!;
         if (searchMember) {
           if (
             (
@@ -50,7 +55,7 @@ const AssignMemberForm = ({ card, setClickAddMembers }) => {
     setDropMemberList(list);
   }, [searchMember]);
 
-  const toggleAssignMember = async (e, memberID) => {
+  const toggleAssignMember = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>, memberID: string) => {
     e.stopPropagation();
 
     if (card.assignedUsers.includes(memberID)) {
@@ -125,7 +130,7 @@ const AssignMemberForm = ({ card, setClickAddMembers }) => {
           <div className={style.dropAsignMembersList}>
             {dropMemberList &&
               dropMemberList.map((memberID) => {
-                const currentMember = users.find((ob) => ob.id === memberID);
+                const currentMember = users.find((ob) => ob.id === memberID)!;
                 return (
                   <div
                     key={memberID}

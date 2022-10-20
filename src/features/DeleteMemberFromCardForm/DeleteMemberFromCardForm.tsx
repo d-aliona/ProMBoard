@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/hooks';
 
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase-client';
@@ -11,19 +11,26 @@ import CloseButton from '../../ui/CloseButton';
 import useOutsideClick from '../../hooks/useOutsideClick';
 import style from '../../assets/scss/deleteForm.module.scss';
 
-const DeleteMemberFromCardForm = ({
+interface DelMemProps {
+  card: Card;
+  memberID: string;
+  currentMember: User;
+  setShowDeleteMemberForm: Dispatcher;
+}
+
+const DeleteMemberFromCardForm: React.FC<DelMemProps> = ({
   card,
   memberID,
   currentMember,
   setShowDeleteMemberForm,
 }) => {
-  const user = useSelector((state) => state.user.user);
-  const boards = useSelector(allBoardsState);
+  const user = useAppSelector((state) => state.user.user);
+  const boards = useAppSelector(allBoardsState);
   const ref = useOutsideClick(() => {
     setShowDeleteMemberForm(false);
   });
 
-  const removeMember = async (e) => {
+  const removeMember = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
     setShowDeleteMemberForm(false);
 
@@ -35,7 +42,7 @@ const DeleteMemberFromCardForm = ({
       assignedUsers: [...changedData],
     });
 
-    const currentBoard = boards.find((ob) => ob.id === card.boardID);
+    const currentBoard = boards.find((ob) => ob.id === card.boardID)!;
     if (user.id !== currentMember.id) {
       const ob = {
         memberID: currentMember.id,
@@ -69,7 +76,7 @@ const DeleteMemberFromCardForm = ({
           </div>
         </div>
         <hr className={style.line} />
-        <div className={style.removeMember} onClick={(e) => removeMember(e)}>
+        <div className={style.removeMember} onClick={removeMember}>
           Remove from card
         </div>
       </div>

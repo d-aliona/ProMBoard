@@ -3,7 +3,11 @@ import React, { useState } from 'react';
 import Initials from '../../ui/Initials';
 import style from '../../assets/scss/card.module.scss';
 
-const AssignedMemberOnCardCover = ({ currentMember }) => {
+interface AssignMemProps {
+    currentMember: User;
+}
+
+const AssignedMemberOnCardCover: React.FC<AssignMemProps> = ({ currentMember }) => {
   const [coordY, setCoordY] = useState(0);
   const [showHint, setShowHint] = useState(false)
 

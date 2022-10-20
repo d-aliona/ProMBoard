@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../../../hooks/hooks';
 
 import { db } from '../../../firebase-client';
 import { collection, orderBy, query, onSnapshot } from 'firebase/firestore';
@@ -15,10 +15,10 @@ import {
 } from '../../../store/slices/currentRepliesSlice';
 import style from '../../../assets/scss/card.module.scss';
 
-const CardComments = ({ card }) => {
-  const dispatch = useDispatch();
-  const comments = useSelector(currentCommentsState);
-  const replies = useSelector(currentRepliesState);
+const CardComments: React.FC<CardProps> = ({ card }) => {
+  const dispatch = useAppDispatch();
+  const comments = useAppSelector(currentCommentsState);
+  const replies = useAppSelector(currentRepliesState);
 
   useEffect(() => {
     const commentsCol = collection(db, 'cards', card.id, 'comments');
@@ -26,7 +26,7 @@ const CardComments = ({ card }) => {
 
     onSnapshot(qComments, (snapshot) => {
       const commentsSnap = snapshot.docs.map((doc) => {
-        return { ...doc.data(), id: doc.id };
+        return { ...doc.data(), id: doc.id } as Comment;
       });
       dispatch(setCurrentComments(commentsSnap));
     });
@@ -38,7 +38,7 @@ const CardComments = ({ card }) => {
 
     onSnapshot(qReplies, (snapshot) => {
       const repliesSnap = snapshot.docs.map((doc) => {
-        return { ...doc.data(), id: doc.id };
+        return { ...doc.data(), id: doc.id } as Reply;
       });
       dispatch(setCurrentReplies(repliesSnap));
     });

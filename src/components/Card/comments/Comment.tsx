@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../../hooks/hooks';
 
 import { db } from '../../../firebase-client';
 import { doc, deleteDoc, updateDoc } from 'firebase/firestore';
@@ -11,23 +11,29 @@ import { TickDown } from '../../../assets/svg/svg-icons';
 import style from '../../../assets/scss/card.module.scss';
 import styles from '../../../assets/scss/deleteForm.module.scss';
 
-const Comment = ({ card, comment, repliesForComment }) => {
-  const user = useSelector((state) => state.user.user);
-  const users = useSelector((state) => state.users.users);
-  const currentMember = users.find((pers) => pers.id === comment.userID);
+interface CommentProps {
+  card: Card;
+  comment: Comment;
+  repliesForComment: Replies;
+}
+
+const Comment: React.FC<CommentProps> = ({ card, comment, repliesForComment }) => {
+  const user = useAppSelector((state) => state.user.user);
+  const users = useAppSelector((state) => state.users.users);
+  const currentMember = users.find((pers) => pers.id === comment.userID)!;
   const [clickEditComment, setClickEditComment] = useState(false);
   const [clickReplyComment, setClickReplyComment] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [commentText, setCommentText] = useState(comment.comment);
   const [showReplies, setShowReplies] = useState(true);
 
-  const cancel = (e) => {
+  const cancel = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
     setClickEditComment(false);
     setCommentText(comment.comment);
   };
 
-  const editComment = async (e) => {
+  const editComment = async () => {
     const docRef = doc(db, 'cards', card.id, 'comments', comment.id);
 
     await updateDoc(docRef, {
@@ -37,7 +43,7 @@ const Comment = ({ card, comment, repliesForComment }) => {
     setClickEditComment(false);
   };
 
-  const deleteComment = async (e) => {
+  const deleteComment = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
     setConfirmDelete(false);
     await deleteDoc(doc(db, 'cards', card.id, 'comments', comment.id));

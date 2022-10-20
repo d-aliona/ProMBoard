@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/hooks';
 
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../firebase-client';
@@ -8,18 +8,22 @@ import { currentCardsState } from '../../store/slices/currentCardsSlice';
 import CloseButton from '../../ui/CloseButton';
 import style from '../../assets/scss/addCardForm.module.scss';
 
-const AddCardForm = ({ list, curBoardId }) => {
-  const cards = useSelector(currentCardsState);
-  const user = useSelector((state) => state.user.user);
+interface AddCardProps {
+  list: List;
+  curBoardId: string;
+}
+
+const AddCardForm: React.FC<AddCardProps> = ({ list, curBoardId }) => {
+  const cards = useAppSelector(currentCardsState);
   const [clickAddCard, setClickAddCard] = useState(false);
   const [cardTitle, setCardTitle] = useState('');
-  const disabled = cardTitle ? '' : style.disabled;
+  const disabled: string = cardTitle ? '' : style.disabled;
 
   const selectedCards = cards.filter(
     (card) => card.boardID === curBoardId && card.listID === list.id
   );
 
-  const addCard = async (e) => {
+  const addCard = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setCardTitle('');
     setClickAddCard(false);
@@ -51,7 +55,7 @@ const AddCardForm = ({ list, curBoardId }) => {
       {clickAddCard && (
         <form className={style.addForm} onSubmit={addCard}>
           <textarea
-            rows="2"
+            rows={2}
             placeholder="Enter a title for this card"
             className={style.inputTitle}
             autoFocus
