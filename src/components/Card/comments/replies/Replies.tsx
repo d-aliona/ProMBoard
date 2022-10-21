@@ -2,7 +2,12 @@ import React from 'react';
 
 import OneReply from './OneReply';
 
-const Replies = ({ card, comment, replies }) => {
+interface RepliesProps {
+  card: Card;
+  replies: Replies;
+}
+
+const Replies: React.FC<RepliesProps> = ({ card, replies }) => {
   return (
     <>
       <div style={{ padding: '0px 0 20px 55px' }}>
@@ -12,7 +17,6 @@ const Replies = ({ card, comment, replies }) => {
               <OneReply
                 key={reply.id}
                 card={card}
-                comment={comment}
                 reply={reply}
               />
             );

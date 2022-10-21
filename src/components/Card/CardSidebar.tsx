@@ -7,7 +7,12 @@ import CopyCard from '../../features/CopyCard';
 import MoveCard from '../../features/MoveCard';
 import style from '../../assets/scss/card.module.scss';
 
-const CardSidebar = ({ card, setClickTitle }) => {
+interface CardSidebarProps {
+  card: Card;
+  setClickTitle: Dispatcher;
+}
+
+const CardSidebar: React.FC<CardSidebarProps> = ({ card, setClickTitle }) => {
   const [clickDelete, setClickDelete] = useState(false);
   const [clickAddMembers, setClickAddMembers] = useState(false);
   const [clickAddCover, setClickAddCover] = useState(false);

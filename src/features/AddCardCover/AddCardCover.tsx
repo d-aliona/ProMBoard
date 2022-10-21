@@ -6,7 +6,12 @@ import { db } from '../../firebase-client';
 import useOutsideClick from '../../hooks/useOutsideClick';
 import style from '../../assets/scss/card.module.scss';
 
-const AddCardCover = ({ card, setClickAddCover }) => {
+interface AddCardCoverProps {
+  card: Card;
+  setClickAddCover: Dispatcher;
+}
+
+const AddCardCover: React.FC<AddCardCoverProps> = ({ card, setClickAddCover }) => {
   const [isCover, setIsCover] = useState(
     card.cardColor === 'white' ? false : true
   );
@@ -14,17 +19,18 @@ const AddCardCover = ({ card, setClickAddCover }) => {
     setClickAddCover(false);
   });
 
-  const updateColor = (e) => {
+  const updateColor = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
+    const ev = e.target as HTMLDivElement;
     const docRef = doc(db, 'cards', card.id);
 
     updateDoc(docRef, {
-      cardColor: e.target.style.backgroundColor,
+      cardColor: ev.style.backgroundColor,
     });
     setIsCover(true);
   };
 
-  const removeCover = (e) => {
+  const removeCover = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
     const docRef = doc(db, 'cards', card.id);
 
@@ -42,42 +48,42 @@ const AddCardCover = ({ card, setClickAddCover }) => {
           <div
             className={style.colorItem}
             style={{ backgroundColor: '#ffb3b3' }}
-            onClick={(e) => updateColor(e)}
+            onClick={updateColor}
           ></div>
           <div
             className={style.colorItem}
             style={{ backgroundColor: '#ffeac7' }}
-            onClick={(e) => updateColor(e)}
+            onClick={updateColor}
           ></div>
           <div
             className={style.colorItem}
             style={{ backgroundColor: '#feffc7' }}
-            onClick={(e) => updateColor(e)}
+            onClick={updateColor}
           ></div>
           <div
             className={style.colorItem}
             style={{ backgroundColor: '#cefbcb' }}
-            onClick={(e) => updateColor(e)}
+            onClick={updateColor}
           ></div>
           <div
             className={style.colorItem}
             style={{ backgroundColor: '#b8edff' }}
-            onClick={(e) => updateColor(e)}
+            onClick={updateColor}
           ></div>
           <div
             className={style.colorItem}
             style={{ backgroundColor: '#b8daf7' }}
-            onClick={(e) => updateColor(e)}
+            onClick={updateColor}
           ></div>
           <div
             className={style.colorItem}
             style={{ backgroundColor: '#f0c7ff' }}
-            onClick={(e) => updateColor(e)}
+            onClick={updateColor}
           ></div>
           <div
             className={style.colorItem}
             style={{ backgroundColor: '#ffc7df' }}
-            onClick={(e) => updateColor(e)}
+            onClick={updateColor}
           ></div>
           {isCover && (
             <div className={style.removeCover} onClick={removeCover}>

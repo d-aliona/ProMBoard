@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 export {};
 
 declare global {
@@ -110,4 +110,7 @@ declare global {
   
   type AllListsCardsType = ListCardsType[]
   
+  type ChildrenProps = {
+    children: React.ReactNode;
+  }
 }

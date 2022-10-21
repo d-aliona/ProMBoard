@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useAppSelector } from '../../hooks/hooks';
 import { useNavigate } from 'react-router-dom';
 
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice';
@@ -12,10 +12,10 @@ import ShortenTitle from '../../ui/ShortenTitle';
 import useWindowSize from '../../hooks/useWindowSize';
 import style from '../../assets/scss/boardsList.module.scss';
 
-const BoardsList = () => {
-  const user = useSelector((state) => state.user.user);
-  const boards = useSelector(personalBoardsState);
-  const notUserBoards = useSelector(notPersonalBoardsState);
+const BoardsList: React.FC = () => {
+  const user = useAppSelector((state) => state.user.user);
+  const boards = useAppSelector(personalBoardsState);
+  const notUserBoards = useAppSelector(notPersonalBoardsState);
   const [show, setShow] = useState(false);
   const ref = useOutsideClick(() => setShow(false));
   let navigate = useNavigate();
@@ -25,12 +25,12 @@ const BoardsList = () => {
       ? notUserBoards.filter((board) => board.invitedMembers.includes(user.id))
       : [];
 
-  const navigateBoard = (boardID) => {
+  const navigateBoard = (boardID: string) => {
     navigate('/auth/board/' + boardID);
     setShow(false);
   };
 
-  const toggle = (e) => {
+  const toggle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     setShow((prev) => !prev);
     e.stopPropagation();
   };

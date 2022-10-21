@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import {
@@ -20,13 +20,13 @@ import {
   currentCardsState,
 } from '../../store/slices/currentCardsSlice';
 
-const GetBoardState = ({ children }) => {
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.user);
+const GetBoardState = ({ children }: ChildrenProps): JSX.Element => {
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user.user);
   const title = useParams();
-  const allBoards = useSelector(allBoardsState);
-  const lists = useSelector(currentListsState);
-  const cards = useSelector(currentCardsState);
+  const allBoards = useAppSelector(allBoardsState);
+  const lists = useAppSelector(currentListsState);
+  const cards = useAppSelector(currentCardsState);
   const currentBoard = allBoards.find((ob) => ob.id === title?.id);
   const [existBoard, setExistBoard] = useState(false);
   let navigate = useNavigate();
@@ -40,7 +40,7 @@ const GetBoardState = ({ children }) => {
   }, [title]);
 
   useEffect(() => {
-    if (existBoard) {
+    if (existBoard && currentBoard) {
       const listsCol = collection(db, 'lists');
       const qLists = query(
         listsCol,
@@ -50,7 +50,7 @@ const GetBoardState = ({ children }) => {
 
       onSnapshot(qLists, (snapshot) => {
         const listSnap = snapshot?.docs.map((doc) => {
-          return { ...doc?.data(), id: doc?.id };
+          return { ...doc?.data(), id: doc?.id } as List;
         });
         dispatch(setCurrentLists(listSnap));
       });
@@ -58,22 +58,22 @@ const GetBoardState = ({ children }) => {
   }, [title, currentBoard, user, existBoard]);
 
   useEffect(() => {
-    if (existBoard) {
+    if (existBoard && currentBoard) {
       const cardsCol = collection(db, 'cards');
       const qCards = query(cardsCol, where('boardID', '==', currentBoard.id));
 
       onSnapshot(qCards, (snapshot) => {
         const cardSnap = snapshot.docs.map((doc) => {
-          return { ...doc.data(), id: doc.id };
+          return { ...doc.data(), id: doc.id } as Card;
         });
         dispatch(setCurrentCards(cardSnap));
       });
     }
-  }, [title, currentBoard, cards?.assignedUsers, existBoard]);
+  }, []);
 
   if (lists && cards) {
-    return children;
-  }
+    return <>{children}</>;
+  } else return <></>
 };
 
 export default GetBoardState;

@@ -96,7 +96,7 @@ const Board: React.FC = () => {
     }, 0);
   };
 
-  const handleDragEnterList = (e: React.DragEvent<HTMLDivElement>, targetItem: DragStartType) => {
+  const handleDragEnterList = (targetItem: DragStartType) => {
     const copyListItems = [...listsCardsToRender];
 
     if (draggingList && dragItemList.current) {
@@ -320,8 +320,8 @@ const Board: React.FC = () => {
                     onDragStart={(e) => handleDragStartList(e, { index, el })}
                     onDragEnter={
                       draggingList || (draggingCard && !el.cards.length)
-                        ? (e) => {
-                            handleDragEnterList(e, { index, el });
+                        ? () => {
+                            handleDragEnterList({ index, el });
                           }
                         : undefined
                     }

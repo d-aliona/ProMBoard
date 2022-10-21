@@ -8,7 +8,12 @@ import { db } from '../../firebase-client';
 import { currentCardsState } from '../../store/slices/currentCardsSlice';
 import style from '../../assets/scss/deleteForm.module.scss';
 
-const DeleteCardForm = ({ card, setClickDelete }) => {
+interface DelCardProps {
+  card: Card;
+  setClickDelete: Dispatcher;
+}
+
+const DeleteCardForm: React.FC<DelCardProps> = ({ card, setClickDelete }) => {
   const cards = useSelector(currentCardsState);
   let navigate = useNavigate();
 

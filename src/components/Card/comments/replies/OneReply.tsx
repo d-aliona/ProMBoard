@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../../../hooks/hooks';
 
 import { db } from '../../../../firebase-client';
 import { doc, deleteDoc, updateDoc } from 'firebase/firestore';
@@ -7,21 +7,26 @@ import { doc, deleteDoc, updateDoc } from 'firebase/firestore';
 import style from '../../../../assets/scss/card.module.scss';
 import styles from '../../../../assets/scss/deleteForm.module.scss';
 
-const OneReply = ({ card, reply }) => {
-  const user = useSelector((state) => state.user.user);
-  const users = useSelector((state) => state.users.users);
-  const currentMember = users.find((pers) => pers.id === reply.userID);
+interface OneReplyProps {
+  card: Card;
+  reply: Reply;
+}
+
+const OneReply: React.FC<OneReplyProps> = ({ card, reply }) => {
+  const user = useAppSelector((state) => state.user.user);
+  const users = useAppSelector((state) => state.users.users);
+  const currentMember = users.find((pers) => pers.id === reply.userID)!;
   const [clickEditReply, setClickEditReply] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [replyText, setReplyText] = useState(reply.reply);
 
-  const cancel = (e) => {
+  const cancel = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
     setClickEditReply(false);
     setReplyText(reply.reply);
   };
 
-  const editReply = async (e) => {
+  const editReply = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const docRef = doc(db, 'cards', card.id, 'replies', reply.id);
 
     await updateDoc(docRef, {
@@ -30,7 +35,7 @@ const OneReply = ({ card, reply }) => {
     setClickEditReply(false);
   };
 
-  const deleteReply = async (e) => {
+  const deleteReply = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
     setConfirmDelete(false);
     await deleteDoc(doc(db, 'cards', card.id, 'replies', reply.id));

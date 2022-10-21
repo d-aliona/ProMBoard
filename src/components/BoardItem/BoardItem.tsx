@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/hooks';
 
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase-client';
@@ -12,17 +12,23 @@ import DropBoardMenu from '../../features/DropBoardMenu';
 import style from '../../assets/scss/sidebar.module.scss';
 import useWindowSize from '../../hooks/useWindowSize';
 
-const BoardItem = ({ board, refSidebar }) => {
+interface BoardItemProps {
+  board: Board;
+  refSidebar: React.MutableRefObject<HTMLDivElement>;
+}
+
+const BoardItem: React.FC<BoardItemProps> = ({ board, refSidebar }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [showDropMenu, setShowDropMenu] = useState(false);
   const [boardtitle, setBoardtitle] = useState(board.boardTitle);
   const [clickBoardTitle, setClickBoardTitle] = useState(false);
   const [needToRename, setNeedToRename] = useState(false);
   const [coordY, setCoordY] = useState(0);
-  const boards = useSelector(personalBoardsState);
+  const boards = useAppSelector(personalBoardsState);
   const title = useParams();
   let navigate = useNavigate();
   const size = useWindowSize();
+  const refInput = useRef<HTMLTextAreaElement | null>(null);
 
   const ref = useOutsideClick(() => {
     setShowDropMenu(false);
@@ -38,38 +44,40 @@ const BoardItem = ({ board, refSidebar }) => {
     }
   }, [needToRename]);
 
-  const refInput = useOutsideClick(() => setNeedToRename(true));
+  const refDiv = useOutsideClick(() => setNeedToRename(true));
 
-  const updateBoardTitle = async (boardID) => {
-    refInput.current.placeholder = '';
+  const updateBoardTitle = async (boardID: string) => {
+    if (refInput.current) {
+      refInput.current.placeholder = '';
 
-    if (refInput.current.value === '') {
-      refInput.current.style.border = '2px solid red';
-      refInput.current.placeholder = 'There should be a title';
-      setNeedToRename(false);
-    } else if (
-      boards.some((el) => el.boardTitle === refInput.current.value) &&
-      board.boardTitle !== refInput.current.value
-    ) {
-      refInput.current.style.border = '2px solid red';
-      refInput.current.value = '';
-      setBoardtitle('');
-      refInput.current.placeholder = 'Such board already exists';
-      setNeedToRename(false);
-    } else {
-      const docRef = doc(db, 'boards', boardID);
-      await updateDoc(docRef, {
-        boardTitle: refInput.current.value,
-      });
+      if (refInput.current.value === '') {
+        refInput.current.style.border = '2px solid red';
+        refInput.current.placeholder = 'There should be a title';
+        setNeedToRename(false);
+      } else if (
+        boards.some((el) => el.boardTitle === refInput?.current?.value) &&
+        board.boardTitle !== refInput.current.value
+      ) {
+        refInput.current.style.border = '2px solid red';
+        refInput.current.value = '';
+        setBoardtitle('');
+        refInput.current.placeholder = 'Such board already exists';
+        setNeedToRename(false);
+      } else {
+        const docRef = doc(db, 'boards', boardID);
+        await updateDoc(docRef, {
+          boardTitle: refInput.current.value,
+        });
 
-      setClickBoardTitle(false);
-      setNeedToRename(false);
-      refInput.current = null;
-      navigate('/auth/board/' + board.id);
+        setClickBoardTitle(false);
+        setNeedToRename(false);
+        refInput.current = null;
+        navigate('/auth/board/' + board.id);
+      }
     }
   };
 
-  const handleEnterKey = (e) => {
+  const handleEnterKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.code === 'Enter') {
       e.preventDefault();
       setNeedToRename(true);
@@ -91,20 +99,21 @@ const BoardItem = ({ board, refSidebar }) => {
       onMouseOut={() => setShowMenu(false)}
     >
       {clickBoardTitle ? (
-        <textarea
-          ref={refInput}
-          type="text"
-          style={{
-            borderRadius: '4px',
-            paddingLeft: '4px',
-            zIndex: '2000',
-            border: '1px solid rgba(23, 43, 77, .7)',
-          }}
-          value={boardtitle}
-          autoFocus
-          onChange={(e) => setBoardtitle(e.target.value)}
-          onKeyDown={(e) => handleEnterKey(e)}
-        ></textarea>
+        <div ref={refDiv}>
+          <textarea
+            ref={refInput}
+            style={{
+              borderRadius: '4px',
+              paddingLeft: '4px',
+              zIndex: '2000',
+              border: '1px solid rgba(23, 43, 77, .7)',
+            }}
+            value={boardtitle}
+            autoFocus
+            onChange={(e) => setBoardtitle(e.target.value)}
+            onKeyDown={handleEnterKey}
+          ></textarea>
+        </div>
       ) : (
         <>
           <div

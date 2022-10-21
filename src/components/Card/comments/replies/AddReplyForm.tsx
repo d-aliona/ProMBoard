@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../../../hooks/hooks';
 
 import { db } from '../../../../firebase-client';
 import { collection, addDoc } from 'firebase/firestore';
@@ -8,9 +8,15 @@ import { addNotificationToDataBase } from '../../../../features/exportFunctions'
 import { allBoardsState } from '../../../../store/slices/allBoardsSlice';
 import style from '../../../../assets/scss/card.module.scss';
 
-const AddReplyForm = ({ card, comment, setClickReplyComment }) => {
-  const user = useSelector((state) => state.user.user);
-  const allBoards = useSelector(allBoardsState);
+interface AddReplProps {
+  card: Card;
+  comment: Comment;
+  setClickReplyComment: Dispatcher;
+}
+
+const AddReplyForm: React.FC<AddReplProps> = ({ card, comment, setClickReplyComment }) => {
+  const user = useAppSelector((state) => state.user.user);
+  const allBoards = useAppSelector(allBoardsState);
   const [replyText, setReplyText] = useState('');
 
   const saveReply = () => {
@@ -31,7 +37,7 @@ const AddReplyForm = ({ card, comment, setClickReplyComment }) => {
         console.error(error.message);
       });
 
-    const curBoard = allBoards.find((el) => el.id === card.boardID);
+    const curBoard = allBoards.find((el) => el.id === card.boardID)!;
 
     card.assignedUsers.forEach((memID) => {
       if (user.id !== memID) {

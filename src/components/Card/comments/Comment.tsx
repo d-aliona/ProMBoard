@@ -192,7 +192,7 @@ const Comment: React.FC<CommentProps> = ({ card, comment, repliesForComment }) =
           )}
         </div>
         {showReplies && (
-          <Replies card={card} comment={comment} replies={repliesForComment} />
+          <Replies card={card} replies={repliesForComment} />
         )}
       </div>
     </>

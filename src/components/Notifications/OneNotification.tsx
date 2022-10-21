@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/hooks';
 import { useNavigate } from 'react-router-dom';
 
 import Initials from '../../ui/Initials';
@@ -8,11 +8,15 @@ import { allCardsState } from '../../store/slices/allCardsSlice';
 import { allBoardsState } from '../../store/slices/allBoardsSlice';
 import styles from '../../assets/scss/topbar.module.scss';
 
-const OneNotification = ({ notification }) => {
-  const user = useSelector((state) => state.user.user);
-  const boards = useSelector(allBoardsState);
-  const cards = useSelector(allCardsState);
-  const users = useSelector((state) => state.users.users);
+interface OneNotifProps {
+  notification: Notification;
+}
+
+const OneNotification: React.FC<OneNotifProps> = ({ notification }) => {
+  const user = useAppSelector((state) => state.user.user);
+  const boards = useAppSelector(allBoardsState);
+  const cards = useAppSelector(allCardsState);
+  const users = useAppSelector((state) => state.users.users);
   let navigate = useNavigate();
   const currentCard = cards.find((ob) => ob.id === notification?.cardID);
   const cardname = notification.hasOwnProperty('cardTitle')
@@ -20,17 +24,17 @@ const OneNotification = ({ notification }) => {
     : '';
   const curCardTitle = currentCard ? currentCard.cardTitle : cardname;
   const currentBoard = boards.find((ob) => ob.id === notification?.boardID);
-  const fromUser = users.find((ob) => ob.id === notification?.fromUser);
+  const fromUser = users.find((ob) => ob.id === notification.fromUser)!;
   const color = currentBoard
     ? currentBoard.boardColor
     : notification.boardColor;
-  const isReadColor = notification.read ? '#ffe' : 'rgba(73, 136, 245, 0.3)';
+  const isReadColor: string = notification.read ? '#ffe' : 'rgba(73, 136, 245, 0.3)';
   const requireNavigation =
     currentBoard &&
     currentBoard.statusOpened &&
     currentBoard.invitedMembers.includes(user.id);
 
-  const handleNavigateBoard = (e, currentBoard) => {
+  const handleNavigateBoard = (currentBoard: Board) => {
     if (
       currentBoard.invitedMembers.includes(user.id) ||
       currentBoard.owner === user.id
@@ -52,7 +56,7 @@ const OneNotification = ({ notification }) => {
           }}
           onClick={
             requireNavigation
-              ? (e) => handleNavigateBoard(e, currentBoard)
+              ? () => handleNavigateBoard(currentBoard)
               : undefined
           }
         >
@@ -76,7 +80,8 @@ const OneNotification = ({ notification }) => {
               padding: '6px',
             }}
           >
-            <ShortenTitle title={curCardTitle} number={28} />
+            {curCardTitle && 
+              <ShortenTitle title={curCardTitle} number={28} />}
           </div>
         </div>
         <div

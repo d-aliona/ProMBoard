@@ -35,7 +35,7 @@ const Cards: React.FC<CardsProps> = ({
   setDraggingCard,
   listsCardsToRender,
   setListsCardsToRender,
-}: CardsProps) => {
+}) => {
   const dispatch = useAppDispatch();
   const currentDragStartCard = useAppSelector(currentDragStartCardState);
   const dragItemCard = useRef<number | null>(null);
@@ -43,11 +43,11 @@ const Cards: React.FC<CardsProps> = ({
 
   const handleDragStartCard = (e: React.DragEvent<HTMLDivElement>, item: DragStartCardType) => {
     e.stopPropagation();
-    dragItemCard.current = item.index;
+    dragItemCard.current = item.index!;
     dragItemCardNode.current = e.target as HTMLDivElement;
     const listIndex = listsCardsToRender.findIndex(
       (el) => el.list.id === list.id
-    );
+    )!;
 
     dispatch(
       setCurrentDragStartCard({
@@ -65,7 +65,7 @@ const Cards: React.FC<CardsProps> = ({
     }, 0);
   };
 
-  const handleDragEnterCard = (e: React.DragEvent<HTMLDivElement>, targetItem: DragStartCardType) => {
+  const handleDragEnterCard = (targetItem: DragStartCardType) => {
     let copyCards = [...listsCardsToRender];
     const listIndexForEnterCard = listsCardsToRender.findIndex(
       (el) => el.list.id === list.id
@@ -154,8 +154,8 @@ const Cards: React.FC<CardsProps> = ({
               onDragStart={(e) => handleDragStartCard(e, { index, card })}
               onDragEnter={
                 draggingCard
-                  ? (e) => {
-                      handleDragEnterCard(e, { index, card });
+                  ? () => {
+                      handleDragEnterCard({ index, card });
                     }
                   : undefined
               }

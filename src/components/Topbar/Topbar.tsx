@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 
 import { auth } from '../../firebase-client';
 import { signOut } from 'firebase/auth';
@@ -11,15 +11,15 @@ import ShortenTitle from '../../ui/ShortenTitle';
 import Initials from '../../ui/Initials';
 import CreateBoardForm from '../../features/CreateBoardForm';
 import Notifications from '../Notifications';
-import BoardsList from '../../components/BoardsList';
+import BoardsList from '../BoardsList';
 import useOutsideClick from '../../hooks/useOutsideClick';
 import useBoardColor from '../../hooks/useBoardColor';
 import MenuContext from '../../context/MenuContext';
 import useWindowSize from '../../hooks/useWindowSize';
 import style from '../../assets/scss/topbar.module.scss';
 
-function Topbar() {
-  const user = useSelector(userState);
+const Topbar: React.FC = () => {
+  const user = useAppSelector(userState);
   const size = useWindowSize();
   const [show, setShow] = useState(false);
   const [showCreateBoardForm, setShowCreateBoardForm] = useState(false);
@@ -27,12 +27,13 @@ function Topbar() {
     setShow(false);
   });
   const title = useParams();
-  const boardColor = useBoardColor(title);
-  const { textColor } = useContext(MenuContext);
+  const boardColor = useBoardColor(title.id);
+  const context = useContext(MenuContext);
+  const textColor = context?.textColor;
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const toggle = (e) => {
+  const toggle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     setShow((prev) => !prev);
     e.stopPropagation();
   };

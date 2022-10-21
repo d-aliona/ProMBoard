@@ -29,10 +29,10 @@ const Profile: React.FC = () => {
   return (
     <div>
       <div className={style.head}>
-        <p className={style.title}>
+        <div className={style.title}>
           <Initials user={curUser} />
           {curUser.firstName} {curUser.lastName}
-        </p>
+        </div>
         <p className={style.email}>{curUser.email}</p>
       </div>
       <div className={style.line}></div>

@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 
 import {
   collection,
@@ -21,9 +21,9 @@ import { setPersonalBoards } from '../../store/slices/personalBoardsSlice';
 import { setNotPersonalBoards } from '../../store/slices/notPersonalBoardsSlice';
 import { setNotifications } from '../../store/slices/notificationsSlice';
 
-const GetState = ({ children }) => {
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.user);
+const GetState = ({ children }: ChildrenProps) => {
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user.user);
 
   useEffect(() => {
     onIdTokenChanged(auth, (user) => {
@@ -41,7 +41,7 @@ const GetState = ({ children }) => {
                 setUser({
                   id: doc.id,
                   ...doc.data(),
-                })
+                } as User)
               );
             });
           });
@@ -59,7 +59,7 @@ const GetState = ({ children }) => {
         const allBoardsSnap = snapshot.docs.map((doc) => ({
           ...doc.data(),
           id: doc.id,
-        }));
+        } as Board));
         dispatch(setAllBoards(allBoardsSnap));
       });
 
@@ -73,7 +73,7 @@ const GetState = ({ children }) => {
         const persBoardsSnap = snapshot.docs.map((doc) => ({
           ...doc.data(),
           id: doc.id,
-        }));
+        } as Board));
         dispatch(setPersonalBoards(persBoardsSnap));
       });
 
@@ -87,7 +87,7 @@ const GetState = ({ children }) => {
         const notPersBoardsSnap = snapshot.docs.map((doc) => ({
           ...doc.data(),
           id: doc.id,
-        }));
+        } as Board));
         dispatch(setNotPersonalBoards(notPersBoardsSnap));
       });
     }
@@ -98,7 +98,7 @@ const GetState = ({ children }) => {
 
     onSnapshot(listsCol, (snapshot) => {
       const listSnap = snapshot.docs.map((doc) => {
-        return { ...doc.data(), id: doc.id };
+        return { ...doc.data(), id: doc.id } as User;
       });
       dispatch(setUsers(listSnap));
     });
@@ -109,7 +109,7 @@ const GetState = ({ children }) => {
 
     onSnapshot(listsCol, (snapshot) => {
       const listSnap = snapshot.docs.map((doc) => {
-        return { ...doc.data(), id: doc.id };
+        return { ...doc.data(), id: doc.id } as List;
       });
       dispatch(setAllLists(listSnap));
     });
@@ -120,7 +120,7 @@ const GetState = ({ children }) => {
 
     onSnapshot(listsCol, (snapshot) => {
       const listSnap = snapshot.docs.map((doc) => {
-        return { ...doc.data(), id: doc.id };
+        return { ...doc.data(), id: doc.id } as Card;
       });
       dispatch(setAllCards(listSnap));
     });
@@ -142,14 +142,14 @@ const GetState = ({ children }) => {
 
       onSnapshot(qNotifications, (snapshot) => {
         const notificationsSnap = snapshot.docs.map((doc) => {
-          return { ...doc.data(), id: doc.id };
+          return { ...doc.data(), id: doc.id } as Notification;
         });
         dispatch(setNotifications(notificationsSnap));
       });
     }
   }, [user, dispatch]);
 
-  return children;
+  return <>{children}</>;
 };
 
 export default GetState;

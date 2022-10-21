@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/hooks';
 
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice';
 import { notPersonalBoardsState } from '../../store/slices/notPersonalBoardsSlice';
@@ -14,25 +14,26 @@ import useWindowSize from '../../hooks/useWindowSize';
 import style from '../../assets/scss/sidebar.module.scss';
 
 const Sidebar = () => {
-  const user = useSelector((state) => state.user.user);
+  const user = useAppSelector((state) => state.user.user);
   const size = useWindowSize();
   const [showYourBoards, setShowYourBoards] = useState(true);
   const [showGuestBoards, setShowGuestBoards] = useState(true);
   const [toggleClick, setToggleClick] = useState(true);
-  const [changeTick, setChangeTick] = useState(style.tickLeft);
-  const [tickUpDownPers, setTickUpDownPers] = useState(style.TickDown);
-  const [tickUpDownGuest, setTickUpDownGuest] = useState(style.TickDown);
-  const boards = useSelector(personalBoardsState);
+  const [changeTick, setChangeTick] = useState<string>(style.tickLeft);
+  const [tickUpDownPers, setTickUpDownPers] = useState<string>(style.TickDown);
+  const [tickUpDownGuest, setTickUpDownGuest] = useState<string>(style.TickDown);
+  const boards = useAppSelector(personalBoardsState);
   let navigate = useNavigate();
   const title = useParams();
-  const boardColor = useBoardColor(title);
-  const { textColor } = useContext(MenuContext);
-  const notUserBoards = useSelector(notPersonalBoardsState);
+  const boardColor = useBoardColor(title.id);
+  const context = useContext(MenuContext);
+  const textColor = context?.textColor;
+  const notUserBoards = useAppSelector(notPersonalBoardsState);
   const guestBoards =
     notUserBoards && notUserBoards.length > 0
       ? notUserBoards.filter((board) => board.invitedMembers.includes(user.id))
       : [];
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null!);
 
   useEffect(() => {
     size.width < 799 ? setToggleClick(false) : setToggleClick(true);
@@ -50,9 +51,14 @@ const Sidebar = () => {
     setTickUpDownGuest(showGuestBoards ? style.tickDown : style.tickUp);
   }, [showGuestBoards]);
 
-  const handleClickBoard = (id) => {
+  const handleClickBoard = (id: string) => {
     navigate('/auth/board/' + id);
   };
+
+  const styles: {} = {
+    '--backgroundColor': `${title.id ? boardColor : '#f4f5f7'}`,
+    '--hoverColor': 'rgba(23, 43, 77, .4)',
+  }
 
   return (
     <>
@@ -139,10 +145,7 @@ const Sidebar = () => {
       {!toggleClick && (
         <div
           className={style.wrapperHidden}
-          style={{
-            '--backgroundColor': `${title.id ? boardColor : '#f4f5f7'}`,
-            '--hoverColor': 'rgba(23, 43, 77, .4)',
-          }}
+          style={styles}
           onClick={() => setToggleClick((prev) => !prev)}
         >
           <div className={`${changeTick}`}>

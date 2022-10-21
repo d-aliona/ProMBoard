@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/hooks';
 
 import { collection, addDoc, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase-client';
@@ -15,32 +15,37 @@ import { allBoardsState } from '../../store/slices/allBoardsSlice';
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice';
 import style from '../../assets/scss/card.module.scss';
 
-const CopyCard = ({ card, setClickCopyCard }) => {
-  const user = useSelector((state) => state.user.user);
-  const persBoards = useSelector(personalBoardsState);
-  const allBoards = useSelector(allBoardsState);
-  const allLists = useSelector(allListsState);
-  const allCards = useSelector(allCardsState);
-  const comments = useSelector(currentCommentsState);
-  const replies = useSelector(currentRepliesState);
+interface CopyCardProps {
+  card: Card;
+  setClickCopyCard: Dispatcher;
+}
+
+const CopyCard: React.FC<CopyCardProps> = ({ card, setClickCopyCard }) => {
+  const user = useAppSelector((state) => state.user.user);
+  const persBoards = useAppSelector(personalBoardsState);
+  const allBoards = useAppSelector(allBoardsState);
+  const allLists = useAppSelector(allListsState);
+  const allCards = useAppSelector(allCardsState);
+  const comments = useAppSelector(currentCommentsState);
+  const replies = useAppSelector(currentRepliesState);
   const [newTitle, setNewTitle] = useState('');
   const ref = useOutsideClick(() => {
     setClickCopyCard(false);
   });
-  const curList = allLists.find((el) => el.id === card.listID);
-  const curBoard = allBoards.find((el) => el.id === card.boardID);
+  const curList = allLists.find((el) => el.id === card.listID)!;
+  const curBoard = allBoards.find((el) => el.id === card.boardID)!;
   const [openBoardList, setOpenBoardList] = useState(false);
   const [openListsList, setOpenListsList] = useState(false);
   const [openPositionList, setOpenPositionList] = useState(false);
   const [chosenBoard, setChosenBoard] = useState(curBoard);
   const [chosenList, setChosenList] = useState(curList);
   const [chosenPosition, setChosenPosition] = useState(card.position);
-  const [listsOfChosenBoard, setListsOfChosenBoard] = useState([]);
-  const [cardsOfChosenList, setCardsOfChosenList] = useState([]);
+  const [listsOfChosenBoard, setListsOfChosenBoard] = useState<Lists>([]);
+  const [cardsOfChosenList, setCardsOfChosenList] = useState<Cards>([]);
   const [checkedMem, setCheckedMem] = useState(false);
   const [checkedCom, setCheckedCom] = useState(false);
   const isPersonalBoard = user.id === curBoard.owner;
-  const disabled =
+  const disabled: string =
     newTitle && listsOfChosenBoard.length !== 0 ? '' : style.disabled;
 
   useEffect(() => {
@@ -63,7 +68,7 @@ const CopyCard = ({ card, setClickCopyCard }) => {
     setChosenPosition(cardsOfChosenList.length + 1);
   }, [cardsOfChosenList]);
 
-  const copyCard = async (e) => {
+  const copyCard = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
 
     if (chosenPosition <= cardsOfChosenList.length) {

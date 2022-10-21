@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 
 import {
   collection,
   orderBy,
   query,
   onSnapshot,
-  where,
   limit,
 } from 'firebase/firestore';
 import { doc, updateDoc, deleteDoc } from 'firebase/firestore';
@@ -25,13 +24,13 @@ import style from '../../assets/scss/home.module.scss';
 import styles from '../../assets/scss/topbar.module.scss';
 import styless from '../../assets/scss/boardsList.module.scss';
 
-const Notifications = () => {
-  const user = useSelector((state) => state.user.user);
+const Notifications: React.FC = () => {
+  const user = useAppSelector((state) => state.user.user);
   const [showDropWindow, setShowDropWindow] = useState(false);
-  const notifications = useSelector(notificationsState);
+  const notifications = useAppSelector(notificationsState);
   const [newNotificationExist, setNewNotificationExist] = useState(false);
   const [limitNumber, setLimitNumber] = useState(10);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const notificationsCol = collection(db, 'users', user.id, 'notifications');
@@ -43,7 +42,7 @@ const Notifications = () => {
 
     onSnapshot(qNotifications, (snapshot) => {
       const notificationsSnap = snapshot.docs.map((doc) => {
-        return { ...doc.data(), id: doc.id };
+        return { ...doc.data(), id: doc.id } as Notification;
       });
       dispatch(setNotifications(notificationsSnap));
     });
@@ -72,12 +71,12 @@ const Notifications = () => {
 
   const ref = useOutsideClick(() => setShowDropWindow(false));
 
-  const toggle = async (e) => {
+  const toggle = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     setShowDropWindow((prev) => !prev);
     e.stopPropagation();
   };
 
-  const deleteAllNotifications = (e) => {
+  const deleteAllNotifications = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
     notifications &&
       notifications.forEach(async (item) => {
@@ -109,7 +108,7 @@ const Notifications = () => {
           <Line width={'96%'} />
           {notifications.length > 0 ? (
             <div
-              onClick={(e) => deleteAllNotifications(e)}
+              onClick={deleteAllNotifications}
               style={{
                 cursor: 'pointer',
                 textDecoration: 'underline',

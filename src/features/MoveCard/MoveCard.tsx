@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/hooks';
 import { useNavigate } from 'react-router-dom';
 
 import { doc, updateDoc } from 'firebase/firestore';
@@ -14,25 +14,30 @@ import { allBoardsState } from '../../store/slices/allBoardsSlice';
 import { personalBoardsState } from '../../store/slices/personalBoardsSlice';
 import style from '../../assets/scss/card.module.scss';
 
-const MoveCard = ({ card, setClickMoveCard }) => {
-  const user = useSelector((state) => state.user.user);
-  const persBoards = useSelector(personalBoardsState);
-  const allBoards = useSelector(allBoardsState);
-  const allLists = useSelector(allListsState);
-  const allCards = useSelector(allCardsState);
+interface MoveCardProps {
+  card: Card;
+  setClickMoveCard: Dispatcher;
+}
+
+const MoveCard: React.FC<MoveCardProps> = ({ card, setClickMoveCard }) => {
+  const user = useAppSelector((state) => state.user.user);
+  const persBoards = useAppSelector(personalBoardsState);
+  const allBoards = useAppSelector(allBoardsState);
+  const allLists = useAppSelector(allListsState);
+  const allCards = useAppSelector(allCardsState);
   const ref = useOutsideClick(() => {
     setClickMoveCard(false);
   });
-  const curList = allLists.find((el) => el.id === card.listID);
-  const curBoard = allBoards.find((el) => el.id === card.boardID);
+  const curList = allLists.find((el) => el.id === card.listID)!;
+  const curBoard = allBoards.find((el) => el.id === card.boardID)!;
   const [openBoardList, setOpenBoardList] = useState(false);
   const [openListsList, setOpenListsList] = useState(false);
   const [openPositionList, setOpenPositionList] = useState(false);
   const [chosenBoard, setChosenBoard] = useState(curBoard);
   const [chosenList, setChosenList] = useState(curList);
   const [chosenPosition, setChosenPosition] = useState(card.position);
-  const [listsOfChosenBoard, setListsOfChosenBoard] = useState([]);
-  const [cardsOfChosenList, setCardsOfChosenList] = useState([]);
+  const [listsOfChosenBoard, setListsOfChosenBoard] = useState<Lists>([]);
+  const [cardsOfChosenList, setCardsOfChosenList] = useState<Cards>([]);
   const isPersonalBoard = user.id === curBoard.owner;
   const cardsOfCurrentList = allCards.filter((el) => el.listID === curList.id);
   let navigate = useNavigate();
@@ -61,7 +66,7 @@ const MoveCard = ({ card, setClickMoveCard }) => {
     );
   }, [cardsOfChosenList]);
 
-  const moveCard = async (e) => {
+  const moveCard = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
 
     if (card.listID === chosenList.id) {
