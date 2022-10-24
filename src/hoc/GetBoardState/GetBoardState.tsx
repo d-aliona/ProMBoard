@@ -69,7 +69,7 @@ const GetBoardState = ({ children }: ChildrenProps): JSX.Element => {
         dispatch(setCurrentCards(cardSnap));
       });
     }
-  }, []);
+  }, [title, currentBoard, existBoard]);
 
   if (lists && cards) {
     return <>{children}</>;

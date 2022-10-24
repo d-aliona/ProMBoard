@@ -20,7 +20,7 @@ const Boards: React.FC = () => {
   const notUserBoards = useAppSelector(notPersonalBoardsState);
   const guestBoards =
     notUserBoards && notUserBoards.length > 0
-      ? notUserBoards.filter((board) => board.invitedMembers.includes(user.id))
+      ? notUserBoards.filter((board) => board.invitedMembers.includes(user.id!))
       : [];
   
   const tempArr = [...boards];

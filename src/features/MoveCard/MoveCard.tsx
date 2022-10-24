@@ -108,7 +108,7 @@ const MoveCard: React.FC<MoveCardProps> = ({ card, setClickMoveCard }) => {
           });
           const ob = {
             memberID: el,
-            userID: user.id,
+            userID: user.id!,
             text: 'added you to this board',
             boardID: chosenBoard.id,
             boardTitle: chosenBoard.boardTitle,

@@ -32,11 +32,11 @@ const OneNotification: React.FC<OneNotifProps> = ({ notification }) => {
   const requireNavigation =
     currentBoard &&
     currentBoard.statusOpened &&
-    currentBoard.invitedMembers.includes(user.id);
+    currentBoard.invitedMembers.includes(user.id!);
 
   const handleNavigateBoard = (currentBoard: Board) => {
     if (
-      currentBoard.invitedMembers.includes(user.id) ||
+      currentBoard.invitedMembers.includes(user.id!) ||
       currentBoard.owner === user.id
     ) {
       navigate('/auth/board/' + currentBoard.id);

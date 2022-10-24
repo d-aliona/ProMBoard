@@ -5,7 +5,7 @@ import { useAppSelector } from '../../hooks/hooks';
 const RequireAuth: React.ComponentType<ChildrenProps> = ({ children }) => {
   const user = useAppSelector((state) => state.user.user);
 
-  if (user.email) {
+  if (user.id) {
     <Navigate to="auth/" />;
     return <>{children}</>;
   } else {

@@ -108,7 +108,7 @@ const CopyCard: React.FC<CopyCardProps> = ({ card, setClickCopyCard }) => {
                 });
                 const ob = {
                   memberID: el,
-                  userID: user.id,
+                  userID: user.id!,
                   text: 'added you to this board',
                   boardID: chosenBoard.id,
                   boardTitle: chosenBoard.boardTitle,
@@ -156,7 +156,7 @@ const CopyCard: React.FC<CopyCardProps> = ({ card, setClickCopyCard }) => {
             if (el !== user.id) {
               const ob = {
                 memberID: el,
-                userID: user.id,
+                userID: user.id!,
                 text: 'added you to this card',
                 cardID: docref.id,
                 boardID: chosenBoard.id,

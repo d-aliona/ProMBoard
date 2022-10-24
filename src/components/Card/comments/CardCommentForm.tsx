@@ -48,7 +48,7 @@ const CardCommentForm: React.FC<CardProps> = ({ card }) => {
       if (user.id !== memID) {
         const ob = {
           memberID: memID,
-          userID: user.id,
+          userID: user.id!,
           text: 'added a comment',
           cardID: card.id,
           boardID: card.boardID,

@@ -36,7 +36,7 @@ const ViewOneMember: React.FC<ViewOneMemberProps> = ({ currentBoard, currentMemb
       cards.map((card) => {
         const tempArray = [...card.assignedUsers];
 
-        if (tempArray.includes(currentMember.id)) {
+        if (tempArray.includes(currentMember.id!)) {
           data.push([card.listID, card.cardTitle, card.id]);
         }
       });
@@ -55,13 +55,13 @@ const ViewOneMember: React.FC<ViewOneMemberProps> = ({ currentBoard, currentMemb
 
     const dataUser = [...currentMember.guestBoards];
     const changedDataUser = dataUser.filter((id) => id !== currentBoard.id);
-    const doccRef = doc(db, 'users', currentMember.id);
+    const doccRef = doc(db, 'users', currentMember.id!);
     await updateDoc(doccRef, {
       guestBoards: [...changedDataUser],
     });
     const ob = {
-      memberID: currentMember.id,
-      userID: user.id,
+      memberID: currentMember.id!,
+      userID: user.id!,
       text: 'removed you from this board',
       boardTitle: currentBoard.boardTitle,
       boardColor: currentBoard.boardColor,

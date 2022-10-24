@@ -60,7 +60,7 @@ const SignupForm: React.FC = () => {
           const userFound = users.find((el) => el.email === email);
           if (userFound) {
             if (userFound.firstName === '?' && userFound.lastName === '?') {
-              const docRef = doc(db, 'users', userFound.id);
+              const docRef = doc(db, 'users', userFound.id!);
               await updateDoc(docRef, {
                 firstName: firstName,
                 lastName: lastName,

@@ -37,7 +37,7 @@ const InviteMembersPopup: React.FC<InviteMembersPopupProps> = ({ currentBoard, s
   useEffect(() => {
     const filteredUsers = users
       .filter((member) => member.id !== user.id)
-      .filter((member) => !currentBoard.invitedMembers.includes(member.id));
+      .filter((member) => !currentBoard.invitedMembers.includes(member.id!));
     setUsersNotPresentOnBoard(filteredUsers);
   }, [currentBoard]);
 
@@ -57,7 +57,7 @@ const InviteMembersPopup: React.FC<InviteMembersPopupProps> = ({ currentBoard, s
           (
             member.firstName.toLowerCase() + member.lastName.toLowerCase()
           ).includes(searchTerm.toLowerCase()) ||
-          member.email.includes(searchTerm)
+          member.email!.includes(searchTerm)
         ) {
           return member;
         }
@@ -102,13 +102,13 @@ const InviteMembersPopup: React.FC<InviteMembersPopupProps> = ({ currentBoard, s
 
     selectedToBeInvited &&
       selectedToBeInvited.map(async (member) => {
-        const docMemberRef = doc(db, 'users', member.id);
+        const docMemberRef = doc(db, 'users', member.id!);
         await updateDoc(docMemberRef, {
           guestBoards: [...member.guestBoards, currentBoard.id],
         });
         const ob = {
-          memberID: member.id,
-          userID: user.id,
+          memberID: member.id!,
+          userID: user.id!,
           text: 'added you to this board',
           boardID: currentBoard.id,
           boardTitle: currentBoard.boardTitle,
@@ -140,7 +140,7 @@ const InviteMembersPopup: React.FC<InviteMembersPopupProps> = ({ currentBoard, s
               });
               const ob = {
                 memberID: userRef.id,
-                userID: user.id,
+                userID: user.id!,
                 text: 'added you to this board',
                 boardID: currentBoard.id,
                 boardTitle: currentBoard.boardTitle,

@@ -35,7 +35,7 @@ const OneClosedBoard: React.FC<OneClosedBoardProps> = ({ currentBoard }) => {
       currentBoard.invitedMembers.forEach((id) => {
         const ob = {
           memberID: id,
-          userID: user.id,
+          userID: user.id!,
           text: 'reopened this board',
           boardID: currentBoard.id,
           boardTitle: currentBoard.boardTitle,
@@ -67,14 +67,14 @@ const OneClosedBoard: React.FC<OneClosedBoardProps> = ({ currentBoard }) => {
           const changedDataUser = dataUser.filter(
             (id) => id !== currentBoard.id
           );
-          const doccRef = doc(db, 'users', member.id);
+          const doccRef = doc(db, 'users', member.id!);
 
           await updateDoc(doccRef, {
             guestBoards: [...changedDataUser],
           });
           const ob = {
-            memberID: member.id,
-            userID: user.id,
+            memberID: member.id!,
+            userID: user.id!,
             text: 'deleted this board',
             boardTitle: currentBoard.boardTitle,
             boardColor: currentBoard.boardColor,

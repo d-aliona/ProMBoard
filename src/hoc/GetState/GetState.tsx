@@ -24,7 +24,9 @@ import { setNotifications } from '../../store/slices/notificationsSlice';
 const GetState = ({ children }: ChildrenProps) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.user);
-
+  console.log(user)
+// const ss = auth.currentUser;
+// console.log(ss)
   useEffect(() => {
     onIdTokenChanged(auth, (user) => {
       if (!user) {
@@ -33,7 +35,7 @@ const GetState = ({ children }: ChildrenProps) => {
         const token = user.getIdToken().then(() => {
           const q = query(
             collection(db, 'users'),
-            where('email', '==', user.email)
+            where('email', '==', user.email!)
           );
           onSnapshot(q, (snapshot) => {
             snapshot.forEach((doc) => {
@@ -48,13 +50,14 @@ const GetState = ({ children }: ChildrenProps) => {
         });
       }
     });
+    
   }, [dispatch]);
 
   useEffect(() => {
     if (user.id) {
       const colRef = collection(db, 'boards');
       const qAllBoards = query(colRef);
-
+      
       onSnapshot(qAllBoards, (snapshot) => {
         const allBoardsSnap = snapshot.docs.map((doc) => ({
           ...doc.data(),
@@ -150,6 +153,7 @@ const GetState = ({ children }: ChildrenProps) => {
   }, [user, dispatch]);
 
   return <>{children}</>;
+  
 };
 
 export default GetState;

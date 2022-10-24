@@ -18,7 +18,7 @@ const Profile: React.FC = () => {
   const [showChangePassForm, setShowChangePassForm] = useState(false);
 
   const saveNameUser = async () => {
-    const docRef = doc(db, 'users', curUser.id);
+    const docRef = doc(db, 'users', curUser.id!);
     await updateDoc(docRef, {
       firstName: firstName,
       lastName: lastName,

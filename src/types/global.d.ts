@@ -4,8 +4,8 @@ export {};
 declare global {
   
   interface User {
-    email: string;
-    id: string;
+    email: string | null;
+    id: string | null;
     firstName: string;
     lastName: string;
     guestBoards: string[];

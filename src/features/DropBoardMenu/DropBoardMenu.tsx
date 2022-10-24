@@ -25,6 +25,7 @@ const DropBoardMenu: React.FC<DropBoardMenuProps> = ({
   isOnBoards,
 }) => {
   const user = useAppSelector((state) => state.user.user);
+  const isGuestBoard = board.owner !== user.id;
   const [showMembers, setShowMembers] = useState(false);
   const [showInviteMembers, setShowInviteMembers] = useState(false);
   const [showChangeBackgroundForm, setShowChangeBackgroundForm] =
@@ -41,7 +42,7 @@ const DropBoardMenu: React.FC<DropBoardMenuProps> = ({
         board.invitedMembers.forEach((mem) => {
           const ob = {
             memberID: mem,
-            userID: user.id,
+            userID: user.id!,
             text: 'closed this board',
             boardID: board.id,
             boardTitle: board.boardTitle,
@@ -81,51 +82,59 @@ const DropBoardMenu: React.FC<DropBoardMenuProps> = ({
           setShowMembers={setShowMembers}
         />
       )}
-      <div
-        className={style.boardDropItem}
-        onClick={(e) => {
-          e.stopPropagation();
-          setShowInviteMembers((prev) => !prev);
-        }}
-      >
-        Invite members
-      </div>
-      {showInviteMembers && (
-        <InviteMembersPopup
-          currentBoard={board}
-          setShowInviteMembers={setShowInviteMembers}
-        />
-      )}
-      <div
-        className={style.boardDropItem}
-        onClick={(e) => {
-          setShowChangeBackgroundForm((prev) => !prev);
-          e.stopPropagation();
-        }}
-      >
-        Change background
-      </div>
-      {showChangeBackgroundForm && (
-        <ChangeBackgroundBoardForm
-          board={board}
-          setShowChangeBackgroundForm={setShowChangeBackgroundForm}
-          setShowDropMenu={setShowDropMenu}
-          isOnBoards={isOnBoards}
-        />
-      )}
-      <div
-        className={style.boardDropItem}
-        onClick={(e) => {
-          e.stopPropagation();
-          setClickBoardTitle(true);
-          setShowDropMenu(false);
-        }}
-      >
-        Rename board
-      </div>
-      <div className={style.boardDropItem} onClick={closeBoard}>
-        Close board
-      </div>
+      {!isGuestBoard && 
+        <div
+          className={style.boardDropItem}
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowInviteMembers((prev) => !prev);
+          }}
+        >
+          Invite members
+        </div>
+      }
+        {showInviteMembers && (
+          <InviteMembersPopup
+            currentBoard={board}
+            setShowInviteMembers={setShowInviteMembers}
+          />
+        )}
+      {!isGuestBoard &&   
+        <div
+          className={style.boardDropItem}
+          onClick={(e) => {
+            setShowChangeBackgroundForm((prev) => !prev);
+            e.stopPropagation();
+          }}
+        >
+          Change background
+        </div>
+      }
+        {showChangeBackgroundForm && (
+          <ChangeBackgroundBoardForm
+            board={board}
+            setShowChangeBackgroundForm={setShowChangeBackgroundForm}
+            setShowDropMenu={setShowDropMenu}
+            isOnBoards={isOnBoards}
+          />
+        )}
+      {!isGuestBoard && 
+        <>
+          <div
+            className={style.boardDropItem}
+            onClick={(e) => {
+              e.stopPropagation();
+              setClickBoardTitle(true);
+              setShowDropMenu(false);
+            }}
+          >
+            Rename board
+          </div>
+          <div className={style.boardDropItem} onClick={closeBoard}>
+            Close board
+          </div>
+        </>
+      }
     </div>
   );
 };

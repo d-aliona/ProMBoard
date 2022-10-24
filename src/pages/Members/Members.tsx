@@ -58,7 +58,7 @@ const Members: React.FC = () => {
                 (
                   member.firstName.toLowerCase() + member.lastName.toLowerCase()
                 ).includes(searchMem.toLowerCase()) ||
-                member.email.includes(searchMem)
+                member.email!.includes(searchMem)
               ) {
                 memberToDisplay = true;
                 countMembers += 1;

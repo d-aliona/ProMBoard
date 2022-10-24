@@ -33,7 +33,7 @@ const Notifications: React.FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const notificationsCol = collection(db, 'users', user.id, 'notifications');
+    const notificationsCol = collection(db, 'users', user.id!, 'notifications');
     const qNotifications = query(
       notificationsCol,
       orderBy('sortkey', 'desc'),
@@ -61,7 +61,7 @@ const Notifications: React.FC = () => {
       const dataToChange = notifications.filter((ob) => ob.read === false);
 
       dataToChange.forEach(async (item) => {
-        const docRef = doc(db, 'users', user.id, 'notifications', item.id);
+        const docRef = doc(db, 'users', user.id!, 'notifications', item.id);
         await updateDoc(docRef, {
           read: true,
         });
@@ -80,7 +80,7 @@ const Notifications: React.FC = () => {
     e.stopPropagation();
     notifications &&
       notifications.forEach(async (item) => {
-        const docRef = doc(db, 'users', user.id, 'notifications', item.id);
+        const docRef = doc(db, 'users', user.id!, 'notifications', item.id);
         await deleteDoc(docRef);
       });
   };

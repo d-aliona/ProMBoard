@@ -43,7 +43,7 @@ const AddReplyForm: React.FC<AddReplProps> = ({ card, comment, setClickReplyComm
       if (user.id !== memID) {
         const ob = {
           memberID: memID,
-          userID: user.id,
+          userID: user.id!,
           text: 'added a comment',
           cardID: card.id,
           boardID: card.boardID,

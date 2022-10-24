@@ -45,7 +45,7 @@ const AssignMemberForm: React.FC<AssignMemProps> = ({ card, setClickAddMembers }
             (
               member.firstName.toLowerCase() + member.lastName.toLowerCase()
             ).includes(searchMember.toLowerCase()) ||
-            member.email.includes(searchMember)
+            member.email!.includes(searchMember)
           ) {
             return member;
           }
@@ -69,7 +69,7 @@ const AssignMemberForm: React.FC<AssignMemProps> = ({ card, setClickAddMembers }
       if (user.id !== memberID) {
         const ob = {
           memberID: memberID,
-          userID: user.id,
+          userID: user.id!,
           text: 'removed you from this card',
           boardTitle: currentBoard.boardTitle,
           boardColor: currentBoard.boardColor,
@@ -85,7 +85,7 @@ const AssignMemberForm: React.FC<AssignMemProps> = ({ card, setClickAddMembers }
       if (user.id !== memberID) {
         const ob = {
           memberID: memberID,
-          userID: user.id,
+          userID: user.id!,
           text: 'added you to this card',
           cardID: card.id,
           boardID: card.boardID,

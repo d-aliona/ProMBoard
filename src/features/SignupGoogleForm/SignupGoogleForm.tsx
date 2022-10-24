@@ -26,7 +26,7 @@ const SignupGoogleForm: React.FC<SignupGoogleFormProps> = (props) => {
     signInWithPopup(auth, provider)
       .then(async (result) => {
         const user = result.user;
-
+        // console.log(user)
         if (!users.some((el) => el.email === user.email)) {
           if (user.displayName) {
             addDoc(collection(db, 'users'), {
@@ -38,10 +38,10 @@ const SignupGoogleForm: React.FC<SignupGoogleFormProps> = (props) => {
           }
         } else {
           const userFound = users.find((el) => el.email === user.email);
-          if (userFound) {
+          if (userFound != undefined) {
             if (userFound.firstName === '?' && userFound.lastName === '?') {
               if (user.displayName) {
-                const docRef = doc(db, 'users', userFound.id);
+                const docRef = doc(db, 'users', userFound.id!);
                 await updateDoc(docRef, {
                   firstName: user.displayName.split(' ')[0],
                   lastName: user.displayName.split(' ')[1],

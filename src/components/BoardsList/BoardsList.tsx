@@ -21,8 +21,8 @@ const BoardsList: React.FC = () => {
   let navigate = useNavigate();
   const size = useWindowSize();
   const guestBoards =
-    notUserBoards && notUserBoards.length > 0
-      ? notUserBoards.filter((board) => board.invitedMembers.includes(user.id))
+    notUserBoards && notUserBoards.length > 0 
+      ? notUserBoards.filter((board) => board.invitedMembers.includes(user.id!))
       : [];
 
   const navigateBoard = (boardID: string) => {

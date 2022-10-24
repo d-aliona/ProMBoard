@@ -45,8 +45,8 @@ const DeleteMemberFromCardForm: React.FC<DelMemProps> = ({
     const currentBoard = boards.find((ob) => ob.id === card.boardID)!;
     if (user.id !== currentMember.id) {
       const ob = {
-        memberID: currentMember.id,
-        userID: user.id,
+        memberID: currentMember.id!,
+        userID: user.id!,
         text: 'removed you from this card',
         boardTitle: currentBoard.boardTitle,
         boardColor: currentBoard.boardColor,

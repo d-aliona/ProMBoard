@@ -6,8 +6,8 @@ type UserState = {
 
 const initialState: UserState = {
   user: {
-    email: '',
-    id: '',
+    email: null,
+    id: null,
     firstName: '',
     lastName: '',
     guestBoards: [],
@@ -22,8 +22,11 @@ const userSlice = createSlice({
       state.user = action.payload;
     },
     removeUser(state) {
-      state.user.email = '';
-      state.user.id = '';
+      state.user.email = null;
+      state.user.id = null;
+      state.user.firstName = '';
+      state.user.lastName = '';
+      state.user.guestBoards = [];
     },
   },
 });

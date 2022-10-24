@@ -39,7 +39,7 @@ const DeleteListForm: React.FC<DeleteListProps> = ({
           if (user.id !== idn) {
             const ob = {
               memberID: idn,
-              userID: user.id,
+              userID: user.id!,
               text: 'deleted this card',
               boardTitle: currentBoard.boardTitle,
               boardColor: currentBoard.boardColor,
