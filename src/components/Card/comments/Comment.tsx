@@ -9,7 +9,7 @@ import AddReplyForm from './replies/AddReplyForm';
 import Replies from './replies/Replies';
 import { TickDown } from '../../../assets/svg/svg-icons';
 import style from '../../../assets/scss/card.module.scss';
-import styles from '../../../assets/scss/deleteForm.module.scss';
+import DeleteForm from '../../../ui/DeleteForm';
 
 interface CommentProps {
   card: Card;
@@ -122,7 +122,7 @@ const Comment: React.FC<CommentProps> = ({ card, comment, repliesForComment }) =
                 <div className={style.commentText}>{comment.comment}</div>
               </pre>
               {!confirmDelete && (
-                <div
+                <div className={style.replyWrapper}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -166,26 +166,14 @@ const Comment: React.FC<CommentProps> = ({ card, comment, repliesForComment }) =
               )}
               {confirmDelete && (
                 <div style={{ width: '200px', margin: '0 auto' }}>
-                  <div className={styles.deleteCardForm}>
-                    Delete this comment?
-                    <button
-                      className={styles.buttonYes}
-                      style={{ fontSize: '16px' }}
-                      onClick={deleteComment}
-                    >
-                      Yes
-                    </button>
-                    <button
-                      className={styles.buttonNo}
-                      style={{ fontSize: '16px' }}
-                      onClick={(e) => {
-                        setConfirmDelete(false);
-                        e.stopPropagation();
-                      }}
-                    >
-                      No
-                    </button>
-                  </div>
+                  <DeleteForm 
+                    text={'Delete this comment?'}
+                    onClickYes={deleteComment}
+                    onClickNo={(e) => {
+                      setConfirmDelete(false);
+                      e.stopPropagation();
+                    }}
+                  />
                 </div>
               )}
             </>

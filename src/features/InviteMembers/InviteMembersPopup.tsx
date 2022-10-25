@@ -23,7 +23,6 @@ const InviteMembersPopup: React.FC<InviteMembersPopupProps> = ({ currentBoard, s
   const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/gi;
   const user = useAppSelector((state) => state.user.user);
   const users = useAppSelector((state) => state.users.users);
-  // const [show, setShow] = useState(false)
   const [showDropList, setShowDropList] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [dropMemberList, setDropMemberList] = useState<Users>([]);

@@ -18,7 +18,7 @@ interface DelMemProps {
   setShowDeleteMemberForm: Dispatcher;
 }
 
-const DeleteMemberFromCardForm: React.FC<DelMemProps> = ({
+const RemoveMemberFromCardForm: React.FC<DelMemProps> = ({
   card,
   memberID,
   currentMember,
@@ -84,4 +84,4 @@ const DeleteMemberFromCardForm: React.FC<DelMemProps> = ({
   );
 };
 
-export default DeleteMemberFromCardForm;
+export default RemoveMemberFromCardForm;

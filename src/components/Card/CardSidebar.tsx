@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import AssignMemberForm from '../../features/AssignMemberForm';
-import DeleteCardForm from '../../features/DeleteCardForm';
+import DeleteCard from '../../features/DeleteCard';
 import AddCardCover from '../../features/AddCardCover';
 import CopyCard from '../../features/CopyCard';
 import MoveCard from '../../features/MoveCard';
@@ -117,7 +117,7 @@ const CardSidebar: React.FC<CardSidebarProps> = ({ card, setClickTitle }) => {
         </div>
       </div>
       {clickDelete && (
-        <DeleteCardForm card={card} setClickDelete={setClickDelete} />
+        <DeleteCard card={card} setClickDelete={setClickDelete} />
       )}
     </div>
   );

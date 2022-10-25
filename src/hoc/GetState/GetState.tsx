@@ -24,9 +24,7 @@ import { setNotifications } from '../../store/slices/notificationsSlice';
 const GetState = ({ children }: ChildrenProps) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.user);
-  console.log(user)
-// const ss = auth.currentUser;
-// console.log(ss)
+ 
   useEffect(() => {
     onIdTokenChanged(auth, (user) => {
       if (!user) {

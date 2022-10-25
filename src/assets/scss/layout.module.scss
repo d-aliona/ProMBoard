@@ -12,6 +12,7 @@
 }
 
 .sidebar {
+  width: var(--width);
   @media (max-width: 799px) {
     width: 20px;
   }

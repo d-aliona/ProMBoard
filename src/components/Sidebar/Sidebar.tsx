@@ -13,26 +13,32 @@ import ShortenTitle from '../../ui/ShortenTitle';
 import useWindowSize from '../../hooks/useWindowSize';
 import style from '../../assets/scss/sidebar.module.scss';
 
-const Sidebar = () => {
+interface SidebarProps {
+  toggleClick: boolean;
+  setToggleClick: Dispatcher;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({toggleClick, setToggleClick}) => {
   const user = useAppSelector((state) => state.user.user);
   const size = useWindowSize();
   const [showYourBoards, setShowYourBoards] = useState(true);
   const [showGuestBoards, setShowGuestBoards] = useState(true);
-  const [toggleClick, setToggleClick] = useState(true);
   const [changeTick, setChangeTick] = useState<string>(style.tickLeft);
   const [tickUpDownPers, setTickUpDownPers] = useState<string>(style.TickDown);
   const [tickUpDownGuest, setTickUpDownGuest] = useState<string>(style.TickDown);
-  const boards = useAppSelector(personalBoardsState);
+  const getBoards = useAppSelector(personalBoardsState);
+  const boards = [...getBoards];
   let navigate = useNavigate();
   const title = useParams();
   const boardColor = useBoardColor(title.id);
   const context = useContext(MenuContext);
   const textColor = context?.textColor;
   const notUserBoards = useAppSelector(notPersonalBoardsState);
-  const guestBoards =
+  const getGuestBoards =
     notUserBoards && notUserBoards.length > 0
       ? notUserBoards.filter((board) => board.invitedMembers.includes(user.id!))
       : [];
+  const guestBoards = [...getGuestBoards];
   const ref = useRef<HTMLDivElement>(null!);
 
   useEffect(() => {
@@ -101,7 +107,9 @@ const Sidebar = () => {
           {!showYourBoards && (
             <div className={style.scrollbar}>
               {boards &&
-                boards.map((board) => (
+                boards
+                  .sort((a, b) => a.boardTitle.localeCompare(b.boardTitle))
+                  .map((board) => (
                   <BoardItem key={board.id} board={board} refSidebar={ref} />
                 ))}
             </div>
@@ -120,7 +128,9 @@ const Sidebar = () => {
           {!showGuestBoards && (
             <div className={style.scrollbar}>
               {guestBoards &&
-                guestBoards.map((board) => (
+                guestBoards
+                  .sort((a, b) => a.boardTitle.localeCompare(b.boardTitle))
+                  .map((board) => (
                   <div
                     key={board.id}
                     className={style.boardItem}

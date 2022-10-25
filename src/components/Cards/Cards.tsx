@@ -71,33 +71,30 @@ const Cards: React.FC<CardsProps> = ({
       (el) => el.list.id === list.id
     );
     
-    if (currentDragStartCard.listIndex && currentDragStartCard.cardIndex) {
-      const dragItemContent =
-        copyCards[currentDragStartCard.listIndex].cards[
-          currentDragStartCard.cardIndex
-        ];
-      copyCards[currentDragStartCard.listIndex].cards.splice(
-        currentDragStartCard.cardIndex,
-        1
-      );
-      copyCards[listIndexForEnterCard].cards.splice(
-        targetItem.index,
-        0,
-        dragItemContent
-      );
+    const dragItemContent =
+      copyCards[currentDragStartCard.listIndex!].cards[
+        currentDragStartCard.cardIndex!
+      ];
+    copyCards[currentDragStartCard.listIndex!].cards.splice(
+      currentDragStartCard.cardIndex!,
+      1
+    );
+    copyCards[listIndexForEnterCard].cards.splice(
+      targetItem.index,
+      0,
+      dragItemContent
+    );
+  
+    setListsCardsToRender(copyCards);
 
-      setListsCardsToRender(copyCards);
-
-      dispatch(
-        setCurrentDragStartCard({
-          listIndex: listIndexForEnterCard,
-          cardIndex: targetItem.index,
-          listID: list.id,
-          cardID: currentDragStartCard.cardID,
-        })
-      );
-    }
-    
+    dispatch(
+      setCurrentDragStartCard({
+        listIndex: listIndexForEnterCard,
+        cardIndex: targetItem.index,
+        listID: list.id,
+        cardID: currentDragStartCard.cardID,
+      })
+    );
   };
 
   const handleDragLeaveCard = (e: React.DragEvent<HTMLDivElement>) => {

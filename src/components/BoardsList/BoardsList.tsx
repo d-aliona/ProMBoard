@@ -14,17 +14,19 @@ import style from '../../assets/scss/boardsList.module.scss';
 
 const BoardsList: React.FC = () => {
   const user = useAppSelector((state) => state.user.user);
-  const boards = useAppSelector(personalBoardsState);
+  const getBoards = useAppSelector(personalBoardsState);
+  const boards = [...getBoards];
   const notUserBoards = useAppSelector(notPersonalBoardsState);
   const [show, setShow] = useState(false);
   const ref = useOutsideClick(() => setShow(false));
   let navigate = useNavigate();
   const size = useWindowSize();
-  const guestBoards =
+  const getGuestBoards =
     notUserBoards && notUserBoards.length > 0 
       ? notUserBoards.filter((board) => board.invitedMembers.includes(user.id!))
       : [];
-
+  const guestBoards = [...getGuestBoards];
+  
   const navigateBoard = (boardID: string) => {
     navigate('/auth/board/' + boardID);
     setShow(false);
@@ -51,7 +53,9 @@ const BoardsList: React.FC = () => {
             <div className={style.scrollbar}>
               <p className={style.boardsGroup}>Personal boards</p>
               {boards &&
-                boards.map((board) => (
+                boards
+                  .sort((a, b) => a.boardTitle.localeCompare(b.boardTitle))
+                  .map((board) => (
                   <div
                     key={board.id}
                     className={style.listItem}
@@ -74,7 +78,9 @@ const BoardsList: React.FC = () => {
                 </>
               )}
               {guestBoards &&
-                guestBoards.map((board) => (
+                guestBoards
+                  .sort((a, b) => a.boardTitle.localeCompare(b.boardTitle))
+                  .map((board) => (
                   <div
                     key={board.id}
                     className={style.listItem}

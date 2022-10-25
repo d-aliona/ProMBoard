@@ -92,7 +92,7 @@ const CardCommentForm: React.FC<CardProps> = ({ card }) => {
           <Initials user={user} />
           <div
             className={!clickComment ? style.commentForm : null}
-            onClick={(e)=>handleInputComment}
+            onClick={handleInputComment}
           >
             {clickComment ? (
               <>

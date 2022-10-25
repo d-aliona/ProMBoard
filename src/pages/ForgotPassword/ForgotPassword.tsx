@@ -77,7 +77,7 @@ const ForgotPassword: React.FC = () => {
                   </button>
                 </div>
               </form>
-              {!!showErrorEmail && (
+              {showErrorEmail && (
                 <div className={styles.error}>
                   Please enter the correct email address
                 </div>

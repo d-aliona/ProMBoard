@@ -105,26 +105,24 @@ const Board: React.FC = () => {
       copyListItems.splice(targetItem.index, 0, dragItemContent);
       dragItemList.current.index = targetItem.index;
     } else {
-      if (currentDragStartCard.listIndex && currentDragStartCard.cardIndex) {
-        const dragItemContent =
-        copyListItems[currentDragStartCard.listIndex].cards[
-          currentDragStartCard.cardIndex
+      const dragItemContent =
+        copyListItems[currentDragStartCard.listIndex!].cards[
+          currentDragStartCard.cardIndex!
         ];
-        copyListItems[currentDragStartCard.listIndex].cards.splice(
-          currentDragStartCard.cardIndex,
-          1
-        );
-        copyListItems[targetItem.index].cards.splice(0, 0, dragItemContent);
-  
-        dispatch(
-          setCurrentDragStartCard({
-            listIndex: targetItem.index,
-            cardIndex: 0,
-            listID: targetItem.el.list.id,
-            cardID: currentDragStartCard.cardID,
-          })
-        );
-      }
+      copyListItems[currentDragStartCard.listIndex!].cards.splice(
+        currentDragStartCard.cardIndex!,
+        1
+      );
+      copyListItems[targetItem.index].cards.splice(0, 0, dragItemContent);
+
+      dispatch(
+        setCurrentDragStartCard({
+          listIndex: targetItem.index,
+          cardIndex: 0,
+          listID: targetItem.el.list.id,
+          cardID: currentDragStartCard.cardID,
+        })
+      );
     }
     setListsCardsToRender(copyListItems);
   };

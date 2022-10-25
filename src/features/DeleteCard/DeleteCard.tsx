@@ -6,14 +6,14 @@ import { doc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase-client';
 
 import { currentCardsState } from '../../store/slices/currentCardsSlice';
-import style from '../../assets/scss/deleteForm.module.scss';
+import DeleteForm from '../../ui/DeleteForm';
 
 interface DelCardProps {
   card: Card;
   setClickDelete: Dispatcher;
 }
 
-const DeleteCardForm: React.FC<DelCardProps> = ({ card, setClickDelete }) => {
+const DeleteCard: React.FC<DelCardProps> = ({ card, setClickDelete }) => {
   const cards = useSelector(currentCardsState);
   let navigate = useNavigate();
 
@@ -33,31 +33,16 @@ const DeleteCardForm: React.FC<DelCardProps> = ({ card, setClickDelete }) => {
     await deleteDoc(doc(db, 'cards', card.id));
     setClickDelete(false);
   };
-
   return (
-    <>
-      <div className={style.deleteCardForm}>
-        Delete this card?
-        <button
-          className={style.buttonYes}
-          style={{ fontSize: '16px' }}
-          onClick={deleteCard}
-        >
-          Yes
-        </button>
-        <button
-          className={style.buttonNo}
-          style={{ fontSize: '16px' }}
-          onClick={(e) => {
-            setClickDelete(false);
-            e.stopPropagation();
-          }}
-        >
-          No
-        </button>
-      </div>
-    </>
-  );
+    <DeleteForm 
+      text={'Delete this card?'}
+      onClickYes={deleteCard}
+      onClickNo={(e) => {
+                  setClickDelete(false);
+                  e.stopPropagation();
+                }}
+    />
+  )
 };
 
-export default DeleteCardForm;
+export default DeleteCard;

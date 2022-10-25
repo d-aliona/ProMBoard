@@ -26,7 +26,6 @@ const SignupGoogleForm: React.FC<SignupGoogleFormProps> = (props) => {
     signInWithPopup(auth, provider)
       .then(async (result) => {
         const user = result.user;
-        // console.log(user)
         if (!users.some((el) => el.email === user.email)) {
           if (user.displayName) {
             addDoc(collection(db, 'users'), {

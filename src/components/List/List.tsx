@@ -139,7 +139,6 @@ const List: React.FC<ListProps> = ({
               cards={cards}
               listsCardsToRender={listsCardsToRender}
               setListsCardsToRender={setListsCardsToRender}
-              // curBoardId={curBoardId}
               draggingCard={draggingCard}
               setDraggingCard={setDraggingCard}
             />

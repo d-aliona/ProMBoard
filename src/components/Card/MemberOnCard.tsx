@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAppSelector } from '../../hooks/hooks';
 
-import DeleteMemberFromCardForm from '../../features/DeleteMemberFromCardForm';
+import RemoveMemberFromCardForm from '../../features/RemoveMemberFromCardForm';
 import Initials from '../../ui/Initials';
 import style from '../../assets/scss/card.module.scss';
 
@@ -28,7 +28,7 @@ const MemberOnCard: React.FC<MemberOnCardProps> = ({ card, memberID }) => {
           <Initials user={currentMember} />
         </div>
         {showDeleteMemberForm ? (
-          <DeleteMemberFromCardForm
+          <RemoveMemberFromCardForm
             card={card}
             memberID={memberID}
             currentMember={currentMember}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAppSelector } from '../../hooks/hooks';
 
 import { doc, updateDoc } from 'firebase/firestore';
-import { db } from '../../firebase-client';
+import { db, auth } from '../../firebase-client';
 
 import Initials from '../../ui/Initials';
 import Input from '../../ui/Input';
@@ -25,7 +25,7 @@ const Profile: React.FC = () => {
     });
     setShowSaveButton(false);
   };
-
+  
   return (
     <div>
       <div className={style.head}>
@@ -90,22 +90,24 @@ const Profile: React.FC = () => {
       )}
 
       <div style={{ display: 'flex', gap: '1px', flexWrap: 'wrap' }}>
-        <h2
-          className={style.nameTitle}
-          style={{
-            display: 'flex',
-            gap: '15px',
-            cursor: 'pointer',
-            height: '30px',
-          }}
-          onClick={() => setShowChangePassForm(!showChangePassForm)}
-        >
-          Change password
-          <div style={{ transform: 'scale(1.4)', color: '#555' }}>
-            {' '}
-            &#x279C;
-          </div>
-        </h2>
+        {auth.currentUser?.providerData[0].providerId === 'password' && 
+          <h2
+            className={style.nameTitle}
+            style={{
+              display: 'flex',
+              gap: '15px',
+              cursor: 'pointer',
+              height: '30px',
+            }}
+            onClick={() => setShowChangePassForm(!showChangePassForm)}
+          >
+            Change password
+            <div style={{ transform: 'scale(1.4)', color: '#555' }}>
+              {' '}
+              &#x279C;
+            </div>
+          </h2>
+        }
         {showChangePassForm && (
           <ChangePasswordForm setShowChangePassForm={setShowChangePassForm} />
         )}

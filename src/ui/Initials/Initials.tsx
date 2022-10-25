@@ -8,7 +8,7 @@ interface Initialsprops {
 }
 
 const Initials: React.FC<Initialsprops> = ({ user, size, font }) => {
-  // console.log(user)
+  
   return (
     <div
       className={style.circle}
