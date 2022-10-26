@@ -33,6 +33,7 @@ const DeleteCard: React.FC<DelCardProps> = ({ card, setClickDelete }) => {
     await deleteDoc(doc(db, 'cards', card.id));
     setClickDelete(false);
   };
+  
   return (
     <DeleteForm 
       text={'Delete this card?'}

@@ -11,7 +11,7 @@ import ShortenTitle from '../../ui/ShortenTitle';
 import Button from '../../ui/Button';
 import useWindowSize from '../../hooks/useWindowSize';
 import style from '../../assets/scss/boardsList.module.scss';
-import styles from '../../assets/scss/deleteForm.module.scss';
+import DeleteForm from '../../ui/DeleteForm';
 
 interface OneClosedBoardProps {
   currentBoard: Board;
@@ -118,36 +118,19 @@ const OneClosedBoard: React.FC<OneClosedBoardProps> = ({ currentBoard }) => {
         )}
         {clickRemove ? (
           <div
-            className={styles.deleteCardForm}
             style={{
               width: size.width < 550 ? '60%' : '35%',
               marginLeft: 'auto',
             }}
           >
-            <p style={{ padding: '2px' }}>
-              All lists, cards will be deleted on this board. <br />
-              <br />
-              Delete board?
-            </p>
-            <div style={{ marginTop: '-10px' }}>
-              <button
-                className={styles.buttonYes}
-                style={{ fontSize: '16px' }}
-                onClick={confirmDeleteBoard}
-              >
-                Yes
-              </button>
-              <button
-                className={styles.buttonNo}
-                style={{ fontSize: '16px' }}
-                onClick={(e) => {
-                  setClickRemove(false);
-                  e.stopPropagation();
-                }}
-              >
-                No
-              </button>
-            </div>
+            <DeleteForm 
+              text={`All lists, cards will be deleted on this  board. Delete board?`}
+              onClickYes={confirmDeleteBoard}
+              onClickNo={(e) => {
+                setClickRemove(false);
+                e.stopPropagation();
+              }}
+            />
           </div>
         ) : null}
       </div>

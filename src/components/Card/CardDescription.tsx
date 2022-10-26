@@ -5,6 +5,8 @@ import { db } from '../../firebase-client';
 
 import useOutsideClick from '../../hooks/useOutsideClick';
 import style from '../../assets/scss/card.module.scss';
+import styles from '../../assets/scss/ui.module.scss';
+import SaveCancelButtons from '../../ui/SaveCancelButtons';
 
 const CardDescription: React.FC<CardProps> = ({ card }) => {
   const [clickDescription, setClickDescription] = useState(false);
@@ -58,17 +60,10 @@ const CardDescription: React.FC<CardProps> = ({ card }) => {
                   onChange={(e) => setDescription(e.target.value)}
                 ></textarea>
               </div>
-              <div>
-                <button
-                  className={style.buttonTrue}
-                  onClick={updateCardDescription}
-                >
-                  Save
-                </button>
-                <button className={style.buttonCancel} onClick={cancel}>
-                  Cancel
-                </button>
-              </div>
+              <SaveCancelButtons 
+                onClickSave={updateCardDescription}
+                onClickCancel={cancel}
+              />             
             </>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -88,7 +83,7 @@ const CardDescription: React.FC<CardProps> = ({ card }) => {
               {!clickDescription && card.description && (
                 <button
                   style={{ alignSelf: 'flex-end' }}
-                  className={style.buttonTrue}
+                  className={styles.buttonTrue}
                   onClick={(e) => {
                     e.stopPropagation();
                     setClickDescription(true);

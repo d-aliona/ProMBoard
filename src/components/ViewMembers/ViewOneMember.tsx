@@ -12,16 +12,19 @@ import CloseButton from '../../ui/CloseButton';
 import ShortenTitle from '../../ui/ShortenTitle';
 import useWindowSize from '../../hooks/useWindowSize';
 import style from '../../assets/scss/board.module.scss';
-import styles from '../../assets/scss/deleteForm.module.scss';
+import DeleteForm from '../../ui/DeleteForm';
 
 interface ViewOneMemberProps {
   currentBoard: Board;
   currentMember: User;
 }
 
-type StrArr = [string, string, string][]
+type StrArr = [string, string, string][];
 
-const ViewOneMember: React.FC<ViewOneMemberProps> = ({ currentBoard, currentMember }) => {
+const ViewOneMember: React.FC<ViewOneMemberProps> = ({
+  currentBoard,
+  currentMember,
+}) => {
   const user = useAppSelector((state) => state.user.user);
   const cards = useAppSelector(currentCardsState);
   const lists = useAppSelector(currentListsState);
@@ -43,7 +46,9 @@ const ViewOneMember: React.FC<ViewOneMemberProps> = ({ currentBoard, currentMemb
     setAttachedToCards(data);
   }, [cards]);
 
-  const removeMemberFromBoard = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const removeMemberFromBoard = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.stopPropagation();
 
     const dataBoard = [...currentBoard.invitedMembers];
@@ -69,7 +74,9 @@ const ViewOneMember: React.FC<ViewOneMemberProps> = ({ currentBoard, currentMemb
     addNotificationToDataBase(ob);
   };
 
-  const confirmRemoveMemberFromBoard = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const confirmRemoveMemberFromBoard = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.stopPropagation();
     attachedToCards &&
       attachedToCards.map(async (item) => {
@@ -95,29 +102,19 @@ const ViewOneMember: React.FC<ViewOneMemberProps> = ({ currentBoard, currentMemb
           </span>
         )}
         {isPersonalBoard ? (
-          <div
-            style={{
-              marginLeft: 'auto',
-              borderRadius: '6px',
-              background:
-                'linear-gradient(90deg, rgba(73, 136, 245, 0) 0%, rgba(73, 136, 245, 0.2) 100%)',
-            }}
-          >
+          <div className={style.removeMemFromBoardButWrapper}>
             <CloseButton
-              onClick={() =>
+              onClick={(e) =>
                 attachedToCards.length === 0
-                  ? removeMemberFromBoard
-                  : setClickRemove(true)
+                  ? removeMemberFromBoard(e)
+                  : setClickRemove(!clickRemove)
               }
             />
           </div>
         ) : null}
       </div>
       {clickRemove ? (
-        <div
-          className={styles.deleteCardForm}
-          style={{ width: '70%', margin: 'auto' }}
-        >
+        <div style={{ width: '70%', margin: 'auto' }}>
           <span>
             <b>{currentMember.firstName + ' ' + currentMember.lastName}</b>
           </span>{' '}
@@ -127,44 +124,49 @@ const ViewOneMember: React.FC<ViewOneMemberProps> = ({ currentBoard, currentMemb
               attachedToCards.map((item) => {
                 const curList = lists.find((ob) => ob.id === item[0])!;
                 return (
-                  <p
+                  <div
                     key={item[2]}
                     style={{
                       display: 'flex',
-                      justifyContent: 'center',
+                      justifyContent: 'start',
                       gap: '10px',
+                      paddingLeft: '10px',
+                      position: 'relative',
                     }}
                   >
                     <b>
-                      <ShortenTitle title={item[1]} number={15} />
+                      <ShortenTitle
+                        title={item[1]}
+                        number={15}
+                        pos={'absolute'}
+                        left={'10px'}
+                        top={'20px'}
+                      />
                     </b>
-                    (<ShortenTitle title={curList.listTitle} number={15} />)
-                  </p>
+                    (
+                    <ShortenTitle
+                      title={curList.listTitle}
+                      number={15}
+                      pos={'absolute'}
+                      left={'10px'}
+                      top={'20px'}
+                    />
+                    )
+                  </div>
                 );
               })}
           </div>
-          <p style={{ padding: '16px 10px 0' }}>
-            Remove from this board anyway and cancel attachment to all of these
-            cards?
-          </p>
-          <div style={{ marginTop: '-10px' }}>
-            <button
-              className={styles.buttonYes}
-              style={{ fontSize: '16px' }}
-              onClick={(e) => confirmRemoveMemberFromBoard(e)}
-            >
-              Yes
-            </button>
-            <button
-              className={styles.buttonNo}
-              style={{ fontSize: '16px' }}
-              onClick={(e) => {
+          <div>
+            <DeleteForm
+              text={
+                'Remove from this board anyway and cancel attachment to all of these cards?'
+              }
+              onClickYes={confirmRemoveMemberFromBoard}
+              onClickNo={(e) => {
                 setClickRemove(false);
                 e.stopPropagation();
               }}
-            >
-              No
-            </button>
+            />
           </div>
         </div>
       ) : null}

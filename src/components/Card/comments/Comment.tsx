@@ -8,8 +8,9 @@ import Initials from '../../../ui/Initials';
 import AddReplyForm from './replies/AddReplyForm';
 import Replies from './replies/Replies';
 import { TickDown } from '../../../assets/svg/svg-icons';
-import style from '../../../assets/scss/card.module.scss';
+import style from '../../../assets/scss/comments.module.scss';
 import DeleteForm from '../../../ui/DeleteForm';
+import SaveCancelButtons from '../../../ui/SaveCancelButtons';
 
 interface CommentProps {
   card: Card;
@@ -57,15 +58,7 @@ const Comment: React.FC<CommentProps> = ({ card, comment, repliesForComment }) =
 
   return (
     <>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '10px',
-          flexWrap: 'wrap',
-          marginTop: '10px',
-        }}
-      >
+      <div className={style.commentWrapper}>
         <Initials user={currentMember} />
         <div style={{ fontSize: '16px', fontWeight: '600' }}>
           {currentMember.firstName} {currentMember.lastName}{' '}
@@ -108,12 +101,10 @@ const Comment: React.FC<CommentProps> = ({ card, comment, repliesForComment }) =
                 onChange={(e) => setCommentText(e.target.value)}
               ></textarea>
               <div style={{ marginLeft: 'calc(35px + 10px)' }}>
-                <button className={style.buttonTrue} onClick={editComment}>
-                  Save
-                </button>
-                <button className={style.buttonCancel} onClick={cancel}>
-                  Cancel
-                </button>
+                <SaveCancelButtons 
+                  onClickSave={editComment}
+                  onClickCancel={cancel}
+                />
               </div>
             </>
           ) : (
@@ -122,15 +113,7 @@ const Comment: React.FC<CommentProps> = ({ card, comment, repliesForComment }) =
                 <div className={style.commentText}>{comment.comment}</div>
               </pre>
               {!confirmDelete && (
-                <div className={style.replyWrapper}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    gap: '10px',
-                    marginLeft: '45px',
-                  }}
-                >
+                <div className={style.replyTitleWrapper} >
                   <span
                     className={style.updateComment}
                     style={{ color: 'rgb(48, 121, 88)' }}

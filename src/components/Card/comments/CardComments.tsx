@@ -13,7 +13,7 @@ import {
   setCurrentReplies,
   currentRepliesState,
 } from '../../../store/slices/currentRepliesSlice';
-import style from '../../../assets/scss/card.module.scss';
+import style from '../../../assets/scss/comments.module.scss';
 
 const CardComments: React.FC<CardProps> = ({ card }) => {
   const dispatch = useAppDispatch();

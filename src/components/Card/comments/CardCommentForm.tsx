@@ -8,7 +8,8 @@ import { db } from '../../../firebase-client';
 import { allBoardsState } from '../../../store/slices/allBoardsSlice';
 import Initials from '../../../ui/Initials';
 import { addNotificationToDataBase } from '../../../features/exportFunctions';
-import style from '../../../assets/scss/card.module.scss';
+import style from '../../../assets/scss/comments.module.scss';
+import SaveCancelButtons from '../../../ui/SaveCancelButtons';
 
 const CardCommentForm: React.FC<CardProps> = ({ card }) => {
   const user = useAppSelector((state) => state.user.user);
@@ -81,14 +82,7 @@ const CardCommentForm: React.FC<CardProps> = ({ card }) => {
           <div className={style.commenticon}></div>
           <div style={{ fontSize: '18px' }}>Comments</div>
         </div>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'start',
-            gap: '10px',
-            marginTop: '10px',
-          }}
-        >
+        <div className={style.commentFormWrapper} >
           <Initials user={user} />
           <div
             className={!clickComment ? style.commentForm : null}
@@ -102,18 +96,11 @@ const CardCommentForm: React.FC<CardProps> = ({ card }) => {
                   autoFocus
                   onChange={(e) => setComment(e.target.value)}
                 ></textarea>
-                <div>
-                  <button
-                    className={style.buttonTrue}
-                    disabled={!Boolean(comment)}
-                    onClick={addCardComment}
-                  >
-                    Save
-                  </button>
-                  <button className={style.buttonCancel} onClick={cancel}>
-                    Cancel
-                  </button>
-                </div>
+                <SaveCancelButtons 
+                  isDisabled={!Boolean(comment)}
+                  onClickSave={addCardComment}
+                  onClickCancel={cancel}
+                />
               </>
             ) : (
               <div>Write a comment...</div>

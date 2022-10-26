@@ -12,7 +12,7 @@ interface ShortenTitleProps {
   showOnlyHint?: boolean; 
 }
 
-const ShortenTitle: React.FC<ShortenTitleProps> = ({ title, number, pos, left, top, showOnlyHint }) => {
+const ShortenTitle: React.FC<ShortenTitleProps> = ({ title, number, pos, left, top, showOnlyHint=false }) => {
   const [showHint, setShowHint] = useState(false);
   const [coords, setCoords] = useState<{x: number | undefined; y: number | undefined}>({ x: undefined, y: undefined });
   const [hintHeight, setHintHeight] = useState(0);
@@ -39,11 +39,11 @@ const ShortenTitle: React.FC<ShortenTitleProps> = ({ title, number, pos, left, t
     });
   };
 
-  const styles: React.CSSProperties = {
-    position: pos,
+  const styles: {} = {
+    position: pos ? pos : 'fixed',
     left: left ? left : coords.x,
     top: top ? top : coords.y,
-  } as object;
+  } as Object;
 
   return (
     <>

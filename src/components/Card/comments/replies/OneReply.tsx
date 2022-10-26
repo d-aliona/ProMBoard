@@ -4,8 +4,10 @@ import { useAppSelector } from '../../../../hooks/hooks';
 import { db } from '../../../../firebase-client';
 import { doc, deleteDoc, updateDoc } from 'firebase/firestore';
 
-import style from '../../../../assets/scss/card.module.scss';
+import style from '../../../../assets/scss/comments.module.scss';
 import styles from '../../../../assets/scss/deleteForm.module.scss';
+import SaveCancelButtons from '../../../../ui/SaveCancelButtons';
+import DeleteForm from '../../../../ui/DeleteForm';
 
 interface OneReplyProps {
   card: Card;
@@ -43,15 +45,7 @@ const OneReply: React.FC<OneReplyProps> = ({ card, reply }) => {
 
   return (
     <>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '10px',
-          flexWrap: 'wrap',
-          marginTop: '10px',
-        }}
-      >
+      <div className={style.commentWrapper} >
         <div style={{ fontSize: '16px', fontWeight: '600' }}>
           {currentMember.firstName} {currentMember.lastName}{' '}
         </div>
@@ -92,12 +86,10 @@ const OneReply: React.FC<OneReplyProps> = ({ card, reply }) => {
                 onChange={(e) => setReplyText(e.target.value)}
               ></textarea>
               <div style={{ marginLeft: 'calc(35px + 10px)' }}>
-                <button className={style.buttonTrue} onClick={editReply}>
-                  Save
-                </button>
-                <button className={style.buttonCancel} onClick={cancel}>
-                  Cancel
-                </button>
+                <SaveCancelButtons 
+                  onClickSave={editReply}
+                  onClickCancel={cancel}
+                />
               </div>
             </>
           ) : (
@@ -107,26 +99,14 @@ const OneReply: React.FC<OneReplyProps> = ({ card, reply }) => {
               </pre>
               {confirmDelete && (
                 <div style={{ width: '200px', margin: '0 auto' }}>
-                  <div className={styles.deleteCardForm}>
-                    Delete this reply?
-                    <button
-                      className={styles.buttonYes}
-                      style={{ fontSize: '16px' }}
-                      onClick={deleteReply}
-                    >
-                      Yes
-                    </button>
-                    <button
-                      className={styles.buttonNo}
-                      style={{ fontSize: '16px' }}
-                      onClick={(e) => {
-                        setConfirmDelete(false);
-                        e.stopPropagation();
-                      }}
-                    >
-                      No
-                    </button>
-                  </div>
+                  <DeleteForm 
+                    text={'Delete this reply?'}
+                    onClickYes={deleteReply}
+                    onClickNo={(e) => {
+                      setConfirmDelete(false);
+                      e.stopPropagation();
+                    }}
+                  />
                 </div>
               )}
             </>

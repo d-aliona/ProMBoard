@@ -1,0 +1,127 @@
+.boundaries {
+  padding: 20px 0 20px 20px;
+  @media (max-width: 770px) {
+    padding: 5px;
+  }
+}
+
+.commenticon {
+  width: 35px;
+  height: 35px;
+  background-image: url(../images/commenticon.png);
+}
+
+.commentForm {
+  width: 496px;
+  height: 36px;
+  background-color: white;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid rgba(23, 43, 77, 0.2);
+  @media (max-width: 590px) {
+    width: 86%;
+  }
+}
+
+.inputComment {
+  @extend .commentForm;
+  height: 70px;
+  resize: none;
+  @media (max-width: 590px) {
+    width: 380px;
+  }
+  @media (max-width: 480px) {
+    width: 230px;
+  }
+}
+
+.updateComment {
+  margin: 10px 0 10px 10px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.editComment {
+  @extend .commentForm;
+  margin-left: calc(35px + 10px);
+  width: 496px;
+  height: 70px;
+  resize: none;
+  @media (max-width: 770px) {
+    margin-left: 10px;
+  }
+  @media (max-width: 590px) {
+    width: 410px;
+  }
+  @media (max-width: 480px) {
+    width: 260px;
+  }
+}
+
+.commentText {
+  width: auto;
+  background-color: white;
+  border: none;
+  margin-top: 4px;
+  margin-left: calc(35px + 10px);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+  @media (max-width: 770px) {
+    margin-left: 10px;
+  }
+}
+
+.commentText:hover {
+  cursor: auto;
+  background-color: white;
+}
+
+.commentFormWrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.replyTitleWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-left: 45px;
+}
+
+.commentWrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.replyText {
+  border-bottom: 1px solid #ddd;
+  margin: 5px 0 1px 20px;
+  padding-bottom: 4px;
+  @media (max-width: 770px) {
+    margin: 5px 0 1px 10px;
+  }
+}
+
+.editReply {
+  margin: 5px 0 1px 20px;
+  width: calc(100% - 20px);
+  border-radius: 3px;
+  resize: none;
+  @media (max-width: 770px) {
+    margin: 5px 0 1px 10px;
+  }
+  @media (max-width: 590px) {
+    width: 370px;
+  }
+  @media (max-width: 480px) {
+    width: 220px;
+  }
+}

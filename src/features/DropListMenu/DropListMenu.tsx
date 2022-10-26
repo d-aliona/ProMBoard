@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 
-import DeleteListForm from '../DeleteListForm';
-import DropCardsList from './DropCardsList';
+import DropListsList from './DropListsList';
 import CloseButton from '../../ui/CloseButton';
 import useOutsideClick from '../../hooks/useOutsideClick';
 import style from '../../assets/scss/list.module.scss';
+import DeleteList from '../DeleteList';
+import DeleteAllCardsOnList from '../DeleteAllCardsOnList';
 
 interface DropListProps {
   list: List;
@@ -83,7 +84,7 @@ const DropListMenu: React.FC<DropListProps> = ({
               maxHeight: `calc(100vh - 400px)`,
             }}
           >
-            <DropCardsList
+            <DropListsList
               list={list}
               lists={lists}
               cardsOnCurList={cardsOnCurList}
@@ -106,10 +107,9 @@ const DropListMenu: React.FC<DropListProps> = ({
         Delete all cards on this list
       </div>
       {messageDeleteAllCards && (
-        <DeleteListForm
+        <DeleteAllCardsOnList
           list={list}
           cardsOnCurList={cardsOnCurList}
-          listWillbeDeleted={false}
           setMessageDeleteAllCards={setMessageDeleteAllCards}
           setShowMenu={setShowMenu}
         />
@@ -119,10 +119,9 @@ const DropListMenu: React.FC<DropListProps> = ({
         Delete this list
       </div>
       {messageDeleteList && (
-        <DeleteListForm
+        <DeleteList
           list={list}
           cardsOnCurList={cardsOnCurList}
-          listWillbeDeleted={true}
           setMessageDeleteList={setMessageDeleteList}
           setShowMenu={setShowMenu}
         />

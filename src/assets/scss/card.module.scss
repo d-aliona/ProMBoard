@@ -129,6 +129,16 @@
   max-width: 100%;
 }
 
+.cardMembersWrapper {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 10px 0 0 45px;
+  @media (max-width: 770px) {
+    margin: 10px 0 0 10px;
+  }
+}
+
 .displayMembersicon {
   width: 32px;
   height: 32px;
@@ -147,12 +157,6 @@
   height: 18px;
   background-size: 18px;
   background-image: url(../images/cardDescription.png);
-}
-
-.commenticon {
-  width: 35px;
-  height: 35px;
-  background-image: url(../images/commenticon.png);
 }
 
 .commenticonMini {
@@ -192,85 +196,6 @@
   max-width: 100%;
 }
 
-.commentForm {
-  width: 496px;
-  height: 36px;
-  background-color: white;
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid rgba(23, 43, 77, 0.2);
-  @media (max-width: 590px) {
-    width: 86%;
-  }
-}
-
-.inputComment {
-  @extend .commentForm;
-  height: 70px;
-  resize: none;
-  @media (max-width: 590px) {
-    width: 380px;
-  }
-  @media (max-width: 480px) {
-    width: 230px;
-  }
-}
-
-.editComment {
-  @extend .commentForm;
-  margin-left: calc(35px + 10px);
-  width: 496px;
-  height: 70px;
-  resize: none;
-  @media (max-width: 770px) {
-    margin-left: 10px;
-  }
-  @media (max-width: 590px) {
-    width: 410px;
-  }
-  @media (max-width: 480px) {
-    width: 260px;
-  }
-}
-
-.commentText {
-  @extend .descriptionText;
-  background-color: white;
-  border: none;
-  margin-top: 4px;
-}
-
-.commentText:hover {
-  cursor: auto;
-  background-color: white;
-}
-
-@mixin button {
-  background: transparent;
-  padding: 3px 10px;
-  cursor: pointer;
-}
-
-.buttonTrue {
-  @include button;
-  border-radius: 3px 0 0 3px;
-  border: 1px solid rgb(38, 70, 177);
-}
-.buttonTrue:hover {
-  background-color: rgb(38, 70, 177);
-  color: white;
-}
-.buttonCancel {
-  @include button;
-  border-radius: 0 3px 3px 0;
-  border: 1px solid rgb(129, 3, 3);
-}
-.buttonCancel:hover {
-  background-color: rgb(129, 3, 3);
-  color: white;
-}
-
 .circle {
   min-width: 35px;
   max-width: 35px;
@@ -281,12 +206,6 @@
   border-radius: 50%;
   color: rgb(255, 255, 255);
   background-color: rgb(23, 43, 77);
-}
-
-.updateComment {
-  margin: 10px 0 10px 10px;
-  text-decoration: underline;
-  cursor: pointer;
 }
 
 .confirmDelete {
@@ -497,28 +416,4 @@
 .disabled {
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-.replyText {
-  border-bottom: 1px solid #ddd;
-  margin: 5px 0 1px 20px;
-  padding-bottom: 4px;
-  @media (max-width: 770px) {
-    margin: 5px 0 1px 10px;
-  }
-}
-.editReply {
-  margin: 5px 0 1px 20px;
-  width: calc(100% - 20px);
-  border-radius: 3px;
-  resize: none;
-  @media (max-width: 770px) {
-    margin: 5px 0 1px 10px;
-  }
-  @media (max-width: 590px) {
-    width: 370px;
-  }
-  @media (max-width: 480px) {
-    width: 220px;
-  }
 }

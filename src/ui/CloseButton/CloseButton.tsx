@@ -5,18 +5,18 @@ interface CloseButtonProps {
   width?: string;
   height?: string;
   border?: string;
-  onClick: (e: React.MouseEvent<HTMLElement>) => void;
+  onClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 const CloseButton: React.FC<CloseButtonProps> = ({ width, height, border, onClick }) => {
   return (
-    <span
+    <button
       className={style.closeButton}
       style={{ width: width, height: height, border: border }}
       onClick={onClick}
     >
       ×
-    </span>
+    </button>
   );
 };
 

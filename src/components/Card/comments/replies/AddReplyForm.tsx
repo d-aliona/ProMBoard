@@ -6,7 +6,8 @@ import { collection, addDoc } from 'firebase/firestore';
 
 import { addNotificationToDataBase } from '../../../../features/exportFunctions';
 import { allBoardsState } from '../../../../store/slices/allBoardsSlice';
-import style from '../../../../assets/scss/card.module.scss';
+import style from '../../../../assets/scss/comments.module.scss';
+import SaveCancelButtons from '../../../../ui/SaveCancelButtons';
 
 interface AddReplProps {
   card: Card;
@@ -64,19 +65,15 @@ const AddReplyForm: React.FC<AddReplProps> = ({ card, comment, setClickReplyComm
         onChange={(e) => setReplyText(e.target.value)}
       ></textarea>
       <div style={{ marginLeft: 'calc(35px + 10px)' }}>
-        <button className={style.buttonTrue} onClick={saveReply}>
-          Save
-        </button>
-        <button
-          className={style.buttonCancel}
-          onClick={(e) => {
+        <SaveCancelButtons 
+          isDisabled={!Boolean(replyText)}
+          onClickSave={saveReply}
+          onClickCancel={(e) => {
             e.stopPropagation();
             setClickReplyComment(false);
             setReplyText('');
           }}
-        >
-          Cancel
-        </button>
+        />
       </div>
     </>
   );

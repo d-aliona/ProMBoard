@@ -13,21 +13,21 @@ const DeleteForm: React.FC<DelCardProps> = ({ text, onClickYes, onClickNo }) => 
   return (
     <>
       <div className={style.deleteCardForm}>
-        {text}
-        <button
-          className={style.buttonYes}
-          style={{ fontSize: '16px' }}
-          onClick={onClickYes}
-        >
-          Yes
-        </button>
-        <button
-          className={style.buttonNo}
-          style={{ fontSize: '16px' }}
-          onClick={onClickNo}
-        >
-          No
-        </button>
+        {text}  
+        <div>
+          <button
+            className={style.buttonYes}
+            onClick={onClickYes}
+          >
+            Yes
+          </button>
+          <button
+            className={style.buttonNo}
+            onClick={onClickNo}
+          >
+            No
+          </button>
+        </div>      
       </div>
     </>
   );

@@ -15,7 +15,7 @@ interface DropCardProps {
   setShowMenu: Dispatcher;
 }
 
-const DropCardsList: React.FC<DropCardProps> = ({
+const DropListsList: React.FC<DropCardProps> = ({
   list,
   lists,
   cardsOnCurList,
@@ -63,4 +63,4 @@ const DropCardsList: React.FC<DropCardProps> = ({
   );
 };
 
-export default DropCardsList;
+export default DropListsList;
