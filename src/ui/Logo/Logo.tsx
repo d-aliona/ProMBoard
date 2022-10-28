@@ -11,6 +11,7 @@ const Logo: React.FC<LogoProps> = ({ font, hideText }) => {
     <div className={style.logo}>
       <div className={style.logoicon}></div>
       <div
+        data-testid='div-logo'
         className={style.logotext}
         style={{ fontSize: font, display: hideText ? 'none' : '' }}
       >
