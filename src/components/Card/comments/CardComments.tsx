@@ -49,7 +49,7 @@ const CardComments: React.FC<CardProps> = ({ card }) => {
       <div className={style.boundaries}>
         {comments &&
           comments.map((comment) => {
-            const repliesForComment = replies.filter(
+            const repliesForComment = replies && replies.filter(
               (re) => re.commentID === comment.id
             );
             return (
