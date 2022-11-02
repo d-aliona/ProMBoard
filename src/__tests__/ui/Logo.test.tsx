@@ -8,7 +8,7 @@ afterEach(cleanup);
 it('renders logo with text', () => {
   render(<Logo />);
   const divEl = screen.getByText(/promboard/i);
-  expect(divEl).toBeInTheDocument;
+  expect(divEl).toBeInTheDocument();
 })
 
 it('renders logo without text', () => {
