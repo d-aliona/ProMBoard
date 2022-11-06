@@ -4,6 +4,7 @@ import { persistReducer, persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
 import { combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import type { PreloadedState } from '@reduxjs/toolkit'
 
 import userReducer from './slices/userSlice';
 import usersReducer from './slices/usersSlice';
@@ -49,9 +50,19 @@ const store = configureStore({
   middleware: [thunk],
 });
 
+export const setupStore = (preloadedState?: PreloadedState<RootState>) => {
+  return configureStore({
+    reducer: persistedReducer,
+    preloadedState,
+    // devTools: process.env.NODE_ENV !== 'production',
+    // middleware: [thunk],
+  })
+}
+
 export default store;
 
 export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+export type AppStore = ReturnType<typeof setupStore>

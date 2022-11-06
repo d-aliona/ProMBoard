@@ -6,7 +6,7 @@ import store from '../store';
 export const RenderInRouterWithStore = () => ({ children }: any) => (
   <BrowserRouter >
       <Provider store={store}>
-          {children}
+        {children}
       </Provider>
   </BrowserRouter>
 );
