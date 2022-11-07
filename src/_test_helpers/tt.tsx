@@ -4,7 +4,7 @@ import type { RenderOptions } from '@testing-library/react'
 import { configureStore } from '@reduxjs/toolkit'
 import type { PreloadedState } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
-import { BrowserRouter, MemoryRouter } from "react-router-dom";
+import { BrowserRouter,  MemoryRouter } from "react-router-dom";
 
 import { setupStore } from '../store'
 import type { AppStore, RootState } from '../store'
@@ -14,7 +14,7 @@ interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   store?: AppStore
 }
 
-export function renderWithProviders(
+export function renderTestWithProviders(
   ui: React.ReactElement,
   {
     preloadedState = {},
@@ -22,13 +22,13 @@ export function renderWithProviders(
     ...renderOptions
   }: ExtendedRenderOptions = {}
 ) {
-  function Wrapper({ children }: PropsWithChildren<{}>): JSX.Element {
+  function Wrapper({ children }: PropsWithChildren<{}>, options?: any): JSX.Element {
     return (
-        <MemoryRouter >
-            <Provider store={store}>
-                {children}
-            </Provider>
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[options]}>
+          {children}
         </MemoryRouter>
+      </Provider>
     )
   }
   return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) }

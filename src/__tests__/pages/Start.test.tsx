@@ -19,8 +19,12 @@ test('check navigate to login page', async() => {
     const spanElement = screen.getByText('Log in');
     const parentDiv = spanElement.parentElement as HTMLElement;
     
-    await user.click(parentDiv)
-    await waitFor(() => expect(window.location.pathname).toBe('/login'))
+    user.click(parentDiv)
+    await waitFor(() => {
+        expect(window.location.pathname).toBe('/login');
+        screen.debug();
+    })
+    
 })
 
 test('check navigate to signup page', async() => {
@@ -51,21 +55,23 @@ it('should stay at start page if the user is not authorized', () => {
     expect(getByText('Collaborate and manage projects')).toBeInTheDocument();
 })
 
-it('should redirect to a home page if the user is authorized', async() => {
-    const testUser = {
-        user: {
-        email: 'invitation.do.not.reply@gmail.com',
-        id: 'test',
-        firstName: 'ProM',
-        lastName: 'Board',
-        guestBoards: ['1'],
-    }}
+// it('should redirect to a home page if the user is authorized', async() => {
+//     const testUser = {
+//         user: {
+//         email: 'test@test.test',
+//         id: 'test',
+//         firstName: 'ProM',
+//         lastName: 'Board',
+//         guestBoards: ['1'],
+//     }}
 
-    // renderWithProviders(<Start />, {
-    //     preloadedState: {
-    //         user: testUser
-    //     }
-    // })
-    // await waitFor(() => expect(window.location.pathname).toBe('/auth/home'))
-    screen.debug()
-})
+//     const {getByText} = renderWithProviders(<Start />, {
+//         preloadedState: {
+//             user: testUser
+//         }
+//     })
+//     // screen.debug()
+//     expect(getByText('Collaborate and manage projects')).toBeInTheDocument();
+//     // await waitFor(() => expect(window.location.pathname).toBe('/auth/home'))
+//     // screen.debug()
+// })
