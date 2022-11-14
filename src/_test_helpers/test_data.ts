@@ -25,7 +25,7 @@ export const PERSONALBOARDS = {
     personalBoards: boards
 }
 
-const cards = [
+export const cards = [
     {   id: 'id1',
         boardID: 'bid1',
         cardColor: 'red',
@@ -39,7 +39,7 @@ const cards = [
     },
     {   id: 'id2',
         boardID: 'bid2',
-        cardColor: 'green',
+        cardColor: 'white',
         cardTitle: 'c2',
         commentsExist: false,
         commentsNumber: 0,

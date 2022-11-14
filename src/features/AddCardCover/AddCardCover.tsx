@@ -39,7 +39,7 @@ const AddCardCover: React.FC<AddCardCoverProps> = ({ card, setClickAddCover }) =
     });
     setIsCover(false);
   };
-
+  
   return (
     <>
       <div className={style.cardCoverWrapper} ref={ref}>
@@ -47,7 +47,7 @@ const AddCardCover: React.FC<AddCardCoverProps> = ({ card, setClickAddCover }) =
         <div className={style.colorList}>
           <div
             className={style.colorItem}
-            style={{ backgroundColor: '#ffb3b3' }}
+            style={{ backgroundColor: 'rgb(255, 179, 179)' }}
             onClick={updateColor}
           ></div>
           <div
