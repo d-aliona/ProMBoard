@@ -14,7 +14,7 @@ const Initials: React.FC<Initialsprops> = ({ user, size, font }) => {
       className={style.circle}
       style={{ width: size, height: size, fontSize: font }}
     >
-      {user.firstName[0] + user.lastName[0]}
+      {user?.firstName[0] + user?.lastName[0]}
     </div>
   );
 };

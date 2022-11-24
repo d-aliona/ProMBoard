@@ -22,7 +22,7 @@ interface AssignMemProps {
 const AssignMemberForm: React.FC<AssignMemProps> = ({ card, setClickAddMembers }) => {
   const user = useAppSelector((state) => state.user.user);
   const users = useAppSelector((state) => state.users.users);
-  const boards = useAppSelector(allBoardsState);
+  const boards = useAppSelector((state) => state.allBoards.allBoards);
   const [searchMember, setSearchMember] = useState('');
   const size = useWindowSize();
   const currentBoard = boards.find((ob) => ob.id === card.boardID)!;
@@ -138,9 +138,9 @@ const AssignMemberForm: React.FC<AssignMemProps> = ({ card, setClickAddMembers }
                     onClick={(e) => toggleAssignMember(e, memberID)}
                   >
                     <Initials user={currentMember} />
-                    {currentMember.firstName + ' ' + currentMember.lastName}
+                    {currentMember?.firstName + ' ' + currentMember?.lastName}
                     <span style={{ marginLeft: '15px', color: '#666' }}>
-                      {size.width > 590 ? currentMember.email : null}
+                      {size.width > 590 ? currentMember?.email : null}
                     </span>
                     {card.assignedUsers.includes(memberID) ? (
                       <span style={{ marginLeft: 'auto' }}>✓</span>

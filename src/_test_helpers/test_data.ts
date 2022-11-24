@@ -1,15 +1,21 @@
-const boards = [
+export const boards = [
     {   boardColor: 'red',
         boardTitle: 'b1',
         owner: 'o1',
         statusOpened: true,
-        id: 'id1',
-        invitedMembers: ['1']},
+        id: 'bid1',
+        invitedMembers: ['1', 'id1']},
     {   boardColor: 'blue',
         boardTitle: 'b2',
         owner: 'o2',
         statusOpened: false,
-        id: 'id2',
+        id: 'bid2',
+        invitedMembers: []},
+    {   boardColor: 'blue',
+        boardTitle: 'b3',
+        owner: 'o2',
+        statusOpened: false,
+        id: 'bi5',
         invitedMembers: []}
 ]
 
@@ -58,7 +64,7 @@ export const CURRENTCARDS = {
     currentCards: cards
 }
 
-const lists = [
+export const lists = [
     {   id: 'id1',
         boardID: 'bid1',
         listTitle: 'l1',
@@ -87,14 +93,14 @@ export const CURRENTLISTS = {
 const comments = [
     {   id: 'id1',
         comment: 'com1',
-        edited: 'true',
+        edited: true,
         sortkey: 'key1',
         time: '01:01:01',
         userID: 'uid1'
     },
     {   id: 'id2',
         comment: 'com2',
-        edited: 'false',
+        edited: false,
         sortkey: 'key2',
         time: '02:02:02',
         userID: 'uid2'
@@ -164,12 +170,12 @@ export const USER = {
     }
 }
 
-const allUsers = [
+export const allUsers = [
     {   email: 'test1@test.test',
         id: 'id1',
         firstName: 'firstname1',
         lastName: 'lastname1',
-        guestBoards: ['1','2']
+        guestBoards: ['1','2', 'bid1']
     },
     {   email: 'test2@test.test',
         id: 'id2',
@@ -181,4 +187,22 @@ const allUsers = [
 
 export const USERS = {
     users: allUsers
+}
+
+export const testPreloadedState = {
+    user: USER,
+    users: USERS,
+    allBoards: ALLBOARDS,
+    allCards: ALLCARDS,
+    allLists: ALLLISTS,
+    personalBoards: PERSONALBOARDS,
+    notPersonalBoards: NOTPERSONALBOARDS,
+    currentLists: CURRENTLISTS,
+    currentCards: CURRENTCARDS,
+    currentComments: {
+        currentComments: []
+    },
+    currentReplies: CURRENTREPLIES,
+    notifications: NOTIFICATIONS,
+    currentDragStartCard: CURRENTDRAG,
 }

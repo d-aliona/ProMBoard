@@ -30,8 +30,6 @@ jest.mock('react-router-dom', () => ({
    ...jest.requireActual('react-router-dom') as any,
   Navigate: () => {return {to: '/auth/home'}},
 }));
-// jest.mock('react-router-dom')
-// console.debug(router)
 
 describe ('Start page tests', () => {
 

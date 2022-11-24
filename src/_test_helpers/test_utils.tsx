@@ -24,7 +24,7 @@ export function renderWithProviders(
 ) {
   function Wrapper({ children }: PropsWithChildren<{}>): JSX.Element {
     return (
-        <MemoryRouter initialEntries={['/']}>
+        <MemoryRouter>
             <Provider store={store}>
                 {children}
             </Provider>
