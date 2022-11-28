@@ -16,7 +16,13 @@ export const boards = [
         owner: 'o2',
         statusOpened: false,
         id: 'bi5',
-        invitedMembers: []}
+        invitedMembers: []},
+    {   boardColor: 'blue',
+        boardTitle: 'personal board',
+        owner: 'idpers',
+        statusOpened: true,
+        id: 'bi4',
+        invitedMembers: []},    
 ]
 
 export const ALLBOARDS = {
@@ -163,7 +169,7 @@ export const NOTIFICATIONS = {
 export const USER = {
     user: {
         email: 'test@test.test',
-        id: 'id',
+        id: 'idpers',
         firstName: 'firstName',
         lastName: 'lastName',
         guestBoards: ['1'],

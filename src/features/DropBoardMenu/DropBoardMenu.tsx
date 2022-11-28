@@ -25,7 +25,11 @@ const DropBoardMenu: React.FC<DropBoardMenuProps> = ({
   isOnBoards,
 }) => {
   const user = useAppSelector((state) => state.user.user);
-  const isGuestBoard = board.owner !== user.id;
+  let isGuestBoard;
+  if (user) {
+    isGuestBoard = board.owner !== user.id;
+  }
+  // const isGuestBoard = board.owner !== user.id;
   const [showMembers, setShowMembers] = useState(false);
   const [showInviteMembers, setShowInviteMembers] = useState(false);
   const [showChangeBackgroundForm, setShowChangeBackgroundForm] =
@@ -82,7 +86,7 @@ const DropBoardMenu: React.FC<DropBoardMenuProps> = ({
           setShowMembers={setShowMembers}
         />
       )}
-      {!isGuestBoard && 
+      
         <div
           className={style.boardDropItem}
           onClick={(e) => {
@@ -92,7 +96,18 @@ const DropBoardMenu: React.FC<DropBoardMenuProps> = ({
         >
           Invite members
         </div>
-      }
+      
+      {/* {!isGuestBoard && 
+        <div
+          className={style.boardDropItem}
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowInviteMembers((prev) => !prev);
+          }}
+        >
+          Invite members
+        </div>
+      } */}
         {showInviteMembers && (
           <InviteMembersPopup
             currentBoard={board}

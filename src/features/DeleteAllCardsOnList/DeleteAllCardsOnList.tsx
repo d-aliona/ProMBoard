@@ -23,7 +23,7 @@ const DeleteAllCardsOnList: React.FC<DeleteListProps> = ({
 }) => {
   const user = useAppSelector((state) => state.user.user);
   const persBoards = useAppSelector(personalBoardsState);
-  const currentBoard = persBoards.find((ob) => ob.id === list.boardID)!;
+  const currentBoard = persBoards?.find((ob) => ob.id === list.boardID)!;
 
   const deleteAllCards = async () => {
     cardsOnCurList.forEach(async (el) => {

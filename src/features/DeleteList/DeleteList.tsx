@@ -26,7 +26,7 @@ const DeleteList: React.FC<DeleteListProps> = ({
   const persBoards = useAppSelector(personalBoardsState);
   const noCards = cardsOnCurList.length === 0;
   const lists = useAppSelector(currentListsState);
-  const currentBoard = persBoards.find((ob) => ob.id === list.boardID)!;
+  const currentBoard = persBoards?.find((ob) => ob.id === list.boardID)!;
 
   const deleteList = async () => {
     if (!noCards) {
