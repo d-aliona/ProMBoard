@@ -19,7 +19,7 @@ const Home: React.FC = () => {
           e.stopPropagation();
         }}
       >
-        Create your board
+        Create your board proba git
       </div>
       {showCreateBoardForm && (
         <div>
