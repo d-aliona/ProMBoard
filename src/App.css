@@ -1,0 +1,5 @@
+@font-face {
+  font-family: 'Chalkboard';
+  src: local('Chalkboard'), url(./fonts/Chalkboard/chalkboard.ttf) format('truetype');
+  font-weight: normal;
+}

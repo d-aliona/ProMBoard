@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../../fonts/Chalkboard/chalkboard.ttf';
 
 import CreateBoardForm from '../../features/CreateBoardForm';
 import style from '../../assets/scss/home.module.scss';

@@ -87,7 +87,7 @@ const DropBoardMenu: React.FC<DropBoardMenuProps> = ({
         />
       )}
       
-        <div
+        {/* <div
           className={style.boardDropItem}
           onClick={(e) => {
             e.stopPropagation();
@@ -95,9 +95,9 @@ const DropBoardMenu: React.FC<DropBoardMenuProps> = ({
           }}
         >
           Invite members
-        </div>
+        </div> */}
       
-      {/* {!isGuestBoard && 
+      {!isGuestBoard && 
         <div
           className={style.boardDropItem}
           onClick={(e) => {
@@ -107,7 +107,7 @@ const DropBoardMenu: React.FC<DropBoardMenuProps> = ({
         >
           Invite members
         </div>
-      } */}
+      }
         {showInviteMembers && (
           <InviteMembersPopup
             currentBoard={board}

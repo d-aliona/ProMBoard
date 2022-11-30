@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
+import './fonts/Chalkboard/chalkboard.ttf';
 
 import Start from './pages/Start';
 import Signup from './pages/Signup';
